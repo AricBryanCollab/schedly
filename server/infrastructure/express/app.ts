@@ -2,8 +2,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 
+import authRouter from "@/internal/auth/route";
+
 import { errorHandler } from "@/infrastructure/middleware/errorHandler";
-import { Request, Response } from "express";
 
 export const startApp = () => {
   const app = express();
@@ -14,9 +15,8 @@ export const startApp = () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  app.use("/test", (_: Request, res: Response) => {
-    res.json({ message: "Test message for this endpoint" });
-  });
+  // Core Routes
+  app.use("/auth", authRouter);
 
   app.use(errorHandler);
 
