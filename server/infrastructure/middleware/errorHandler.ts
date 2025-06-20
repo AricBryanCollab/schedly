@@ -1,4 +1,6 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import multer from "multer";
 
 import {
   AppError,
@@ -6,13 +8,16 @@ import {
 } from "@/infrastructure/errors/customErrors";
 
 import { ErrorResponseProps } from "@/infrastructure/middleware/interface";
-import { PrismaClientValidationError } from "@prisma/client/runtime/library";
-import { JsonWebTokenError } from "jsonwebtoken";
-import multer from "multer";
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientValidationError,
+} from "@prisma/client/runtime/library";
+
+import { handlePrismaError } from "@/utils/errors/handlePrismaError";
 
 export const errorHandler: ErrorRequestHandler = (
   error: Error | AppError,
-  req: Request,
+  _: Request,
   res: Response,
   next: NextFunction
 ): void => {
@@ -40,11 +45,13 @@ export const errorHandler: ErrorRequestHandler = (
   }
 
   // Prisma Errors
-  // if(error instance of PrismaClientKnownRequestError) {
-  // 		errorResponse = handlePrismaError(error);
-  // 		res.status(errorResponse.status === "fail" ? 400:500).json(errorResponse);
-  // 		return;
-  // }
+  if (error instanceof PrismaClientKnownRequestError) {
+    errorResponse = handlePrismaError(error);
+    res
+      .status(errorResponse.status === "failed" ? 400 : 500)
+      .json(errorResponse);
+    return;
+  }
 
   if (error instanceof PrismaClientValidationError) {
     errorResponse = {
@@ -67,6 +74,7 @@ export const errorHandler: ErrorRequestHandler = (
   }
 
   // JWT Errors
+  const { JsonWebTokenError } = jwt;
   if (error instanceof JsonWebTokenError) {
     errorResponse = {
       status: "failed",
