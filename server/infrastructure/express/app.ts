@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 
+import { errorHandler } from "@/infrastructure/middleware/errorHandler";
 import { Request, Response } from "express";
 
 export const startApp = () => {
@@ -16,6 +17,8 @@ export const startApp = () => {
   app.use("/test", (_: Request, res: Response) => {
     res.json({ message: "Test message for this endpoint" });
   });
+
+  app.use(errorHandler);
 
   return app;
 };
