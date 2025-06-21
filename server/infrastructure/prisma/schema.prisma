@@ -30,7 +30,7 @@ model User {
   resetCode String?
   resetCodeExpiry DateTime?
  
-  tasks Task[]
+  calendarItems CalendarItem[]
   notifications Notification[]
 
   createdAt DateTime @default(now())
@@ -39,7 +39,7 @@ model User {
   @@index([resetCode])
 }
 
-model Task {
+model CalendarItem {
   id String @id @default(uuid())
   userId String 
 
@@ -48,6 +48,7 @@ model Task {
   startTime DateTime
   endTime DateTime
   isAllDay Boolean
+  isHiglighted Boolean
   status Status
 
   user User @relation(fields: [userId], references: [id])
