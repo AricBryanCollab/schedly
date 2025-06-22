@@ -32,3 +32,4 @@ node_modules/
 infrastructure/prisma/migrations
 .env
 infrastructure/generated/prisma
+/generated/prisma

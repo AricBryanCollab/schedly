@@ -38,11 +38,11 @@
     "@types/node": "^24.0.1",
     "@types/nodemailer": "^6.4.17",
     "prettier": "^3.5.3",
-    "prisma": "^6.9.0",
+    "prisma": "^6.10.1",
     "tsx": "^4.20.3"
   },
   "dependencies": {
-    "@prisma/client": "^6.9.0",
+    "@prisma/client": "^6.10.1",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.6.1",
     "cookie-parser": "^1.4.7",
