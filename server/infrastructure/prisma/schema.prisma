@@ -20,15 +20,23 @@ enum Status {
   COMPLETED
 }
 
+enum OffsetDuration {
+  MINUTES
+  HOURS
+  DAYS
+}
+
 model User {
   id String @id @default(uuid())
   username String @unique
   email String @unique
   password String 
   profilePic String?
-  timezone String
+
+  timezone String?
   resetCode String?
   resetCodeExpiry DateTime?
+  provider String?
  
   calendarItems CalendarItem[]
   notifications Notification[]
@@ -41,17 +49,20 @@ model User {
 
 model CalendarItem {
   id String @id @default(uuid())
-  userId String 
+  userId String @unique
 
   title String
   description String?
   startTime DateTime
   endTime DateTime
   isAllDay Boolean
-  isHiglighted Boolean
+  isRecurrent Boolean
+  recurrenceRule String?
+  isHighlighted Boolean
   status Status
 
   user User @relation(fields: [userId], references: [id])
+  reminders Reminder[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -59,14 +70,24 @@ model CalendarItem {
   @@index([userId])
 }
 
+model Reminder {
+  id String @id @default(uuid())
+  calendarItemId String 
+  offset Int
+  offsetType OffsetDuration
+  isSent Boolean
+
+  calendarItem CalendarItem @relation(fields:[calendarItemId], references: [id])
+
+}
+
+
 model Notification {
   id        String   @id @default(uuid())
   userId    String
 
   message   String
   isRead    Boolean  @default(false)
-  sentAt    DateTime @default(now())
-  readAt    DateTime?
 
   user      User     @relation(fields: [userId], references: [id])
 
