@@ -43,9 +43,12 @@ export class AuthController {
       next(error);
     }
   }
-  async signOut(req: Request, res: Response, next: NextFunction) {
+  async signOut(_: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json("Sign Out Endpoint");
+      res.cookie("jwt", "", { maxAge: 0 });
+      res
+        .status(200)
+        .json({ message: "You have been logged out successfully" });
     } catch (error) {
       next(error);
     }
