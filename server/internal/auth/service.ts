@@ -1,9 +1,12 @@
-import { ValidationError } from "@/infrastructure/errors/customErrors";
-import { SignUpData } from "@/internal/auth/dto";
+import {
+  NotFoundError,
+  ValidationError,
+} from "@/infrastructure/errors/customErrors";
+import { SignInData, SignUpData } from "@/internal/auth/dto";
 import { IAuthResponse } from "@/internal/auth/interface";
 
 import { AuthRepository } from "@/internal/auth/repository";
-import { toHashPassword } from "@/utils/auth/bcrypt";
+import { toHashPassword, validatePassword } from "@/utils/auth/bcrypt";
 
 export class AuthService {
   constructor(private readonly authRepository: AuthRepository) {}
@@ -57,7 +60,28 @@ export class AuthService {
     return userResData;
   }
 
-  async signIn() {}
+  async signIn(signinData: SignInData) {
+    const { email, password } = signinData;
+
+    const user = await this.authRepository.findByEmail(email);
+
+    if (!user || !user.password) {
+      throw new NotFoundError("User account");
+    }
+
+    const isPasswordMatched = await validatePassword(password, user.password);
+
+    if (!isPasswordMatched) {
+      throw new Error("Invalid password. Please try again");
+    }
+
+    const userResData = {
+      id: user.id,
+      username: user.username,
+    };
+
+    return userResData;
+  }
 
   async oAuth() {}
 }
