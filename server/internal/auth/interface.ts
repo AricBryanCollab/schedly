@@ -9,8 +9,4 @@ export interface IAuthRepository {
 export interface IAuthResponse {
   id: string;
   username: string;
-  password: string;
-  email: string;
-  profilePic: string | null;
-  role: string;
 }
