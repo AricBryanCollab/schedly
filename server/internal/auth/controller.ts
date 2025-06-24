@@ -30,7 +30,15 @@ export class AuthController {
 
   async signIn(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json("Sign In Endpoint");
+      const signInData = req.body;
+
+      const userResData = await this.authService.signIn(signInData);
+
+      generateTokenAndSetCookie(userResData.id, req, res);
+      res.status(200).json({
+        message: "You have successfully signed in",
+        user: userResData,
+      });
     } catch (error) {
       next(error);
     }
