@@ -1,6 +1,7 @@
 import { AuthService } from "@/internal/auth/service";
 import { NextFunction, Request, Response } from "express";
 
+import { ValidationError } from "@/infrastructure/errors/customErrors";
 import { generateTokenAndSetCookie } from "@/utils/auth/jwt";
 
 export class AuthController {
@@ -43,6 +44,7 @@ export class AuthController {
       next(error);
     }
   }
+
   async signOut(_: Request, res: Response, next: NextFunction) {
     try {
       res.cookie("jwt", "", { maxAge: 0 });
@@ -53,9 +55,26 @@ export class AuthController {
       next(error);
     }
   }
+
   async oAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json("OAuth Endpoint");
+      const { provider } = req.params;
+      const { accessToken } = req.body;
+
+      if (!accessToken) {
+        throw new ValidationError("Access Token is required");
+      }
+
+      const userResData = await this.authService.oAuth(provider, accessToken);
+      if (!userResData) {
+        throw new Error("Failed to perform OAuth protocol");
+      }
+
+      generateTokenAndSetCookie(userResData.id, req, res);
+      res.status(200).json({
+        message: "You have successfully signed in",
+        user: userResData,
+      });
     } catch (error) {
       next(error);
     }
