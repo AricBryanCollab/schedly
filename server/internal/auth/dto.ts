@@ -10,3 +10,10 @@ export class SignUpData {
   confirmPassword?: string;
   profilePicURL?: string;
 }
+
+export class OAuthData {
+  username!: string;
+  email!: string;
+  profilePicURL?: string;
+  provider!: string;
+}

@@ -3,23 +3,31 @@ import { prisma } from "@/infrastructure/database/connectToDb";
 import { DatabaseError } from "@/infrastructure/errors/customErrors";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-import { SignUpData } from "@/internal/auth/dto";
+import { OAuthData, SignUpData } from "@/internal/auth/dto";
 import { IAuthRepository, IAuthResponse } from "@/internal/auth/interface";
 
 const defaultProfilePic =
   "https://res.cloudinary.com/dpmecjee7/image/upload/v1750701689/default_profilepic_lm3qvo.jpg";
 
 export class AuthRepository implements IAuthRepository {
-  async createUser(signUpData: SignUpData): Promise<IAuthResponse> {
+  async createUser(signUpData: SignUpData | OAuthData): Promise<IAuthResponse> {
     try {
       const newUser = await prisma.user.create({
         data: {
           username: signUpData.username,
           email: signUpData.email,
-          password: signUpData.password,
+          password:
+            "password" in signUpData && signUpData.password !== undefined
+              ? signUpData.password
+              : null,
           profilePic: signUpData.profilePicURL || defaultProfilePic,
+          provider:
+            "provider" in signUpData && signUpData.provider !== undefined
+              ? signUpData.provider
+              : null,
         },
       });
+
       return newUser;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
@@ -44,7 +52,11 @@ export class AuthRepository implements IAuthRepository {
         return null;
       }
 
-      return user;
+      return {
+        id: user.id,
+        username: user.username,
+        password: user.password ?? null,
+      };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         console.error(error.message);
@@ -52,8 +64,5 @@ export class AuthRepository implements IAuthRepository {
       }
       throw error;
     }
-  }
-  findByUserId(userId: string): Promise<IAuthResponse | null> {
-    throw new Error("Method not implemented.");
   }
 }

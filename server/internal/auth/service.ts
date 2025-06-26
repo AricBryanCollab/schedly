@@ -2,11 +2,16 @@ import {
   NotFoundError,
   ValidationError,
 } from "@/infrastructure/errors/customErrors";
-import { SignInData, SignUpData } from "@/internal/auth/dto";
+import { OAuthData, SignInData, SignUpData } from "@/internal/auth/dto";
 import { IAuthResponse } from "@/internal/auth/interface";
 
 import { AuthRepository } from "@/internal/auth/repository";
 import { toHashPassword, validatePassword } from "@/utils/auth/bcrypt";
+import {
+  UserInfo,
+  handleFacebookProvider,
+  handleGoogleProvider,
+} from "@/utils/auth/oauth";
 
 export class AuthService {
   constructor(private readonly authRepository: AuthRepository) {}
@@ -83,5 +88,35 @@ export class AuthService {
     return userResData;
   }
 
-  async oAuth() {}
+  async oAuth(provider: string, accessToken: string): Promise<IAuthResponse> {
+    let userInfo: UserInfo<string>;
+    switch (provider) {
+      case "google":
+        userInfo = await handleGoogleProvider(accessToken);
+        break;
+
+      case "facebook":
+        userInfo = await handleFacebookProvider(accessToken);
+        break;
+
+      default:
+        throw new ValidationError(`Unsupported provider: ${provider}`);
+    }
+
+    const { email, username, profilePic } = userInfo;
+
+    let user = await this.authRepository.findByEmail(userInfo?.email);
+    if (!user) {
+      const signUpData: OAuthData = {
+        email,
+        username,
+        profilePicURL: profilePic,
+        provider: provider,
+      };
+
+      user = await this.authRepository.createUser(signUpData);
+    }
+
+    return user;
+  }
 }
