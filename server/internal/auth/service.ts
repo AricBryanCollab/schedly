@@ -88,7 +88,10 @@ export class AuthService {
     return userResData;
   }
 
-  async oAuth(provider: string, accessToken: string): Promise<IAuthResponse> {
+  async oAuthSignUp(
+    provider: string,
+    accessToken: string
+  ): Promise<IAuthResponse> {
     let userInfo: UserInfo<string>;
     switch (provider) {
       case "google":
@@ -118,5 +121,27 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async oAuthSignIn(provider: string, accessToken: string) {
+    try {
+      let userInfo: UserInfo<string>;
+      switch (provider) {
+        case "google":
+          userInfo = await handleGoogleProvider(accessToken);
+          break;
+        case "facebook":
+          userInfo = await handleFacebookProvider(accessToken);
+          break;
+        default:
+          throw new ValidationError(`Unsupported provider: ${provider}`);
+      }
+      const user = await this.authRepository.findByEmail(userInfo.email);
+      if (!user) {
+        throw new NotFoundError("No user found for this OAuth account");
+      }
+
+      return user;
+    } catch (error) {}
   }
 }
