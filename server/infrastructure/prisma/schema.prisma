@@ -29,7 +29,7 @@ enum OffsetDuration {
 model User {
   id String @id @default(uuid())
   username String @unique
-  email String @unique
+  email String? @unique
   password String? 
   profilePic String?
 

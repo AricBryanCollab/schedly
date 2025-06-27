@@ -2,7 +2,8 @@ import { SignUpData } from "@/internal/auth/dto";
 
 export interface IAuthRepository {
   createUser(signUpData: SignUpData): Promise<IAuthResponse>;
-  findByEmail(email: string): Promise<IAuthResponse | null>;
+  findUserByEmail(email: string): Promise<IAuthResponse | null>;
+  findUserByUsername(username: string): Promise<IAuthResponse | null>;
 }
 
 export interface IAuthResponse {

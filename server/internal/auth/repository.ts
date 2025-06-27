@@ -10,6 +10,9 @@ const defaultProfilePic =
   "https://res.cloudinary.com/dpmecjee7/image/upload/v1750701689/default_profilepic_lm3qvo.jpg";
 
 export class AuthRepository implements IAuthRepository {
+  findByEmail(email: string): Promise<IAuthResponse | null> {
+    throw new Error("Method not implemented.");
+  }
   async createUser(signUpData: SignUpData | OAuthData): Promise<IAuthResponse> {
     try {
       const newUser = await prisma.user.create({
@@ -37,7 +40,7 @@ export class AuthRepository implements IAuthRepository {
       throw error;
     }
   }
-  async findByEmail(email: string): Promise<IAuthResponse | null> {
+  async findUserByEmail(email: string): Promise<IAuthResponse | null> {
     try {
       const user = await prisma.user.findUnique({
         where: { email },
@@ -60,7 +63,36 @@ export class AuthRepository implements IAuthRepository {
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         console.error(error.message);
-        throw new DatabaseError("Database error at findByEmail method");
+        throw new DatabaseError("Database error at findUserByEmail method");
+      }
+      throw error;
+    }
+  }
+
+  async findUserByUsername(username: string): Promise<IAuthResponse | null> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { username },
+        select: {
+          id: true,
+          username: true,
+          password: true,
+        },
+      });
+
+      if (!user) {
+        return null;
+      }
+
+      return {
+        id: user.id,
+        username: user.username,
+        password: user.password ?? null,
+      };
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at findUserByUsername method");
       }
       throw error;
     }

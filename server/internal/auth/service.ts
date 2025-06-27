@@ -108,7 +108,13 @@ export class AuthService {
 
     const { email, username, profilePic } = userInfo;
 
-    let user = await this.authRepository.findByEmail(userInfo?.email);
+    let user: IAuthResponse | null = null;
+    if (provider === "google") {
+      user = await this.authRepository.findByEmail(userInfo.email);
+    } else {
+      user = await this.authRepository.findUserByUsername(userInfo.username);
+    }
+
     if (!user) {
       const signUpData: OAuthData = {
         email,
