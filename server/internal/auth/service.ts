@@ -1,4 +1,5 @@
 import {
+  AuthorizationError,
   NotFoundError,
   ValidationError,
 } from "@/infrastructure/errors/customErrors";
@@ -6,12 +7,20 @@ import { OAuthData, SignInData, SignUpData } from "@/internal/auth/dto";
 import { IAuthResponse } from "@/internal/auth/interface";
 
 import { AuthRepository } from "@/internal/auth/repository";
+
 import { toHashPassword, validatePassword } from "@/utils/auth/bcrypt";
+import { verifyToken } from "@/utils/auth/jwt";
 import {
   UserInfo,
   handleFacebookProvider,
   handleGoogleProvider,
 } from "@/utils/auth/oauth";
+
+interface UserData {
+  id: string;
+  username: string;
+  password: string | null;
+}
 
 export class AuthService {
   constructor(private readonly authRepository: AuthRepository) {}
@@ -157,5 +166,23 @@ export class AuthService {
 
       return user;
     } catch (error) {}
+  }
+
+  async validateUserToken(token: string): Promise<UserData | null> {
+    try {
+      const decoded = verifyToken(token);
+
+      const user = await this.authRepository.findUserByUserId(decoded.userId);
+      if (user) {
+        return {
+          id: user.id,
+          username: user.username,
+          password: user.password || null,
+        };
+      }
+      return null;
+    } catch (error) {
+      throw new AuthorizationError("Invalid or expired token");
+    }
   }
 }

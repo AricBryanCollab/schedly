@@ -94,4 +94,33 @@ export class AuthRepository implements IAuthRepository {
       throw error;
     }
   }
+
+  async findUserByUserId(userId: string): Promise<IAuthResponse | null> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          username: true,
+          password: true,
+        },
+      });
+
+      if (!user) {
+        return null;
+      }
+
+      return {
+        id: user.id,
+        username: user.username,
+        password: user.password ?? null,
+      };
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at findUserByUserId method");
+      }
+      throw error;
+    }
+  }
 }
