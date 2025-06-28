@@ -10,9 +10,6 @@ const defaultProfilePic =
   "https://res.cloudinary.com/dpmecjee7/image/upload/v1750701689/default_profilepic_lm3qvo.jpg";
 
 export class AuthRepository implements IAuthRepository {
-  findByEmail(email: string): Promise<IAuthResponse | null> {
-    throw new Error("Method not implemented.");
-  }
   async createUser(signUpData: SignUpData | OAuthData): Promise<IAuthResponse> {
     try {
       const newUser = await prisma.user.create({

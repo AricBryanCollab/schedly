@@ -110,7 +110,7 @@ export class AuthService {
 
     let user: IAuthResponse | null = null;
     if (provider === "google") {
-      user = await this.authRepository.findByEmail(userInfo.email);
+      user = await this.authRepository.findUserByEmail(userInfo.email);
     } else {
       user = await this.authRepository.findUserByUsername(userInfo.username);
     }
@@ -146,7 +146,7 @@ export class AuthService {
       let user: IAuthResponse | null;
 
       if (provider === "google") {
-        user = await this.authRepository.findByEmail(userInfo.email);
+        user = await this.authRepository.findUserByEmail(userInfo.email);
       } else {
         user = await this.authRepository.findUserByUsername(userInfo.username);
       }
