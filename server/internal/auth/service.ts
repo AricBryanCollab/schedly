@@ -44,7 +44,7 @@ export class AuthService {
     }
 
     // Existing User Validation
-    const existingUser = await this.authRepository.findByEmail(email);
+    const existingUser = await this.authRepository.findUserByEmail(email);
     if (existingUser) {
       throw new ValidationError("Email already used, please try another");
     }
@@ -68,7 +68,7 @@ export class AuthService {
   async signIn(signinData: SignInData) {
     const { email, password } = signinData;
 
-    const user = await this.authRepository.findByEmail(email);
+    const user = await this.authRepository.findUserByEmail(email);
 
     if (!user || !user.password) {
       throw new NotFoundError("User account");
@@ -142,7 +142,15 @@ export class AuthService {
         default:
           throw new ValidationError(`Unsupported provider: ${provider}`);
       }
-      const user = await this.authRepository.findByEmail(userInfo.email);
+
+      let user: IAuthResponse | null;
+
+      if (provider === "google") {
+        user = await this.authRepository.findByEmail(userInfo.email);
+      } else {
+        user = await this.authRepository.findUserByUsername(userInfo.username);
+      }
+
       if (!user) {
         throw new NotFoundError("No user found for this OAuth account");
       }
