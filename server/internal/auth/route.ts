@@ -5,7 +5,8 @@ const router = express.Router();
 
 router.post("/signup", authController.signUp);
 router.post("/signin", authController.signIn);
-router.post("/oauth/:provider", authController.oAuth);
+router.post("/oauth-signup/:provider", authController.oAuthSignUp);
+router.post("/oauth-signin/:provider", authController.oAuthSignIn);
 router.post("/signout", authController.signOut);
 
 export default router;

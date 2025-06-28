@@ -44,7 +44,7 @@ export class AuthService {
     }
 
     // Existing User Validation
-    const existingUser = await this.authRepository.findByEmail(email);
+    const existingUser = await this.authRepository.findUserByEmail(email);
     if (existingUser) {
       throw new ValidationError("Email already used, please try another");
     }
@@ -68,7 +68,7 @@ export class AuthService {
   async signIn(signinData: SignInData) {
     const { email, password } = signinData;
 
-    const user = await this.authRepository.findByEmail(email);
+    const user = await this.authRepository.findUserByEmail(email);
 
     if (!user || !user.password) {
       throw new NotFoundError("User account");
@@ -88,7 +88,10 @@ export class AuthService {
     return userResData;
   }
 
-  async oAuth(provider: string, accessToken: string): Promise<IAuthResponse> {
+  async oAuthSignUp(
+    provider: string,
+    accessToken: string
+  ): Promise<IAuthResponse> {
     let userInfo: UserInfo<string>;
     switch (provider) {
       case "google":
@@ -105,7 +108,13 @@ export class AuthService {
 
     const { email, username, profilePic } = userInfo;
 
-    let user = await this.authRepository.findByEmail(userInfo?.email);
+    let user: IAuthResponse | null = null;
+    if (provider === "google") {
+      user = await this.authRepository.findByEmail(userInfo.email);
+    } else {
+      user = await this.authRepository.findUserByUsername(userInfo.username);
+    }
+
     if (!user) {
       const signUpData: OAuthData = {
         email,
@@ -118,5 +127,35 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async oAuthSignIn(provider: string, accessToken: string) {
+    try {
+      let userInfo: UserInfo<string>;
+      switch (provider) {
+        case "google":
+          userInfo = await handleGoogleProvider(accessToken);
+          break;
+        case "facebook":
+          userInfo = await handleFacebookProvider(accessToken);
+          break;
+        default:
+          throw new ValidationError(`Unsupported provider: ${provider}`);
+      }
+
+      let user: IAuthResponse | null;
+
+      if (provider === "google") {
+        user = await this.authRepository.findByEmail(userInfo.email);
+      } else {
+        user = await this.authRepository.findUserByUsername(userInfo.username);
+      }
+
+      if (!user) {
+        throw new NotFoundError("No user found for this OAuth account");
+      }
+
+      return user;
+    } catch (error) {}
   }
 }

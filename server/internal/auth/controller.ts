@@ -9,7 +9,8 @@ export class AuthController {
     this.signUp = this.signUp.bind(this);
     this.signIn = this.signIn.bind(this);
     this.signOut = this.signOut.bind(this);
-    this.oAuth = this.oAuth.bind(this);
+    this.oAuthSignUp = this.oAuthSignUp.bind(this);
+    this.oAuthSignIn = this.oAuthSignIn.bind(this);
   }
 
   async signUp(req: Request, res: Response, next: NextFunction) {
@@ -56,7 +57,7 @@ export class AuthController {
     }
   }
 
-  async oAuth(req: Request, res: Response, next: NextFunction) {
+  async oAuthSignUp(req: Request, res: Response, next: NextFunction) {
     try {
       const { provider } = req.params;
       const { accessToken } = req.body;
@@ -65,9 +66,39 @@ export class AuthController {
         throw new ValidationError("Access Token is required");
       }
 
-      const userResData = await this.authService.oAuth(provider, accessToken);
+      const userResData = await this.authService.oAuthSignUp(
+        provider,
+        accessToken
+      );
       if (!userResData) {
         throw new Error("Failed to perform OAuth protocol");
+      }
+
+      generateTokenAndSetCookie(userResData.id, req, res);
+      res.status(200).json({
+        message: "You have successfully signed in",
+        user: userResData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async oAuthSignIn(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { provider } = req.params;
+      const { accessToken } = req.body;
+
+      if (!accessToken) {
+        throw new ValidationError("Access token is required");
+      }
+
+      const userResData = await this.authService.oAuthSignIn(
+        provider,
+        accessToken
+      );
+      if (!userResData) {
+        throw new Error("No user found for this OAuth account");
       }
 
       generateTokenAndSetCookie(userResData.id, req, res);
