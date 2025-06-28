@@ -4,6 +4,7 @@ export interface IAuthRepository {
   createUser(signUpData: SignUpData): Promise<IAuthResponse>;
   findUserByEmail(email: string): Promise<IAuthResponse | null>;
   findUserByUsername(username: string): Promise<IAuthResponse | null>;
+  findUserByUserId(userId: string): Promise<IAuthResponse | null>;
 }
 
 export interface IAuthResponse {
