@@ -11,6 +11,14 @@ Schedly is a monorepo scheduling/calendar application with:
 
 ## Development Commands
 
+### Root (workspace commands)
+```bash
+pnpm dev            # Start all services in dev mode
+pnpm build          # Build all packages
+pnpm lint           # Run lint on all packages
+pnpm format         # Format all packages
+```
+
 ### Client (from /client directory)
 ```bash
 pnpm start          # Start Expo development server
@@ -97,6 +105,7 @@ This project uses emoji-prefixed conventional commits:
 - 🔰 init: initial setup or templates
 - 🌐 api: API endpoint changes
 - 🔧 utility: utility functions or tools
+- 📝 docs: documentation updates
 
 Format: `<emoji> <type>: <short description>`
 
