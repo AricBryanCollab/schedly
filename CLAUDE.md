@@ -71,7 +71,7 @@ Server requires `.env` file with:
 
 ## Key Technologies
 
-- **Package Manager**: pnpm (with hoisted node_modules)
+- **Package Manager**: pnpm (with symlinked node_modules)
 - **UI Framework**: React Native Paper (Material Design 3)
 - **Navigation**: Expo Router (file-based)
 - **State**: React hooks
@@ -86,3 +86,18 @@ Server requires `.env` file with:
 - React Native Paper already configured with theme switching
 - No test infrastructure currently set up
 - Git branch: main (for PRs)
+
+## Git Commit Convention
+
+This project uses emoji-prefixed conventional commits:
+
+- 🔧 fix: bug fixes or configuration fixes
+- ✨ feature: new features
+- 🧹 chore: maintenance tasks, dependency updates
+- 🔰 init: initial setup or templates
+- 🌐 api: API endpoint changes
+- 🔧 utility: utility functions or tools
+
+Format: `<emoji> <type>: <short description>`
+
+Keep commits concise and focused on one change.
