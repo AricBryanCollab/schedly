@@ -27,9 +27,18 @@ lerna-debug.log*
 .env.*
 .env*.local
 !.env.example
+*.env
+*.env.production
 
 # Common editor-specific folders
 .vscode/
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # Operating System generated files
 # macOS
