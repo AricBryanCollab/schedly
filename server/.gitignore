@@ -1,3 +1,4 @@
+# Package-specific GitHub Actions workflows
 .github/*
 
 # Logs
@@ -27,7 +28,7 @@ dist-ssr
 *.env
 *.env.production
 
-#Server
+# Server
 node_modules/
 infrastructure/prisma/migrations
 .env

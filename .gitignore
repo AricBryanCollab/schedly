@@ -1,0 +1,46 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# Monorepo-wide dependency folders
+node_modules/
+.pnpm-store/
+
+# General build output directories
+dist/
+build/
+.expo/
+ios/
+android/
+web-build/
+*.tsbuildinfo
+
+# Log files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment variable files
+.env
+.env.*
+.env*.local
+!.env.example
+
+# Common editor-specific folders
+.vscode/
+
+# Operating System generated files
+# macOS
+.DS_Store
+
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+
+# Internal tooling
+.claude/
