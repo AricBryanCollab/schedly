@@ -15,6 +15,7 @@ import {
   handleFacebookProvider,
   handleGoogleProvider,
 } from "@/utils/auth/oauth";
+import { storeTemporaryUser } from "@/utils/otp/redisStore";
 
 interface UserData {
   id: string;
@@ -25,7 +26,7 @@ interface UserData {
 export class AuthService {
   constructor(private readonly authRepository: AuthRepository) {}
 
-  async signUp(signUpData: SignUpData): Promise<IAuthResponse> {
+  async signUp(signUpData: SignUpData) {
     const { username, email, password, confirmPassword } = signUpData;
 
     // Missing Fields Validation
@@ -60,18 +61,13 @@ export class AuthService {
 
     //Password Hashing
     const hashedPassword = await toHashPassword(password);
-    const newUser = await this.authRepository.createUser({
+    const validatedUser = {
       ...signUpData,
       password: hashedPassword,
-      profilePicURL: "",
-    });
-
-    const userResData = {
-      id: newUser.id,
-      username: newUser.username,
     };
 
-    return userResData;
+    const tempKey = storeTemporaryUser(validatedUser);
+    return tempKey;
   }
 
   async signIn(signinData: SignInData) {
