@@ -17,13 +17,12 @@ export class AuthController {
     try {
       const signUpData = req.body;
 
-      const userResData = await this.authService.signUp(signUpData);
+      const tempKey = await this.authService.signUp(signUpData);
 
-      generateTokenAndSetCookie(userResData.id, req, res);
-
-      res.status(201).json({
-        message: "Congratulations, your account has been registered",
-        user: userResData,
+      res.status(200).json({
+        message:
+          "Verification code was sent to your email. Please confirm to continue.",
+        key: tempKey,
       });
     } catch (error) {
       next(error);

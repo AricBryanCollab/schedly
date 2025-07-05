@@ -15,6 +15,8 @@ import {
   handleFacebookProvider,
   handleGoogleProvider,
 } from "@/utils/auth/oauth";
+import { generateVerificationCode } from "@/utils/email/nodemailer";
+import { storeTemporaryUser } from "@/utils/otp/redisStore";
 
 interface UserData {
   id: string;
@@ -25,7 +27,7 @@ interface UserData {
 export class AuthService {
   constructor(private readonly authRepository: AuthRepository) {}
 
-  async signUp(signUpData: SignUpData): Promise<IAuthResponse> {
+  async signUp(signUpData: SignUpData) {
     const { username, email, password, confirmPassword } = signUpData;
 
     // Missing Fields Validation
@@ -60,18 +62,22 @@ export class AuthService {
 
     //Password Hashing
     const hashedPassword = await toHashPassword(password);
-    const newUser = await this.authRepository.createUser({
+    const validatedUser = {
       ...signUpData,
       password: hashedPassword,
-      profilePicURL: "",
-    });
-
-    const userResData = {
-      id: newUser.id,
-      username: newUser.username,
     };
 
-    return userResData;
+    try {
+      const { otp, expiry } = await generateVerificationCode(
+        signUpData.email,
+        "oauth"
+      );
+      const tempKey = await storeTemporaryUser(validatedUser, otp, expiry);
+      return tempKey;
+    } catch (error) {
+      console.log(error);
+      throw new ValidationError("Failed to process the sign up");
+    }
   }
 
   async signIn(signinData: SignInData) {
