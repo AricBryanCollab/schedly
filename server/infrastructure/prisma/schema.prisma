@@ -34,8 +34,6 @@ model User {
   profilePic String?
 
   timezone String?
-  resetCode String?
-  resetCodeExpiry DateTime?
   provider String?
  
   calendarItems CalendarItem[]
@@ -43,8 +41,6 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([resetCode])
 }
 
 model CalendarItem {

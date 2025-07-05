@@ -1,12 +1,15 @@
 import { loadEnv } from "@/config/loadEnv";
 import { connectToDb } from "@/infrastructure/database/connectToDb";
 import { startApp } from "@/infrastructure/express/app";
+import { connectToRedis } from "./infrastructure/database/connectToRedis";
 
 const initializeServer = async () => {
   try {
     loadEnv();
 
     await connectToDb();
+
+    await connectToRedis();
 
     const app = startApp();
 
