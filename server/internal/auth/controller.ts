@@ -11,6 +11,7 @@ export class AuthController {
     this.signOut = this.signOut.bind(this);
     this.oAuthSignUp = this.oAuthSignUp.bind(this);
     this.oAuthSignIn = this.oAuthSignIn.bind(this);
+    this.verifySignUp = this.verifySignUp.bind(this);
   }
 
   async signUp(req: Request, res: Response, next: NextFunction) {
@@ -65,18 +66,18 @@ export class AuthController {
         throw new ValidationError("Access Token is required");
       }
 
-      const userResData = await this.authService.oAuthSignUp(
+      const redisKey = await this.authService.oAuthSignUp(
         provider,
         accessToken
       );
-      if (!userResData) {
+      if (!redisKey) {
         throw new Error("Failed to perform OAuth protocol");
       }
 
-      generateTokenAndSetCookie(userResData.id, req, res);
       res.status(200).json({
-        message: "You have successfully signed in",
-        user: userResData,
+        message:
+          "Verification code was sent to your email. Please confirm to continue.",
+        key: redisKey,
       });
     } catch (error) {
       next(error);
@@ -103,6 +104,25 @@ export class AuthController {
       generateTokenAndSetCookie(userResData.id, req, res);
       res.status(200).json({
         message: "You have successfully signed in",
+        user: userResData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async verifySignUp(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { key, otp } = req.body;
+
+      if (!key || !otp) {
+        throw new ValidationError("Redis key and OTP is required");
+      }
+
+      const userResData = await this.authService.verifyOtpSignUp(key, otp);
+
+      res.status(200).json({
+        message: "You have successfully signed up",
         user: userResData,
       });
     } catch (error) {

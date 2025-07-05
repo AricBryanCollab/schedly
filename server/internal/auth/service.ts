@@ -4,7 +4,6 @@ import {
   ValidationError,
 } from "@/infrastructure/errors/customErrors";
 import { OAuthData, SignInData, SignUpData } from "@/internal/auth/dto";
-import { IAuthResponse } from "@/internal/auth/interface";
 
 import { AuthRepository } from "@/internal/auth/repository";
 
@@ -12,11 +11,11 @@ import { toHashPassword, validatePassword } from "@/utils/auth/bcrypt";
 import { verifyToken } from "@/utils/auth/jwt";
 import {
   UserInfo,
-  handleFacebookProvider,
+  handleGithubProvider,
   handleGoogleProvider,
 } from "@/utils/auth/oauth";
-import { generateVerificationCode } from "@/utils/email/nodemailer";
-import { storeTemporaryUser } from "@/utils/otp/redisStore";
+import { deleteStoredData, retrieveRedisData } from "@/utils/otp/redisStore";
+import { sendOtpToEmail } from "@/utils/otp/sendOTP";
 
 interface UserData {
   id: string;
@@ -27,7 +26,7 @@ interface UserData {
 export class AuthService {
   constructor(private readonly authRepository: AuthRepository) {}
 
-  async signUp(signUpData: SignUpData) {
+  async signUp(signUpData: SignUpData): Promise<string> {
     const { username, email, password, confirmPassword } = signUpData;
 
     // Missing Fields Validation
@@ -67,17 +66,9 @@ export class AuthService {
       password: hashedPassword,
     };
 
-    try {
-      const { otp, expiry } = await generateVerificationCode(
-        signUpData.email,
-        "oauth"
-      );
-      const tempKey = await storeTemporaryUser(validatedUser, otp, expiry);
-      return tempKey;
-    } catch (error) {
-      console.log(error);
-      throw new ValidationError("Failed to process the sign up");
-    }
+    const redisKey = await sendOtpToEmail(signUpData.email, validatedUser);
+
+    return redisKey;
   }
 
   async signIn(signinData: SignInData) {
@@ -103,18 +94,15 @@ export class AuthService {
     return userResData;
   }
 
-  async oAuthSignUp(
-    provider: string,
-    accessToken: string
-  ): Promise<IAuthResponse> {
+  async oAuthSignUp(provider: string, accessToken: string): Promise<string> {
     let userInfo: UserInfo<string>;
     switch (provider) {
       case "google":
         userInfo = await handleGoogleProvider(accessToken);
         break;
 
-      case "facebook":
-        userInfo = await handleFacebookProvider(accessToken);
+      case "github":
+        userInfo = await handleGithubProvider(accessToken);
         break;
 
       default:
@@ -123,25 +111,23 @@ export class AuthService {
 
     const { email, username, profilePic } = userInfo;
 
-    let user: IAuthResponse | null = null;
-    if (provider === "google") {
-      user = await this.authRepository.findUserByEmail(userInfo.email);
-    } else {
-      user = await this.authRepository.findUserByUsername(userInfo.username);
+    const user = await this.authRepository.findUserByEmail(userInfo.email);
+    if (user) {
+      throw new ValidationError(
+        "User account already exist. Failed to sign up"
+      );
     }
 
-    if (!user) {
-      const signUpData: OAuthData = {
-        email,
-        username,
-        profilePicURL: profilePic,
-        provider: provider,
-      };
+    const validatedData: OAuthData = {
+      email: email,
+      username,
+      profilePicURL: profilePic,
+      provider: provider,
+    };
 
-      user = await this.authRepository.createUser(signUpData);
-    }
+    const redisKey = await sendOtpToEmail(email, validatedData);
 
-    return user;
+    return redisKey;
   }
 
   async oAuthSignIn(provider: string, accessToken: string) {
@@ -151,27 +137,43 @@ export class AuthService {
         case "google":
           userInfo = await handleGoogleProvider(accessToken);
           break;
-        case "facebook":
-          userInfo = await handleFacebookProvider(accessToken);
+        case "github":
+          userInfo = await handleGithubProvider(accessToken);
           break;
         default:
           throw new ValidationError(`Unsupported provider: ${provider}`);
       }
 
-      let user: IAuthResponse | null;
-
-      if (provider === "google") {
-        user = await this.authRepository.findUserByEmail(userInfo.email);
-      } else {
-        user = await this.authRepository.findUserByUsername(userInfo.username);
-      }
-
+      const user = await this.authRepository.findUserByEmail(userInfo.email);
       if (!user) {
         throw new NotFoundError("No user found for this OAuth account");
       }
 
       return user;
     } catch (error) {}
+  }
+
+  async verifyOtpSignUp(key: string, otp: string) {
+    const data = await retrieveRedisData(key);
+    if (!data) {
+      throw new ValidationError("Verification expired or invalid");
+    }
+    const { user, storedOtp } = data;
+    if (otp !== storedOtp) {
+      throw new ValidationError("Invalid OTP");
+    }
+
+    const createdUser = await this.authRepository.createUser(user);
+    if (!createdUser) {
+      throw new Error("Failed to store the user data in the database");
+    }
+
+    await deleteStoredData(key);
+
+    return {
+      id: createdUser.id,
+      username: createdUser.username,
+    };
   }
 
   async validateUserToken(token: string): Promise<UserData | null> {
