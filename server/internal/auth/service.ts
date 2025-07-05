@@ -15,6 +15,7 @@ import {
   handleFacebookProvider,
   handleGoogleProvider,
 } from "@/utils/auth/oauth";
+import { generateVerificationCode } from "@/utils/email/nodemailer";
 import { storeTemporaryUser } from "@/utils/otp/redisStore";
 
 interface UserData {
@@ -66,8 +67,17 @@ export class AuthService {
       password: hashedPassword,
     };
 
-    const tempKey = storeTemporaryUser(validatedUser);
-    return tempKey;
+    try {
+      const { otp, expiry } = await generateVerificationCode(
+        signUpData.email,
+        "oauth"
+      );
+      const tempKey = await storeTemporaryUser(validatedUser, otp, expiry);
+      return tempKey;
+    } catch (error) {
+      console.log(error);
+      throw new ValidationError("Failed to process the sign up");
+    }
   }
 
   async signIn(signinData: SignInData) {

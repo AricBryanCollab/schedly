@@ -1,11 +1,13 @@
 interface GeneratedCodeProps {
-  code: string;
-  expiry: Date;
+  otp: string;
+  expiry: number;
 }
 
 export const generateOTP = (): GeneratedCodeProps => {
-  const code = Math.floor(10000 + Math.random() * 90000).toString();
-  const expiry = new Date(Date.now() + 5 * 60 * 1000);
+  const otp = Math.floor(10000 + Math.random() * 90000).toString();
 
-  return { code, expiry };
+  const expiryDate = new Date(Date.now() + 5 * 60 * 1000);
+  const expiry = Math.floor(expiryDate.getTime() / 1000);
+
+  return { otp, expiry };
 };

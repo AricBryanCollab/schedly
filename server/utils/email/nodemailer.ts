@@ -10,15 +10,18 @@ export const generateVerificationCode = async (
   email: string,
   feature: "password-reset" | "oauth"
 ) => {
-  const { code, expiry } = generateOTP();
+  const { otp, expiry } = generateOTP();
   const mailOptions = {
     from: '"Schedly" <your-email@example.com>',
     to: email,
-    subject: "Schedly User Password Reset Code",
+    subject:
+      feature === "password-reset"
+        ? "Schedly User Password Reset Code"
+        : "Schedly User Authentication Verification",
     html:
       feature === "password-reset"
-        ? passwordResetTemplate(code)
-        : oAuthVerificationTemplate(code),
+        ? passwordResetTemplate(otp)
+        : oAuthVerificationTemplate(otp),
   };
 
   try {
@@ -30,5 +33,5 @@ export const generateVerificationCode = async (
     throw new Error("Failed to send verification email");
   }
 
-  return { code, expiry };
+  return { otp, expiry };
 };
