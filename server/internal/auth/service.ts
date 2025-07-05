@@ -15,8 +15,7 @@ import {
   handleFacebookProvider,
   handleGoogleProvider,
 } from "@/utils/auth/oauth";
-import { generateVerificationCode } from "@/utils/email/nodemailer";
-import { storeTemporaryUser } from "@/utils/otp/redisStore";
+import { sendOtpToEmail } from "@/utils/otp/sendOTP";
 
 interface UserData {
   id: string;
@@ -27,7 +26,7 @@ interface UserData {
 export class AuthService {
   constructor(private readonly authRepository: AuthRepository) {}
 
-  async signUp(signUpData: SignUpData) {
+  async signUp(signUpData: SignUpData): Promise<string> {
     const { username, email, password, confirmPassword } = signUpData;
 
     // Missing Fields Validation
@@ -67,17 +66,9 @@ export class AuthService {
       password: hashedPassword,
     };
 
-    try {
-      const { otp, expiry } = await generateVerificationCode(
-        signUpData.email,
-        "oauth"
-      );
-      const tempKey = await storeTemporaryUser(validatedUser, otp, expiry);
-      return tempKey;
-    } catch (error) {
-      console.log(error);
-      throw new ValidationError("Failed to process the sign up");
-    }
+    const redisKey = await sendOtpToEmail(signUpData.email, validatedUser);
+
+    return redisKey;
   }
 
   async signIn(signinData: SignInData) {
@@ -103,10 +94,7 @@ export class AuthService {
     return userResData;
   }
 
-  async oAuthSignUp(
-    provider: string,
-    accessToken: string
-  ): Promise<IAuthResponse> {
+  async oAuthSignUp(provider: string, accessToken: string): Promise<string> {
     let userInfo: UserInfo<string>;
     switch (provider) {
       case "google":
@@ -130,18 +118,16 @@ export class AuthService {
       user = await this.authRepository.findUserByUsername(userInfo.username);
     }
 
-    if (!user) {
-      const signUpData: OAuthData = {
-        email,
-        username,
-        profilePicURL: profilePic,
-        provider: provider,
-      };
+    const validatedData: OAuthData = {
+      email,
+      username,
+      profilePicURL: profilePic,
+      provider: provider,
+    };
 
-      user = await this.authRepository.createUser(signUpData);
-    }
+    const redisKey = await sendOtpToEmail(email, validatedData);
 
-    return user;
+    return redisKey;
   }
 
   async oAuthSignIn(provider: string, accessToken: string) {

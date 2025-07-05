@@ -65,18 +65,18 @@ export class AuthController {
         throw new ValidationError("Access Token is required");
       }
 
-      const userResData = await this.authService.oAuthSignUp(
+      const redisKey = await this.authService.oAuthSignUp(
         provider,
         accessToken
       );
-      if (!userResData) {
+      if (!redisKey) {
         throw new Error("Failed to perform OAuth protocol");
       }
 
-      generateTokenAndSetCookie(userResData.id, req, res);
       res.status(200).json({
-        message: "You have successfully signed in",
-        user: userResData,
+        message:
+          "Verification code was sent to your email. Please confirm to continue.",
+        key: redisKey,
       });
     } catch (error) {
       next(error);

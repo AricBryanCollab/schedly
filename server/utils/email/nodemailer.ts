@@ -6,7 +6,7 @@ import {
 
 import { generateOTP } from "@/utils/otp/generateOtp";
 
-export const generateVerificationCode = async (
+export const generateAndSendVerificationCode = async (
   email: string,
   feature: "password-reset" | "oauth"
 ) => {

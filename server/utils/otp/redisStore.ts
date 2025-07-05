@@ -1,10 +1,10 @@
 import { redisClient } from "@/infrastructure/database/connectToRedis";
-import { SignUpData } from "@/internal/auth/dto";
+import { OAuthData, SignUpData } from "@/internal/auth/dto";
 
 import { v4 as uuidv4 } from "uuid";
 
 export const storeTemporaryUser = async (
-  tempUser: SignUpData,
+  tempUser: SignUpData | OAuthData,
   otp: string,
   expiry: number = 300
 ): Promise<string> => {
