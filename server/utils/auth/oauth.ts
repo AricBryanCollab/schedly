@@ -26,21 +26,17 @@ const handleGithubProvider = async (
   accessToken: string
 ): Promise<UserInfo<string>> => {
   try {
-    // Get basic user profile
     const { data: user } = await axios.get("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        Accept: "application/vnd.github+json",
       },
     });
 
-    // Get user emails (primary + verified)
     const { data: emails } = await axios.get(
       "https://api.github.com/user/emails",
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          Accept: "application/vnd.github+json",
         },
       }
     );

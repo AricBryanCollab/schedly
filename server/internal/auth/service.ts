@@ -4,7 +4,6 @@ import {
   ValidationError,
 } from "@/infrastructure/errors/customErrors";
 import { OAuthData, SignInData, SignUpData } from "@/internal/auth/dto";
-import { IAuthResponse } from "@/internal/auth/interface";
 
 import { AuthRepository } from "@/internal/auth/repository";
 
@@ -15,6 +14,7 @@ import {
   handleGithubProvider,
   handleGoogleProvider,
 } from "@/utils/auth/oauth";
+import { retrieveRedisData } from "@/utils/otp/redisStore";
 import { sendOtpToEmail } from "@/utils/otp/sendOTP";
 
 interface UserData {
@@ -111,15 +111,15 @@ export class AuthService {
 
     const { email, username, profilePic } = userInfo;
 
-    let user: IAuthResponse | null = null;
-    if (provider === "google") {
-      user = await this.authRepository.findUserByEmail(userInfo.email);
-    } else {
-      user = await this.authRepository.findUserByUsername(userInfo.username);
+    const user = await this.authRepository.findUserByEmail(userInfo.email);
+    if (user) {
+      throw new ValidationError(
+        "User account already exist. Failed to sign up"
+      );
     }
 
     const validatedData: OAuthData = {
-      email,
+      email: email,
       username,
       profilePicURL: profilePic,
       provider: provider,
@@ -144,20 +144,30 @@ export class AuthService {
           throw new ValidationError(`Unsupported provider: ${provider}`);
       }
 
-      let user: IAuthResponse | null;
-
-      if (provider === "google") {
-        user = await this.authRepository.findUserByEmail(userInfo.email);
-      } else {
-        user = await this.authRepository.findUserByUsername(userInfo.username);
-      }
-
+      const user = await this.authRepository.findUserByEmail(userInfo.email);
       if (!user) {
         throw new NotFoundError("No user found for this OAuth account");
       }
 
       return user;
     } catch (error) {}
+  }
+
+  async verifyOtpSignUp(key: string, otp: string) {
+    const data = await retrieveRedisData(key);
+    if (!data) {
+      throw new ValidationError("Verification expired or invalid");
+    }
+    const { user, storedOtp } = data;
+    if (otp !== storedOtp) {
+      throw new ValidationError("Invalid OTP");
+    }
+
+    const createdUser = await this.authRepository.createUser(user);
+    return {
+      id: createdUser.id,
+      username: createdUser.username,
+    };
   }
 
   async validateUserToken(token: string): Promise<UserData | null> {
