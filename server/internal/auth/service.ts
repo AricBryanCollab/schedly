@@ -14,7 +14,7 @@ import {
   handleGithubProvider,
   handleGoogleProvider,
 } from "@/utils/auth/oauth";
-import { retrieveRedisData } from "@/utils/otp/redisStore";
+import { deleteStoredData, retrieveRedisData } from "@/utils/otp/redisStore";
 import { sendOtpToEmail } from "@/utils/otp/sendOTP";
 
 interface UserData {
@@ -164,6 +164,12 @@ export class AuthService {
     }
 
     const createdUser = await this.authRepository.createUser(user);
+    if (!createdUser) {
+      throw new Error("Failed to store the user data in the database");
+    }
+
+    await deleteStoredData(key);
+
     return {
       id: createdUser.id,
       username: createdUser.username,

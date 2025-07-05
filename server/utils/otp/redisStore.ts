@@ -34,3 +34,15 @@ export const retrieveRedisData = async (key: string) => {
     throw new Error("Failed to get the stored redis data");
   }
 };
+
+export const deleteStoredData = async (key: string) => {
+  try {
+    if (!redisClient) throw new Error("Redis client not initialized");
+
+    await redisClient.del(key);
+
+    return;
+  } catch (error) {
+    throw new Error("Failed to get the delete the stored redis data");
+  }
+};
