@@ -20,7 +20,7 @@ export const passwordResetTemplate = (code: string) => `
   </div>
 `;
 
-export const otpVerificationTemplate = (otp: string) => `
+export const oAuthVerificationTemplate = (otp: string) => `
   <div style="font-family: Arial, sans-serif; line-height:1.6; color: #545454;">
     <h1 style="font-size: 24px; font-weight: bold; color:#d417ff">
       Schedly Sign Up Verification

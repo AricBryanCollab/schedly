@@ -1,22 +1,24 @@
 import { transporter } from "@/utils/email/config";
-import { passwordResetTemplate } from "@/utils/email/templates";
+import {
+  oAuthVerificationTemplate,
+  passwordResetTemplate,
+} from "@/utils/email/templates";
 
-interface GeneratedCodeProps {
-  code: string;
-  expiry: Date;
-}
+import { generateOTP } from "@/utils/otp/generateOtp";
 
-export const generateAndSendVerificationCode = async (
-  email: string
-): Promise<GeneratedCodeProps> => {
-  const code = Math.floor(10000 + Math.random() * 90000).toString();
-  const expiry = new Date(Date.now() + 5 * 60 * 1000);
-
+export const generateVerificationCode = async (
+  email: string,
+  feature: "password-reset" | "oauth"
+) => {
+  const { code, expiry } = generateOTP();
   const mailOptions = {
     from: '"Schedly" <your-email@example.com>',
     to: email,
     subject: "Schedly User Password Reset Code",
-    html: passwordResetTemplate(code),
+    html:
+      feature === "password-reset"
+        ? passwordResetTemplate(code)
+        : oAuthVerificationTemplate(code),
   };
 
   try {
