@@ -12,7 +12,7 @@ import { toHashPassword, validatePassword } from "@/utils/auth/bcrypt";
 import { verifyToken } from "@/utils/auth/jwt";
 import {
   UserInfo,
-  handleFacebookProvider,
+  handleGithubProvider,
   handleGoogleProvider,
 } from "@/utils/auth/oauth";
 import { sendOtpToEmail } from "@/utils/otp/sendOTP";
@@ -101,8 +101,8 @@ export class AuthService {
         userInfo = await handleGoogleProvider(accessToken);
         break;
 
-      case "facebook":
-        userInfo = await handleFacebookProvider(accessToken);
+      case "github":
+        userInfo = await handleGithubProvider(accessToken);
         break;
 
       default:
@@ -137,8 +137,8 @@ export class AuthService {
         case "google":
           userInfo = await handleGoogleProvider(accessToken);
           break;
-        case "facebook":
-          userInfo = await handleFacebookProvider(accessToken);
+        case "github":
+          userInfo = await handleGithubProvider(accessToken);
           break;
         default:
           throw new ValidationError(`Unsupported provider: ${provider}`);

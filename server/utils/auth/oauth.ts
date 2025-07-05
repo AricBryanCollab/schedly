@@ -22,20 +22,39 @@ const handleGoogleProvider = async (
   }
 };
 
-const handleFacebookProvider = async (
+const handleGithubProvider = async (
   accessToken: string
 ): Promise<UserInfo<string>> => {
   try {
-    const facebookUrl = `https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${accessToken}`;
-    const { data } = await axios.get(facebookUrl);
+    // Get basic user profile
+    const { data: user } = await axios.get("https://api.github.com/user", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        Accept: "application/vnd.github+json",
+      },
+    });
+
+    // Get user emails (primary + verified)
+    const { data: emails } = await axios.get(
+      "https://api.github.com/user/emails",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
+    );
+
+    const primaryEmail = emails.find((email: any) => email.primary)?.email;
+
     return {
-      email: data.email,
-      username: data.name,
-      profilePic: data.picture?.data?.url,
+      email: primaryEmail || "",
+      username: user.login,
+      profilePic: user.avatar_url,
     };
   } catch (error) {
-    throw new Error("Failed to handle facebook access token ");
+    throw new Error("Failed to handle GitHub access token");
   }
 };
 
-export { handleFacebookProvider, handleGoogleProvider };
+export { handleGithubProvider, handleGoogleProvider };
