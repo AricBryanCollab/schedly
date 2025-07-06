@@ -66,7 +66,11 @@ export class AuthService {
       password: hashedPassword,
     };
 
-    const redisKey = await sendOtpToEmail(signUpData.email, validatedUser);
+    const redisKey = await sendOtpToEmail(
+      signUpData.email,
+      validatedUser,
+      "oauth"
+    );
 
     return redisKey;
   }
@@ -125,7 +129,7 @@ export class AuthService {
       provider: provider,
     };
 
-    const redisKey = await sendOtpToEmail(email, validatedData);
+    const redisKey = await sendOtpToEmail(email, validatedData, "oauth");
 
     return redisKey;
   }

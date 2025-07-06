@@ -8,18 +8,18 @@ import { generateOTP } from "@/utils/otp/generateOtp";
 
 export const generateAndSendVerificationCode = async (
   email: string,
-  feature: "password-reset" | "oauth"
+  feature: "oauth" | "reset-password"
 ) => {
   const { otp, expiry } = generateOTP();
   const mailOptions = {
     from: '"Schedly" <your-email@example.com>',
     to: email,
     subject:
-      feature === "password-reset"
+      feature === "reset-password"
         ? "Schedly User Password Reset Code"
         : "Schedly User Authentication Verification",
     html:
-      feature === "password-reset"
+      feature === "reset-password"
         ? passwordResetTemplate(otp)
         : oAuthVerificationTemplate(otp),
   };

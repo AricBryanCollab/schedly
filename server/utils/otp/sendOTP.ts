@@ -6,12 +6,13 @@ import { storeTemporaryUser } from "@/utils/otp/redisStore";
 
 export const sendOtpToEmail = async (
   email: string,
-  validUser: SignUpData | OAuthData
+  validUser: SignUpData | OAuthData,
+  feature: "oauth" | "reset-password"
 ) => {
   try {
     const { otp, expiry } = await generateAndSendVerificationCode(
       email,
-      "oauth"
+      feature
     );
     const tempKey = await storeTemporaryUser(validUser, otp, expiry);
     return tempKey;
