@@ -68,8 +68,8 @@ export class AuthService {
 
     const redisKey = await sendOtpToEmail(
       signUpData.email,
-      validatedUser,
-      "oauth"
+      "oauth",
+      validatedUser
     );
 
     return redisKey;
@@ -129,7 +129,7 @@ export class AuthService {
       provider: provider,
     };
 
-    const redisKey = await sendOtpToEmail(email, validatedData, "oauth");
+    const redisKey = await sendOtpToEmail(email, "oauth", validatedData);
 
     return redisKey;
   }

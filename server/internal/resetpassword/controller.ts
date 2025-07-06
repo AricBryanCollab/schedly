@@ -12,11 +12,11 @@ export class ResetPasswordController {
     try {
       const { email } = req.body;
 
-      await this.resetPasswordService.requestResetPassword(email);
+      const key = await this.resetPasswordService.requestResetPassword(email);
 
       res
         .status(200)
-        .json({ message: "OTP Verification was sent to your email" });
+        .json({ message: "OTP Verification was sent to your email", key: key });
     } catch (error) {
       next(error);
     }

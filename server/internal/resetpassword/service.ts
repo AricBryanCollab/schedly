@@ -4,6 +4,7 @@ import {
   ValidationError,
 } from "@/infrastructure/errors/customErrors";
 import { ResetPasswordRepository } from "@/internal/resetpassword/repository";
+import { sendOtpToEmail } from "@/utils/otp/sendOTP";
 
 export class ResetPasswordService {
   constructor(
@@ -28,6 +29,10 @@ export class ResetPasswordService {
         "User logged in with a third-party provider are not allowed with this feature"
       );
     }
+
+    const redisKey = sendOtpToEmail(email, "reset-password");
+
+    return redisKey;
   }
 
   async verifyResetCode() {}
