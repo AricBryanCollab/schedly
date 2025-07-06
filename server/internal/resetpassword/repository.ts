@@ -13,6 +13,12 @@ import {
 export class ResetPasswordRepository implements IResetPasswordRepository {
   async updatePassword(email: string, hashedPassword: string): Promise<void> {
     try {
+      await prisma.user.update({
+        where: { email },
+        data: {
+          password: hashedPassword,
+        },
+      });
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         console.error(error.message);

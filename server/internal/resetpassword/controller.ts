@@ -39,6 +39,18 @@ export class ResetPasswordController {
 
   async updatePassword(req: Request, res: Response, next: NextFunction) {
     try {
+      const { email, password, confirmPassword } = req.body;
+
+      const updatedEmail = await this.resetPasswordService.updatePassword({
+        email,
+        password,
+        confirmPassword,
+      });
+
+      res.status(200).json({
+        message: "Updating user password successful",
+        email: updatedEmail,
+      });
     } catch (error) {
       next(error);
     }
