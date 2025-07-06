@@ -39,15 +39,21 @@ export const storePasswordResetOTP = async (
   }
 };
 
-export const retrieveRedisData = async (key: string) => {
+export const retrieveRedisData = async (
+  key: string,
+  feature: "oauth" | "reset-password"
+) => {
   try {
     if (!redisClient) throw new Error("Redis client not initialized");
     const data = await redisClient.get(key);
     if (!data) return null;
 
-    const { user, otp: storedOtp } = JSON.parse(data);
-
-    return { user, storedOtp };
+    const parsedData = JSON.parse(data);
+    if (feature == "oauth") {
+      return { user: parsedData.user, storedOtp: parsedData.otp };
+    } else if (feature == "reset-password") {
+      return { email: parsedData.email, storedOtp: parsedData.otp };
+    }
   } catch (error) {
     throw new Error("Failed to get the stored redis data");
   }

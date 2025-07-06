@@ -4,6 +4,7 @@ import {
   ValidationError,
 } from "@/infrastructure/errors/customErrors";
 import { ResetPasswordRepository } from "@/internal/resetpassword/repository";
+import { retrieveRedisData } from "@/utils/otp/redisStore";
 import { sendOtpToEmail } from "@/utils/otp/sendOTP";
 
 export class ResetPasswordService {
@@ -35,7 +36,23 @@ export class ResetPasswordService {
     return redisKey;
   }
 
-  async verifyResetCode() {}
+  async verifyResetCode(key: string, otp: string) {
+    const data = await retrieveRedisData(key, "reset-password");
+    if (!data) {
+      throw new ValidationError("Verification expired or invalid");
+    }
+
+    const { storedOtp } = data;
+
+    let isVerified: boolean;
+    if (storedOtp != otp) {
+      throw new ValidationError("Invalid OTP");
+    }
+
+    isVerified = true;
+
+    return isVerified;
+  }
 
   async updatePassword() {}
 }

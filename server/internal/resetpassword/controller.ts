@@ -24,6 +24,14 @@ export class ResetPasswordController {
 
   async verifyResetCode(req: Request, res: Response, next: NextFunction) {
     try {
+      const { key, otp } = req.body;
+
+      const isVerified = await this.resetPasswordService.verifyResetCode(
+        key,
+        otp
+      );
+
+      res.status(200).json({ isVerified: isVerified });
     } catch (error) {
       next(error);
     }

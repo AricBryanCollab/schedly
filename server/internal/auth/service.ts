@@ -158,7 +158,7 @@ export class AuthService {
   }
 
   async verifyOtpSignUp(key: string, otp: string) {
-    const data = await retrieveRedisData(key);
+    const data = await retrieveRedisData(key, "oauth");
     if (!data) {
       throw new ValidationError("Verification expired or invalid");
     }
