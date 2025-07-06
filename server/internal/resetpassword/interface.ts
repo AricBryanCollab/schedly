@@ -8,3 +8,9 @@ export interface UserData {
   email: string | null;
   provider: string | null;
 }
+
+export interface UpdatePassword<T> {
+  email: T;
+  password: T;
+  confirmPassword: T;
+}

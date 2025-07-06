@@ -3,7 +3,10 @@ import {
   NotFoundError,
   ValidationError,
 } from "@/infrastructure/errors/customErrors";
+import { UpdatePassword } from "@/internal/resetpassword/interface";
 import { ResetPasswordRepository } from "@/internal/resetpassword/repository";
+
+import { toHashPassword } from "@/utils/auth/bcrypt";
 import { retrieveRedisData } from "@/utils/otp/redisStore";
 import { sendOtpToEmail } from "@/utils/otp/sendOTP";
 
@@ -54,5 +57,23 @@ export class ResetPasswordService {
     return isVerified;
   }
 
-  async updatePassword() {}
+  async updatePassword({
+    email,
+    password,
+    confirmPassword,
+  }: UpdatePassword<string>) {
+    if (!email) {
+      throw new ValidationError("Email is missing and required");
+    }
+
+    if (password != confirmPassword) {
+      throw new ValidationError("Password does not match");
+    }
+
+    const hashedPassword = await toHashPassword(password);
+
+    await this.resetPasswordRepository.updatePassword(email, hashedPassword);
+
+    return email;
+  }
 }
