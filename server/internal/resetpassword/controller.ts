@@ -10,6 +10,13 @@ export class ResetPasswordController {
 
   async requestResetPassword(req: Request, res: Response, next: NextFunction) {
     try {
+      const { email } = req.body;
+
+      const key = await this.resetPasswordService.requestResetPassword(email);
+
+      res
+        .status(200)
+        .json({ message: "OTP Verification was sent to your email", key: key });
     } catch (error) {
       next(error);
     }

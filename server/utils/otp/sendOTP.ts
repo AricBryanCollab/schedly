@@ -2,18 +2,30 @@ import { ValidationError } from "@/infrastructure/errors/customErrors";
 import { OAuthData, SignUpData } from "@/internal/auth/dto";
 
 import { generateAndSendVerificationCode } from "@/utils/email/nodemailer";
-import { storeTemporaryUser } from "@/utils/otp/redisStore";
+import {
+  storePasswordResetOTP,
+  storeTemporaryUser,
+} from "@/utils/otp/redisStore";
 
 export const sendOtpToEmail = async (
   email: string,
-  validUser: SignUpData | OAuthData
+  feature: "oauth" | "reset-password",
+  validUser?: SignUpData | OAuthData
 ) => {
   try {
     const { otp, expiry } = await generateAndSendVerificationCode(
       email,
-      "oauth"
+      feature
     );
-    const tempKey = await storeTemporaryUser(validUser, otp, expiry);
+
+    let tempKey: string;
+    if (feature == "oauth") {
+      if (!validUser) throw new Error("A user data is required");
+      tempKey = await storeTemporaryUser(validUser, otp, expiry);
+    } else {
+      tempKey = await storePasswordResetOTP(email, otp, expiry);
+    }
+
     return tempKey;
   } catch (error) {
     console.log(error);
