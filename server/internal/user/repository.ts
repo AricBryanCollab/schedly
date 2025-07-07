@@ -5,6 +5,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { prisma } from "@/infrastructure/database/connectToDb";
 import {
   IUserRepository,
+  ProfilePic,
   UpdateProfilePicRequest,
   UpdateUserRequest,
   UserDataRepo,
@@ -33,11 +34,28 @@ export class UserRepository implements IUserRepository {
       throw error;
     }
   }
-  updateProfilePicture({
+
+  async updateProfilePicture({
     userId,
     imageUrl,
   }: UpdateProfilePicRequest): Promise<string> {
-    throw new Error("Method not implemented.");
+    try {
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: {
+          profilePic: imageUrl,
+        },
+      });
+      return updatedUser.profilePic as string;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError(
+          "Database error at updateProfilePicture method"
+        );
+      }
+      throw error;
+    }
   }
   deleteUser(userId: string): Promise<void> {
     throw new Error("Method not implemented.");
@@ -59,6 +77,25 @@ export class UserRepository implements IUserRepository {
       if (error instanceof PrismaClientKnownRequestError) {
         console.error(error.message);
         throw new DatabaseError("Database error at findUser method");
+      }
+      throw error;
+    }
+  }
+
+  async findUserProfilePic(userId: string): Promise<ProfilePic | null> {
+    try {
+      const profilePic = await prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          profilePic: true,
+        },
+      });
+
+      return profilePic;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at findUserProfilePic method");
       }
       throw error;
     }

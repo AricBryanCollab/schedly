@@ -1,9 +1,12 @@
-import { ValidationError } from "@/infrastructure/errors/customErrors";
 import {
-  UpdateProfilePicRequest,
-  UpdateUserRequest,
-} from "@/internal/user/interface";
+  NotFoundError,
+  ValidationError,
+} from "@/infrastructure/errors/customErrors";
+import { defaultProfilePic } from "@/internal/auth/repository";
+import { FileInput, UpdateUserRequest } from "@/internal/user/interface";
 import { UserRepository } from "@/internal/user/repository";
+
+import { deleteImage, uploadImage } from "@/utils/uploads/cloudinary";
 
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
@@ -30,7 +33,29 @@ export class UserService {
     return userResData;
   }
 
-  async updateProfilePicture({ userId, imageUrl }: UpdateProfilePicRequest) {}
+  async updateProfilePicture(userId: string, file: FileInput) {
+    if (!file) {
+      throw new NotFoundError("Image file not found");
+    }
+
+    const user = await this.userRepository.findUserProfilePic(userId);
+    if (user?.profilePic != null && user?.profilePic != defaultProfilePic) {
+      deleteImage(user.profilePic);
+    }
+
+    const imageUrl = await uploadImage({
+      filePath: file.path,
+      folder: "profile-picture",
+      deleteLocalFile: true,
+    });
+
+    const updatedProfile = this.userRepository.updateProfilePicture({
+      userId,
+      imageUrl,
+    });
+
+    return updatedProfile;
+  }
 
   async deleteUser(userId: string) {}
 

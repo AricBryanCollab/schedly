@@ -11,7 +11,7 @@ router.use(protectRoute);
 
 router.put("/:id/update", userController.updateUser);
 router.put(
-  ":id/update-profile-picture",
+  "/:id/update-profile-picture",
   upload.single("profilePic"),
   userController.updateUserProfilePic
 );
