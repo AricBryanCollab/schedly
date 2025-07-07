@@ -2,10 +2,12 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 
+import { Href, useRouter } from "expo-router";
 import { Button, Text, TextInput } from "react-native-paper";
 
 const LoginPage = () => {
   const SchedlyImg = require("@/assets/images/schedly_login.png");
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const toggleShowPassword = () => {
@@ -55,7 +57,12 @@ const LoginPage = () => {
 
         <View style={styles.toSignUp}>
           <Text variant="bodyMedium">Don&apos;t have an account?</Text>
-          <Text style={styles.textLink}>Sign Up Here</Text>
+          <Text
+            onPress={() => router.push("/(auth)/signup" as Href)}
+            style={styles.textLink}
+          >
+            Sign Up Here
+          </Text>
         </View>
       </View>
     </ScreenWrapper>
