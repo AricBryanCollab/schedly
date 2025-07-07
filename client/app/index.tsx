@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   headerText: {
-    letterSpacing: 0.5,
+    letterSpacing: 1.25,
+    fontFamily: "Fredoka",
   },
   img: {
     width: 260,
@@ -47,6 +48,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     marginTop: 12,
-    width: 250,
+    width: 280,
   },
 });

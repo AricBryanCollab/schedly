@@ -9,6 +9,7 @@ import "react-native-reanimated";
 export default function RootLayout() {
   const [loaded] = useFonts({
     Poppins: require("../assets/fonts/Poppins-Regular.ttf"),
+    Fredoka: require("../assets/fonts/Fredoka-SemiBold.ttf"),
   });
 
   const isDark = useThemeStore((state) => state.isDark);
