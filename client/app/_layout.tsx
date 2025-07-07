@@ -8,13 +8,12 @@ import "react-native-reanimated";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    Poppins: require("../assets/fonts/Poppins-Regular.ttf"),
   });
 
   const isDark = useThemeStore((state) => state.isDark);
 
   if (!loaded) {
-    // Async font loading only occurs in development.
     return null;
   }
 

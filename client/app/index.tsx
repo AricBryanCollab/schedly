@@ -1,3 +1,4 @@
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Href, useRouter } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
@@ -7,36 +8,30 @@ const Home = () => {
   const boarding = require("@/assets/images/boarding.png");
   const router = useRouter();
   return (
-    <View style={styles.mainPage}>
+    <ScreenWrapper>
       <View style={styles.content}>
         <Image source={boarding} resizeMode="stretch" style={styles.img} />
 
         <Text style={styles.headerText} variant="displayMedium">
           Schedly
         </Text>
-        <Text style={styles.subText} variant="titleLarge">
-          Personal Calendar App
-        </Text>
+        <Text variant="titleLarge">Personal Calendar App</Text>
 
         <Button
           onPress={() => router.push("/(auth)/login" as Href)}
           style={styles.btn}
-          mode="contained-tonal"
+          mode="contained"
         >
           Get Started
         </Button>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
-  mainPage: {
-    backgroundColor: "#d9e3e8",
-    flex: 1,
-  },
   content: {
     flex: 1,
     justifyContent: "center",
@@ -45,10 +40,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     letterSpacing: 0.5,
-    color: "#337ed3",
-  },
-  subText: {
-    color: "#337ed3",
   },
   img: {
     width: 260,

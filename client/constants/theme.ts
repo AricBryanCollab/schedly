@@ -16,9 +16,11 @@ export const lightTheme = {
 export const darkTheme = {
   ...MD3DarkTheme,
   roundness: 2,
-  primary: "#2c78ce", // dark blue
-  secondary: "#191b76", //purple
-  accent: "#3724a3", //light purple
-  foreground: "#b7d5fa", // white & light blue
-  background: "#172126", // black
+  colors: {
+    primary: "#2c78ce", // dark blue
+    secondary: "#191b76", //purple
+    accent: "#3724a3", //light purple
+    foreground: "#b7d5fa", // white & light blue
+    background: "#172126", // black
+  },
 };
