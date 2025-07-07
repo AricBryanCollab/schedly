@@ -1,8 +1,8 @@
-import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import { darkTheme } from "@/constants/theme";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { MD3LightTheme, PaperProvider } from "react-native-paper";
+import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 
 export default function RootLayout() {
@@ -16,14 +16,12 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider theme={MD3LightTheme}>
-      <ThemeProvider value={DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
+    <PaperProvider theme={darkTheme}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style="auto" />
     </PaperProvider>
   );
 }
