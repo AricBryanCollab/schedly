@@ -1,9 +1,11 @@
+import { Href, useRouter } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 
 const Home = () => {
   const boarding = require("@/assets/images/boarding.png");
+  const router = useRouter();
   return (
     <View style={styles.mainPage}>
       <View style={styles.content}>
@@ -16,7 +18,11 @@ const Home = () => {
           Personal Calendar App
         </Text>
 
-        <Button style={styles.btn} mode="contained-tonal">
+        <Button
+          onPress={() => router.push("/(auth)/login" as Href)}
+          style={styles.btn}
+          mode="contained-tonal"
+        >
           Get Started
         </Button>
       </View>
