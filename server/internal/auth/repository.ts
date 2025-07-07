@@ -6,7 +6,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { OAuthData, SignUpData } from "@/internal/auth/dto";
 import { IAuthRepository, IAuthResponse } from "@/internal/auth/interface";
 
-const defaultProfilePic =
+export const defaultProfilePic =
   "https://res.cloudinary.com/dpmecjee7/image/upload/v1750701689/default_profilepic_lm3qvo.jpg";
 
 export class AuthRepository implements IAuthRepository {

@@ -53,8 +53,9 @@ export const getPublicId = (url: string): string => {
   return filenameWithExt;
 };
 
-export const deleteImage = async (publicId: string) => {
+export const deleteImage = async (url: string) => {
   try {
+    const publicId = getPublicId(url);
     return await cloudinary.uploader.destroy(publicId, {
       resource_type: "image",
     });

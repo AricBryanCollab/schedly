@@ -7,14 +7,15 @@ import express from "express";
 
 const router = express.Router();
 
-router.put("/update", protectRoute, userController.updateUser);
+router.use(protectRoute);
+
+router.put("/:id/update", userController.updateUser);
 router.put(
-  "/update-profile-picture",
-  protectRoute,
+  "/:id/update-profile-picture",
   upload.single("profilePic"),
   userController.updateUserProfilePic
 );
-router.delete("/delete", protectRoute, userController.deleteUser);
-router.get("/", protectRoute, userController.getAllUsers);
+router.delete("/delete", userController.deleteUser);
+router.get("/", userController.getAllUsers);
 
 export default router;
