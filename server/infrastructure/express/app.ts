@@ -4,7 +4,7 @@ import express from "express";
 
 import authRouter from "@/internal/auth/route";
 import resetPasswordRouter from "@/internal/resetpassword/route";
-import userRouter from "@/internal/resetpassword/route";
+import userRouter from "@/internal/user/route";
 
 import { errorHandler } from "@/infrastructure/middleware/errorHandler";
 

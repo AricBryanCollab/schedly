@@ -10,6 +10,18 @@ export class UserController {
 
   async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
+      const { id } = req.params;
+      const userData = req.body;
+
+      const updateUserRes = await this.userService.updateUser({
+        userId: id,
+        userData,
+      });
+
+      res.status(200).json({
+        message: "You have successfulyy update your profile",
+        user: updateUserRes,
+      });
     } catch (error) {
       next(error);
     }
