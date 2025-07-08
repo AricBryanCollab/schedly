@@ -1,4 +1,5 @@
 import {
+  AuthorizationError,
   NotFoundError,
   ValidationError,
 } from "@/infrastructure/errors/customErrors";
@@ -35,7 +36,7 @@ export class UserService {
 
   async updateProfilePicture(userId: string, file: FileInput) {
     if (!file) {
-      throw new NotFoundError("Image file not found");
+      throw new NotFoundError("Image file");
     }
 
     const user = await this.userRepository.findUserProfilePic(userId);
@@ -57,7 +58,36 @@ export class UserService {
     return updatedProfile;
   }
 
-  async deleteUser(userId: string) {}
+  async deleteUser(userId: string, authUserId: string, usernameStr: string) {
+    if (!userId) {
+      throw new NotFoundError("User ID");
+    }
+
+    if (authUserId != userId) {
+      throw new AuthorizationError(
+        "User can only be deleted when authenticated"
+      );
+    }
+
+    const user = await this.userRepository.findUser("username", usernameStr);
+    if (user?.username != usernameStr && user != null) {
+      throw new ValidationError("Username query does not match");
+    }
+
+    const userProfile = await this.userRepository.findUserProfilePic(userId);
+    if (!userProfile) {
+      throw new ValidationError("User Profile does not exist");
+    }
+
+    const profilePic = userProfile.profilePic;
+    if (profilePic != defaultProfilePic && profilePic != null) {
+      await deleteImage(profilePic);
+    }
+
+    await this.userRepository.deleteUser(userId);
+
+    return;
+  }
 
   async getAllUsers() {}
 }
