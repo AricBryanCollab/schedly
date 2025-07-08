@@ -1,3 +1,4 @@
+import { CustomRequest } from "@/infrastructure/middleware/interface";
 import { UserService } from "@/internal/user/service";
 import { NextFunction, Request, Response } from "express";
 export class UserController {
@@ -51,8 +52,19 @@ export class UserController {
     }
   }
 
-  async deleteUser(req: Request, res: Response, next: NextFunction) {
+  async deleteUser(req: CustomRequest, res: Response, next: NextFunction) {
     try {
+      const userId = req.params.id;
+      const authUserId = req.user?.id!;
+
+      const username = req.query.username;
+      const usernameStr = String(username);
+
+      await this.userService.deleteUser(userId, authUserId, usernameStr);
+
+      res
+        .status(200)
+        .json({ message: "You have deleted your account successfully" });
     } catch (error) {
       next(error);
     }

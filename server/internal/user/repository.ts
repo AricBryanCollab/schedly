@@ -57,8 +57,19 @@ export class UserRepository implements IUserRepository {
       throw error;
     }
   }
-  deleteUser(userId: string): Promise<void> {
-    throw new Error("Method not implemented.");
+
+  async deleteUser(userId: string): Promise<void> {
+    try {
+      await prisma.user.delete({
+        where: { id: userId },
+      });
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at deleteUser method");
+      }
+      throw error;
+    }
   }
   async findUser(
     field: "email" | "username",

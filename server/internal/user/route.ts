@@ -15,7 +15,7 @@ router.put(
   upload.single("profilePic"),
   userController.updateUserProfilePic
 );
-router.delete("/delete", userController.deleteUser);
+router.delete("/delete/:id", userController.deleteUser);
 router.get("/", userController.getAllUsers);
 
 export default router;
