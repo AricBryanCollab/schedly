@@ -1,4 +1,5 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import { TextInput as RNTextInput, StyleSheet, View } from "react-native";
 
@@ -7,6 +8,8 @@ import { Button, Text, TextInput } from "react-native-paper";
 const OTPPage = () => {
   const [otp, setOtp] = useState(["", "", "", "", ""]);
   const inputs = useRef<(RNTextInput | null)[]>([]);
+
+  const router = useRouter();
 
   const handleChange = (text: string, idx: number) => {
     if (/^\d?$/.test(text)) {
@@ -21,7 +24,9 @@ const OTPPage = () => {
 
   const handleResend = () => {};
 
-  const handleSend = () => {};
+  const handleSend = () => {
+    router.push("/home");
+  };
 
   return (
     <ScreenWrapper>
