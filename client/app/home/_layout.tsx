@@ -1,12 +1,67 @@
-import { Stack } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
 import React from "react";
 
-const HomeLayout = () => {
+export default function TabLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
-  );
-};
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: "#337ed3",
+        tabBarInactiveTintColor: "gray",
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "bold",
+        },
+        tabBarStyle: {
+          backgroundColor: "white",
+          borderTopWidth: 1,
+          borderTopColor: "#715ddc",
+          paddingBottom: 5,
+          paddingTop: 5,
+          height: 60,
+        },
+        headerShown: false,
+      }}
+    >
+      <Tabs.Screen
+        name="(tabs)/index"
+        options={{
+          title: "Calendar",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="calendar" color={color} size={size} />
+          ),
+        }}
+      />
 
-export default HomeLayout;
+      <Tabs.Screen
+        name="reminder"
+        options={{
+          title: "Reminder",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="alarm" color={color} size={size} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="notification"
+        options={{
+          title: "Notifications",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="notifications" color={color} size={size} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tabs>
+  );
+}
