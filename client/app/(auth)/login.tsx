@@ -38,7 +38,12 @@ const LoginPage = () => {
             }
           />
 
-          <Button mode="contained">Login </Button>
+          <Button
+            onPress={() => router.push("/(auth)/otp" as Href)}
+            mode="contained"
+          >
+            Login{" "}
+          </Button>
         </View>
         <View style={styles.separatorContainer}>
           <View style={styles.line} />

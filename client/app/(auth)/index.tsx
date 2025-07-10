@@ -12,6 +12,7 @@ const AuthRoot = () => {
         name="signup"
         options={{ title: "Sign Up", headerShown: false }}
       />
+      <Stack.Screen name="otp" options={{ title: "OTP", headerShown: false }} />
     </Stack>
   );
 };
