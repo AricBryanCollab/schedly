@@ -34,11 +34,11 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="reminder"
+        name="about"
         options={{
-          title: "Reminder",
+          title: "About",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="alarm" color={color} size={size} />
+            <Ionicons name="information-circle" color={color} size={size} />
           ),
         }}
       />
