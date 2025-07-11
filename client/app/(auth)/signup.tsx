@@ -55,7 +55,9 @@ const SignUp = () => {
             }
           />
 
-          <Button mode="contained">Sign Up </Button>
+          <Button onPress={() => router.push("/(auth)/otp")} mode="contained">
+            Sign Up{" "}
+          </Button>
         </View>
         <View style={styles.separatorContainer}>
           <View style={styles.line} />

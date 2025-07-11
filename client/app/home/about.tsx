@@ -1,12 +1,12 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { Text } from "react-native";
 
-const ReminderScreen = () => {
+const AboutScreen = () => {
   return (
     <ScreenWrapper>
-      <Text>Reminder Screen</Text>
+      <Text>About The App Screen</Text>
     </ScreenWrapper>
   );
 };
 
-export default ReminderScreen;
+export default AboutScreen;
