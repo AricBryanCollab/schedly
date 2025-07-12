@@ -20,7 +20,7 @@ export const startApp = () => {
   // Core Routes
   app.use("/auth", authRouter);
   app.use("/reset-password", resetPasswordRouter);
-  app.use("/user", userRouter);
+  app.use("/users", userRouter);
 
   app.use(errorHandler);
 
