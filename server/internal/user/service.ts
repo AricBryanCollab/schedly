@@ -90,17 +90,6 @@ export class UserService {
   }
 
   async getAllUsers() {
-    const users = await this.userRepository.getAllUsers();
-
-    const userRes = users.map((user) => {
-      return {
-        username: user.username,
-        email: user.email,
-        profilePic: user.profilePic,
-        timezone: user.timezone,
-      };
-    });
-
-    return userRes;
+    return await this.userRepository.getAllUsers();
   }
 }

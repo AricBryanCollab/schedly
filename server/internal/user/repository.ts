@@ -9,6 +9,7 @@ import {
   UpdateProfilePicRequest,
   UpdateUserRequest,
   UserDataRepo,
+  UserListItem,
 } from "@/internal/user/interface";
 
 export class UserRepository implements IUserRepository {
@@ -111,11 +112,20 @@ export class UserRepository implements IUserRepository {
       throw error;
     }
   }
-  async getAllUsers(): Promise<UserData[]> {
+  async getAllUsers(): Promise<UserListItem[]> {
     try {
       const users = await prisma.user.findMany({});
 
-      return users;
+      const userRes = users.map((user) => {
+        return {
+          username: user.username,
+          email: user.email,
+          profilePic: user.profilePic,
+          timezone: user.timezone,
+        };
+      });
+
+      return userRes;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         console.error(error.message);

@@ -15,7 +15,7 @@ export interface IUserRepository {
     value: string
   ): Promise<UserDataRepo | null>;
   findUserProfilePic(userId: string): Promise<ProfilePic | null>;
-  getAllUsers(): Promise<UserData[]>;
+  getAllUsers(): Promise<UserListItem[]>;
 }
 
 export type FileInput = { path: string };
@@ -38,4 +38,11 @@ export interface UserDataRepo {
 
 export interface ProfilePic {
   profilePic: string | null;
+}
+
+export interface UserListItem {
+  username: string;
+  email?: string | null;
+  profilePic?: string | null;
+  timezone?: string | null;
 }
