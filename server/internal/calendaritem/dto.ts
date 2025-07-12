@@ -1,21 +1,16 @@
-enum Status {
-  PENDING,
-  INCOMING,
-  INPROGRESS,
-  COMPLETED,
-}
+export type Status = "PENDING" | "INCOMING" | "INPROGRESS" | "COMPLETED";
 
-export class CalendarItem {
-  id!: string;
-  userId!: string;
-
-  title!: string;
-  description?: string;
-  startTIme!: Date;
-  endTime!: Date;
-  isAllDay!: boolean;
-  isRecurrent!: boolean;
-  recurrenceRule!: string;
-  isHighlighted!: boolean;
-  status!: Status;
+export interface CalendarItem {
+  id: string;
+  title: string;
+  description?: string | null;
+  startTime: Date;
+  endTime: Date;
+  isAllDay: boolean;
+  isRecurrent: boolean;
+  recurrenceRule?: string | null;
+  isHighlighted: boolean;
+  status: Status;
+  createdAt: Date;
+  updatedAt: Date;
 }

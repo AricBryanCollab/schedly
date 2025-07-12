@@ -14,9 +14,11 @@ export interface ICalendarItemRepository {
   }: MutateCalendarItemRequest): Promise<CalendarItem>;
 
   deleteCalendarItem(userId: string): Promise<void>;
+
+  createNotification(userId: string, message: string): Promise<void>;
 }
 
 export interface MutateCalendarItemRequest {
   userId: string;
-  calendarItem: Partial<CalendarItem>;
+  calendarItem: Omit<CalendarItem, "id" | "createdAt" | "updatedAt">;
 }
