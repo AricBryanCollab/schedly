@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 
 import authRouter from "@/internal/auth/route";
+import calendarRouter from "@/internal/calendaritem/route";
 import resetPasswordRouter from "@/internal/resetpassword/route";
 import userRouter from "@/internal/user/route";
 
@@ -21,6 +22,7 @@ export const startApp = () => {
   app.use("/auth", authRouter);
   app.use("/reset-password", resetPasswordRouter);
   app.use("/users", userRouter);
+  app.use("/calendar-item", calendarRouter);
 
   app.use(errorHandler);
 
