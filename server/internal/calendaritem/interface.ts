@@ -18,5 +18,5 @@ export interface ICalendarItemRepository {
 
 export interface MutateCalendarItemRequest {
   userId: string;
-  calendarItem: Partial<CalendarItem>;
+  calendarItem: Omit<CalendarItem, "id" | "createdAt" | "updatedAt">;
 }

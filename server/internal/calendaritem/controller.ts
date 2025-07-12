@@ -1,3 +1,4 @@
+import { CustomRequest } from "@/infrastructure/middleware/interface";
 import { CalendarService } from "@/internal/calendaritem/service";
 import { NextFunction, Request, Response } from "express";
 export class CalendarController {
@@ -8,9 +9,25 @@ export class CalendarController {
     this.deleteCalendarItem = this.deleteCalendarItem.bind(this);
   }
 
-  async createCalendarItem(req: Request, res: Response, next: NextFunction) {
+  async createCalendarItem(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
-      res.status(200).json("Create Calendar Item Endpoint");
+      const userId = req.user?.id!;
+
+      const calendarItem = req.body;
+
+      const createdItem = await this.calendarService.createCalendarItem({
+        userId,
+        calendarItem,
+      });
+
+      res.status(201).json({
+        message: "You have successfully added a calendar event",
+        calendarItem: createdItem,
+      });
     } catch (error) {
       next(error);
     }

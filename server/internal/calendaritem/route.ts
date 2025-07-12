@@ -1,6 +1,6 @@
 import { protectRoute } from "@/internal/auth/config";
 import { calendarController } from "@/internal/calendaritem/config";
-import express from "Express";
+import express from "express";
 
 const router = express.Router();
 
