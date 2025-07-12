@@ -111,7 +111,17 @@ export class UserRepository implements IUserRepository {
       throw error;
     }
   }
-  getAllUsers(): Promise<UserData[]> {
-    throw new Error("Method not implemented.");
+  async getAllUsers(): Promise<UserData[]> {
+    try {
+      const users = await prisma.user.findMany({});
+
+      return users;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at getALlUsers method");
+      }
+      throw error;
+    }
   }
 }
