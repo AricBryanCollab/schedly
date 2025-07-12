@@ -60,6 +60,9 @@ export class CalendarService {
       },
     });
 
+    const notifMessage = `You have created an event: ${title}`;
+    await this.calendarRepository.createNotification(userId, notifMessage);
+
     return createdItem;
   }
 
