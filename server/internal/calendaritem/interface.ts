@@ -4,21 +4,27 @@ export interface ICalendarItemRepository {
   createCalendarItem({
     userId,
     calendarItem,
-  }: MutateCalendarItemRequest): Promise<CalendarItem>;
+  }: CreateCalendarItemRequest): Promise<CalendarItem>;
 
   getCalendarItemsByUser(userId: string): Promise<CalendarItem[]>;
 
   updateCalendarItem({
-    userId,
+    calendarId,
     calendarItem,
-  }: MutateCalendarItemRequest): Promise<CalendarItem>;
+  }: UpdateCalendarItemRequest): Promise<CalendarItem>;
 
-  deleteCalendarItem(userId: string): Promise<void>;
+  deleteCalendarItem(calendarId: string): Promise<void>;
 
   createNotification(userId: string, message: string): Promise<void>;
 }
 
-export interface MutateCalendarItemRequest {
+export interface CreateCalendarItemRequest {
   userId: string;
+  calendarItem: Omit<CalendarItem, "id" | "createdAt" | "updatedAt">;
+}
+
+export interface UpdateCalendarItemRequest {
+  userId?: string;
+  calendarId: string;
   calendarItem: Omit<CalendarItem, "id" | "createdAt" | "updatedAt">;
 }

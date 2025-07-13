@@ -45,9 +45,26 @@ export class CalendarController {
     }
   }
 
-  async updateCalendarItem(req: Request, res: Response, next: NextFunction) {
+  async updateCalendarItem(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
-      res.status(200).json("Update Calendar Item Endpoint");
+      const userId = req.user?.id!;
+      const calendarId = req.params.id;
+      const calendarItem = req.body;
+
+      const updatedItem = await this.calendarService.updateCalendarItem({
+        userId,
+        calendarId,
+        calendarItem,
+      });
+
+      res.status(200).json({
+        message: "You have successfully updated the calendar event",
+        calendarItem: updatedItem,
+      });
     } catch (error) {
       next(error);
     }

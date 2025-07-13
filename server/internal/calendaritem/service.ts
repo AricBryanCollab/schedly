@@ -2,7 +2,10 @@ import {
   NotFoundError,
   ValidationError,
 } from "@/infrastructure/errors/customErrors";
-import { MutateCalendarItemRequest } from "@/internal/calendaritem/interface";
+import {
+  CreateCalendarItemRequest,
+  UpdateCalendarItemRequest,
+} from "@/internal/calendaritem/interface";
 import { CalendarRepository } from "@/internal/calendaritem/repository";
 export class CalendarService {
   constructor(private readonly calendarRepository: CalendarRepository) {}
@@ -10,7 +13,7 @@ export class CalendarService {
   async createCalendarItem({
     userId,
     calendarItem,
-  }: MutateCalendarItemRequest) {
+  }: CreateCalendarItemRequest) {
     const {
       title,
       description,
@@ -23,7 +26,7 @@ export class CalendarService {
       status,
     } = calendarItem;
 
-    if (!userId) throw new NotFoundError("User not found");
+    if (!userId) throw new NotFoundError("User");
 
     if (!title || typeof title !== "string")
       throw new ValidationError("Title is required");
@@ -68,7 +71,60 @@ export class CalendarService {
 
   async getCalendarItemsByUser() {}
 
-  async updateCalendarItem() {}
+  async updateCalendarItem({
+    userId,
+    calendarId,
+    calendarItem,
+  }: UpdateCalendarItemRequest) {
+    if (!userId) throw new NotFoundError("User");
+
+    if (!calendarId) throw new ValidationError("Calendar Item ID is required");
+
+    const {
+      title,
+      startTime,
+      endTime,
+      isAllDay,
+      isRecurrent,
+      isHighlighted,
+      status,
+    } = calendarItem;
+
+    if (!title || typeof title !== "string")
+      throw new ValidationError("Title is required");
+
+    if (!startTime) throw new ValidationError("Invalid start time");
+
+    if (!endTime) throw new ValidationError("Invalid end time");
+
+    if (new Date(endTime) <= new Date(startTime)) {
+      throw new ValidationError("End time must be after start time");
+    }
+
+    if (typeof isAllDay !== "boolean")
+      throw new ValidationError("isAllDay must be boolean");
+
+    if (typeof isRecurrent !== "boolean")
+      throw new ValidationError("isRecurrent must be boolean");
+
+    if (typeof isHighlighted !== "boolean")
+      throw new ValidationError("isHighlighted must be boolean");
+
+    const allowedStatus = ["PENDING", "INCOMING", "INPROGRESS", "COMPLETED"];
+    if (!allowedStatus.includes(status))
+      throw new ValidationError("Invalid status value");
+
+    const updatedItem = await this.calendarRepository.updateCalendarItem({
+      calendarId,
+      calendarItem,
+    });
+
+    const notifMessage = `You have modified the event: ${calendarItem.title}`;
+
+    await this.calendarRepository.createNotification(userId, notifMessage);
+
+    return updatedItem;
+  }
 
   async deleteCalendarItem() {}
 }
