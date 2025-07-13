@@ -68,8 +68,18 @@ export class CalendarRepository implements ICalendarItemRepository {
       throw error;
     }
   }
-  deleteCalendarItem(calendarId: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async deleteCalendarItem(calendarId: string): Promise<void> {
+    try {
+      await prisma.calendarItem.delete({
+        where: { id: calendarId },
+      });
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at updateCalendarItem method");
+      }
+      throw error;
+    }
   }
 
   async createNotification(userId: string, message: string): Promise<void> {

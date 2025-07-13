@@ -133,5 +133,11 @@ export class CalendarService {
     return updatedItem;
   }
 
-  async deleteCalendarItem() {}
+  async deleteCalendarItem(userId: string, calendarId: string) {
+    if (!userId) throw new NotFoundError("User ID");
+
+    if (!calendarId) throw new ValidationError("Calendar ID is required");
+
+    await this.calendarRepository.deleteCalendarItem(calendarId);
+  }
 }
