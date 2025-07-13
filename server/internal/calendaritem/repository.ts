@@ -30,8 +30,22 @@ export class CalendarRepository implements ICalendarItemRepository {
     }
   }
 
-  getCalendarItemsByUser(userId: string): Promise<CalendarItem[]> {
-    throw new Error("Method not implemented.");
+  async getCalendarItemsByUser(userId: string): Promise<CalendarItem[]> {
+    try {
+      const calendarItems = await prisma.calendarItem.findMany({
+        where: { userId },
+      });
+
+      return calendarItems;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError(
+          "Database error at getCalendarItemsByUser method"
+        );
+      }
+      throw error;
+    }
   }
 
   async updateCalendarItem({

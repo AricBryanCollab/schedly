@@ -15,7 +15,10 @@ export class CalendarController {
     next: NextFunction
   ) {
     try {
-      const userId = req.user?.id!;
+      if (!req.user) {
+        return next(new Error("User not authenticated"));
+      }
+      const userId = req.user.id;
 
       const calendarItem = req.body;
 
@@ -34,12 +37,20 @@ export class CalendarController {
   }
 
   async getCalendarItemsByUser(
-    req: Request,
+    req: CustomRequest,
     res: Response,
     next: NextFunction
   ) {
     try {
-      res.status(200).json("Get Calendar Items By User Endpoint");
+      if (!req.user) {
+        return next(new Error("User not authenticated"));
+      }
+      const userId = req.user.id;
+
+      const calendarItems =
+        await this.calendarService.getCalendarItemsByUser(userId);
+
+      res.status(200).json(calendarItems);
     } catch (error) {
       next(error);
     }
@@ -51,7 +62,10 @@ export class CalendarController {
     next: NextFunction
   ) {
     try {
-      const userId = req.user?.id!;
+      if (!req.user) {
+        return next(new Error("User not authenticated"));
+      }
+      const userId = req.user.id;
       const calendarId = req.params.id;
       const calendarItem = req.body;
 

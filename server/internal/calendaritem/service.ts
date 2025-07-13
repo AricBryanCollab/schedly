@@ -26,7 +26,7 @@ export class CalendarService {
       status,
     } = calendarItem;
 
-    if (!userId) throw new NotFoundError("User");
+    if (!userId) throw new NotFoundError("User ID");
 
     if (!title || typeof title !== "string")
       throw new ValidationError("Title is required");
@@ -69,14 +69,21 @@ export class CalendarService {
     return createdItem;
   }
 
-  async getCalendarItemsByUser() {}
+  async getCalendarItemsByUser(userId: string) {
+    if (!userId) throw new NotFoundError("User ID");
+
+    const calendarItems =
+      await this.calendarRepository.getCalendarItemsByUser(userId);
+
+    return calendarItems;
+  }
 
   async updateCalendarItem({
     userId,
     calendarId,
     calendarItem,
   }: UpdateCalendarItemRequest) {
-    if (!userId) throw new NotFoundError("User");
+    if (!userId) throw new NotFoundError("User ID");
 
     if (!calendarId) throw new ValidationError("Calendar Item ID is required");
 
