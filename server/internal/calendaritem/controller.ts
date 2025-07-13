@@ -1,6 +1,6 @@
 import { CustomRequest } from "@/infrastructure/middleware/interface";
 import { CalendarService } from "@/internal/calendaritem/service";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 export class CalendarController {
   constructor(private readonly calendarService: CalendarService) {
     this.createCalendarItem = this.createCalendarItem.bind(this);
@@ -84,9 +84,22 @@ export class CalendarController {
     }
   }
 
-  async deleteCalendarItem(req: Request, res: Response, next: NextFunction) {
+  async deleteCalendarItem(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
-      res.status(200).json("Delete Calendar Item Endpoint");
+      if (!req.user) {
+        return next(new Error("User not authenticated"));
+      }
+      const userId = req.user.id;
+
+      const calendarId = req.params.id;
+
+      await this.calendarService.deleteCalendarItem(userId, calendarId);
+
+      res.status(200).json({ message: "You have deleted a calendar event" });
     } catch (error) {
       next(error);
     }
