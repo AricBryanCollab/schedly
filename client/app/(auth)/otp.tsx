@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   header: {
     textAlign: "center",
-    color: "#337ed3",
+    color: "#0a0a0a",
   },
 
   caption: {
@@ -94,11 +94,11 @@ const styles = StyleSheet.create({
     height: 56,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: "#337ed3",
+    borderColor: "#0a0a0a",
     textAlign: "center",
     fontSize: 24,
     marginHorizontal: 4,
-    backgroundColor: "#f4f3f2",
+    backgroundColor: "#dedde9",
   },
   btn: {
     width: 180,

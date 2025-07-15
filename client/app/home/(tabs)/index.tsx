@@ -21,11 +21,11 @@ const CalendarScreen = () => {
           theme={{
             backgroundColor: "transparent",
             calendarBackground: "transparent",
-            todayTextColor: "#337ed3",
-            dayTextColor: "#052347",
+            todayTextColor: "#7f7d9c",
+            dayTextColor: "#363636",
             textDisabledColor: "#ccc",
-            arrowColor: "#337ed3",
-            monthTextColor: "#052347",
+            arrowColor: "#545454",
+            monthTextColor: "#363636",
             textMonthFontWeight: "bold",
             textDayFontWeight: "400",
             textDayFontSize: 16,
@@ -39,8 +39,8 @@ const CalendarScreen = () => {
             [selected]: {
               selected: true,
               disableTouchEvent: true,
-              selectedColor: "#8b8de695",
-              selectedTextColor: "#fff",
+              selectedColor: "#dedee9",
+              selectedTextColor: "#0a0a0a",
             },
           }}
         />

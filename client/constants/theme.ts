@@ -5,11 +5,12 @@ export const lightTheme = {
   roundness: 2,
   colors: {
     ...MD3LightTheme.colors,
-    primary: "#337ed3", // aqua blue
-    secondary: "#715ddc", //light indigo
-    accent: "#8b8de6", //dark indigo
-    foreground: "#052347", //black
-    background: "#d9e3e8", // white & light blue
+    primary: "#0a0a0a", // black
+    secondary: "#dedde9", //white
+    accent: "#f3edf2", //white
+    foreground: "#020109", //black
+    background: "#fbfbfe", // white
+    gray: "#545454",
   },
 };
 
@@ -17,10 +18,11 @@ export const darkTheme = {
   ...MD3DarkTheme,
   roundness: 2,
   colors: {
-    primary: "#2c78ce", // dark blue
-    secondary: "#191b76", //purple
-    accent: "#3724a3", //light purple
-    foreground: "#b7d5fa", // white & light blue
-    background: "#172126", // black
+    primary: "#f5f5f5", // dark blue
+    secondary: "#171622", //purple
+    accent: "#120c11", //light purple
+    foreground: "#f7f6fe", // white & light blue
+    background: "#010104", // black
+    gray: "#545454",
   },
 };

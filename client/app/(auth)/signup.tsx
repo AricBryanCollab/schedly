@@ -3,10 +3,16 @@ import { Href, useRouter } from "expo-router";
 import { useState } from "react";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 
+import { useThemeStore } from "@/lib/zustand/themeSlice";
+import { getAuthDynamicStyles } from "@/styles/auth";
+
 import { Button, Text, TextInput } from "react-native-paper";
 
 const SignUp = () => {
   const SchedlyImg = require("@/assets/images/schedly_signup.png");
+
+  const isDark = useThemeStore((state) => state.isDark);
+  const authStyle = getAuthDynamicStyles(isDark);
 
   const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -60,9 +66,9 @@ const SignUp = () => {
           </Button>
         </View>
         <View style={styles.separatorContainer}>
-          <View style={styles.line} />
-          <Text style={styles.orText}>or</Text>
-          <View style={styles.line} />
+          <View style={authStyle.line} />
+          <Text style={authStyle.orText}>or</Text>
+          <View style={authStyle.line} />
         </View>
 
         <View style={styles.oauthbtn}>
@@ -78,7 +84,7 @@ const SignUp = () => {
           <Text variant="bodyMedium"> Already have an account?</Text>
           <Text
             onPress={() => router.push("/(auth)/login" as Href)}
-            style={styles.textLink}
+            style={authStyle.textLink}
           >
             Login Here
           </Text>
@@ -114,16 +120,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 18,
   },
-  orText: {
-    marginHorizontal: 14,
-    color: "#337ed3",
-    fontWeight: "bold",
-  },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#545454",
-  },
   oauthbtn: {
     gap: 14,
   },
@@ -132,9 +128,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     marginTop: 14,
-  },
-  textLink: {
-    color: "#337ed3",
-    textDecorationLine: "underline",
   },
 });
