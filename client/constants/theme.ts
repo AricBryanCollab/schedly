@@ -10,6 +10,7 @@ export const lightTheme = {
     accent: "#f3edf2", //white
     foreground: "#020109", //black
     background: "#fbfbfe", // white
+    gray: "#545454",
   },
 };
 
@@ -22,5 +23,6 @@ export const darkTheme = {
     accent: "#120c11", //light purple
     foreground: "#f7f6fe", // white & light blue
     background: "#010104", // black
+    gray: "#545454",
   },
 };
