@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   orText: {
     marginHorizontal: 14,
-    color: "#337ed3",
+    color: "#0a0a0a",
     fontWeight: "bold",
   },
   line: {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
   },
   textLink: {
-    color: "#337ed3",
+    color: "#545454",
     textDecorationLine: "underline",
   },
 });
