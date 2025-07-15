@@ -8,11 +8,11 @@ export default function NotFoundScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: "Oops!" }} />
+      <Stack.Screen options={{ title: "Screen Not Found" }} />
       <ScreenWrapper>
         <View style={styles.container}>
           <Text variant="headlineMedium">App Screen Not Found</Text>
-          <Button onPress={() => router.back()} mode="contained">
+          <Button onPress={() => router.push("/")} mode="contained">
             Go Back
           </Button>
         </View>

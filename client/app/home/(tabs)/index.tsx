@@ -2,7 +2,10 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Calendar } from "react-native-calendars";
-import { Chip, IconButton, Text } from "react-native-paper";
+import { IconButton, Text } from "react-native-paper";
+
+import EventChip from "@/components/ui/EventChip";
+
 
 const CalendarScreen = () => {
   const [selected, setSelected] = useState<string>("");
@@ -50,17 +53,23 @@ const CalendarScreen = () => {
           Upcoming Events
         </Text>
         <View style={styles.eventsChipList}>
-          <Chip icon="dumbbell" mode="outlined">
-            <Text>Gym Workout at 8am</Text>
-          </Chip>
+          <EventChip
+            title="Workout at the Gym"
+            iconSrc="dumbbell"
+            date="2025-07-23T08:00:00.000Z"
+          />
 
-          <Chip icon="school" mode="outlined">
-            Take the online class at 1pm
-          </Chip>
+          <EventChip
+            title="Attend friends online meeting"
+            iconSrc="account-group"
+            date="2025-07-26T10:30:00.000Z"
+          />
 
-          <Chip icon="food-turkey" mode="outlined">
-            Eat dinner with the family
-          </Chip>
+          <EventChip
+            title="Eat dinner with the family"
+            iconSrc="food-turkey"
+            date="2025-07-26T20:00:00.000Z"
+          />
         </View>
       </ScrollView>
     </ScreenWrapper>
