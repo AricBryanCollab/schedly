@@ -4,6 +4,7 @@ import express from "express";
 
 import authRouter from "@/internal/auth/route";
 import calendarRouter from "@/internal/calendaritem/route";
+import notificationRouter from "@/internal/notification/route";
 import resetPasswordRouter from "@/internal/resetpassword/route";
 import userRouter from "@/internal/user/route";
 
@@ -23,6 +24,7 @@ export const startApp = () => {
   app.use("/reset-password", resetPasswordRouter);
   app.use("/users", userRouter);
   app.use("/calendar-item", calendarRouter);
+  app.use("/notifications", notificationRouter);
 
   app.use(errorHandler);
 
