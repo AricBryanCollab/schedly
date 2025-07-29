@@ -3,7 +3,7 @@ import { Status, getReadableStatus, getStatusIcon } from "@/utils/formatStatus";
 import { StyleSheet, View } from "react-native";
 import { Chip, Icon, Text } from "react-native-paper";
 
-interface CalendarItemCardProps<T, U> {
+export interface CalendarItemCardProps<T, U> {
   title: T;
   startDate: T;
   endDate: T;

@@ -1,10 +1,29 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { ScrollView, StyleSheet } from "react-native";
 
+import CalendarItemCard from "@/components/ui/CalendarItemCard";
+import { eventCardDetails } from "@/constants/mockData";
+
 const EventsScreen = () => {
   return (
     <ScreenWrapper>
-      <ScrollView style={styles.container}></ScrollView>
+      <ScrollView style={styles.container}>
+        {eventCardDetails.map((card) => {
+          return (
+            <CalendarItemCard
+              key={card.title}
+              title={card.title}
+              description={card.description}
+              startDate={card.startDate}
+              endDate={card.endDate}
+              isAllDay={card.isAllDay}
+              isRecurrent={card.isRecurrent}
+              status={card.status}
+              isHighlighted={card.isHighlighted}
+            />
+          );
+        })}
+      </ScrollView>
     </ScreenWrapper>
   );
 };
