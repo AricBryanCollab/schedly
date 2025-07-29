@@ -1,13 +1,19 @@
-import ScreenWrapper from '@/components/layout/ScreenWrapper';
-import { Text } from 'react-native-paper';
-
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import { ScrollView, StyleSheet } from "react-native";
 
 const EventsScreen = () => {
-	return (
-		<ScreenWrapper>
-			<Text variant="headlineMedium">Events Here</Text>
-		</ScreenWrapper>
-	)
-}
+  return (
+    <ScreenWrapper>
+      <ScrollView style={styles.container}></ScrollView>
+    </ScreenWrapper>
+  );
+};
 
 export default EventsScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+});

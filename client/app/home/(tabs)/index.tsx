@@ -6,7 +6,6 @@ import { IconButton, Text } from "react-native-paper";
 
 import EventChip from "@/components/ui/EventChip";
 
-
 const CalendarScreen = () => {
   const [selected, setSelected] = useState<string>("");
 
@@ -17,7 +16,6 @@ const CalendarScreen = () => {
         <IconButton icon="trash-can" mode="outlined" />
         <IconButton icon="assistant" mode="outlined" />
       </View>
-
       <View style={{ paddingVertical: 20 }}>
         <Calendar
           style={styles.calendar}
@@ -81,14 +79,14 @@ export default CalendarScreen;
 const styles = StyleSheet.create({
   calendar: {
     backgroundColor: "transparent",
-    borderWidth: 0,
+    height: 350,
     elevation: 0,
   },
   controls: {
     flexDirection: "row",
     justifyContent: "flex-end",
     gap: 12,
-    paddingVertical: 20,
+    paddingTop: 20,
     paddingHorizontal: 10,
   },
   eventsView: {

@@ -13,3 +13,21 @@ export function formatDate(timestamp: string): string {
 
   return `${year}/${month}/${day} ${hours}:${minutes} ${ampm}`;
 }
+
+export function secondFormatDate(timestamp: string): string {
+  const date = new Date(timestamp);
+
+  const datePart = date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+
+  const timePart = date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  return `${datePart} ${timePart}`;
+}
