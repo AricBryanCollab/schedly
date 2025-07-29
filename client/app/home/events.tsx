@@ -1,13 +1,38 @@
-import ScreenWrapper from '@/components/layout/ScreenWrapper';
-import { Text } from 'react-native-paper';
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import { ScrollView, StyleSheet } from "react-native";
 
+import CalendarItemCard from "@/components/ui/CalendarItemCard";
+import { eventCardDetails } from "@/constants/mockData";
 
 const EventsScreen = () => {
-	return (
-		<ScreenWrapper>
-			<Text variant="headlineMedium">Events Here</Text>
-		</ScreenWrapper>
-	)
-}
+  return (
+    <ScreenWrapper>
+      <ScrollView style={styles.container}>
+        {eventCardDetails.map((card) => {
+          return (
+            <CalendarItemCard
+              key={card.title}
+              title={card.title}
+              description={card.description}
+              startDate={card.startDate}
+              endDate={card.endDate}
+              isAllDay={card.isAllDay}
+              isRecurrent={card.isRecurrent}
+              status={card.status}
+              isHighlighted={card.isHighlighted}
+            />
+          );
+        })}
+      </ScrollView>
+    </ScreenWrapper>
+  );
+};
 
 export default EventsScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+});
