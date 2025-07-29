@@ -1,8 +1,7 @@
 import { secondFormatDate } from "@/utils/formatDate";
+import { Status, getReadableStatus, getStatusIcon } from "@/utils/formatStatus";
 import { StyleSheet, View } from "react-native";
 import { Chip, Icon, Text } from "react-native-paper";
-
-type Status = "PENDING" | "INCOMING" | "INPROGRESS" | "COMPLETED";
 
 interface CalendarItemCardProps<T, U> {
   title: T;
@@ -25,21 +24,6 @@ const CalendarItemCard = ({
   isHighlighted,
   status,
 }: CalendarItemCardProps<string, boolean>) => {
-  const getStatusIcon = (status: Status) => {
-    switch (status) {
-      case "COMPLETED":
-        return "check-circle";
-      case "PENDING":
-        return "clock-outline";
-      case "INCOMING":
-        return "bell-outline";
-      case "INPROGRESS":
-        return "progress-wrench";
-      default:
-        return "calendar-check";
-    }
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -80,7 +64,7 @@ const CalendarItemCard = ({
         )}
 
         <Chip mode="outlined" icon={getStatusIcon(status)}>
-          {status}
+          {getReadableStatus(status)}
         </Chip>
       </View>
 
