@@ -11,7 +11,7 @@ const EventsScreen = () => {
         {eventCardDetails.map((card) => {
           return (
             <CalendarItemCard
-              key={card.title}
+              key={card.id}
               title={card.title}
               iconTitle={card.iconTitle}
               description={card.description}

@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native";
 import { Chip, Icon, Text } from "react-native-paper";
 
 export interface CalendarItemCardProps<T, U> {
+  id?: T;
   title: T;
   startDate: T;
   iconTitle: T;

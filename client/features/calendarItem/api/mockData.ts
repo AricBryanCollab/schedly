@@ -1,10 +1,12 @@
+import { CalendarData } from "@/app/home/(tabs)";
 import { CalendarItemCardProps } from "@/components/ui/CalendarItemCard";
 
 export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
   {
+    id: "1001",
     title: "Coffee with Sarah",
-    startDate: "2025-08-01T10:00:00.000Z",
     iconTitle: "silverware-fork-knife",
+    startDate: "2025-08-01T10:00:00.000Z",
     endDate: "2025-08-01T11:00:00.000Z",
     description:
       "Catching up with Sarah at our favorite cafe. We'll chat about recent travels and plan our next hiking trip. Don't be late!",
@@ -14,6 +16,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
     isHighlighted: true,
   },
   {
+    id: "1002",
     title: "Saturday Movie Night",
     iconTitle: "movie-open",
     startDate: "2025-08-05T19:30:00.000Z",
@@ -26,6 +29,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
     isHighlighted: false,
   },
   {
+    id: "1003",
     title: "Weekend Camping Trip",
     iconTitle: "airplane",
     startDate: "2025-08-10T08:00:00.000Z",
@@ -38,6 +42,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
     isHighlighted: true,
   },
   {
+    id: "1004",
     title: "Grocery Shopping",
     iconTitle: "cart",
     startDate: "2025-07-29T17:00:00.000Z",
@@ -50,6 +55,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
     isHighlighted: false,
   },
   {
+    id: "1005",
     title: "Evening Jog",
     iconTitle: "dumbbell",
     startDate: "2025-08-02T18:00:00.000Z",
@@ -62,6 +68,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
     isHighlighted: false,
   },
   {
+    id: "1006",
     title: "Visit to Grandma's",
     iconTitle: "account-group",
     startDate: "2025-08-15T14:00:00.000Z",
@@ -74,6 +81,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
     isHighlighted: true,
   },
   {
+    id: "1007",
     title: "Book Club Meeting",
     iconTitle: "book-open",
     startDate: "2025-08-20T19:00:00.000Z",
@@ -86,3 +94,65 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
     isHighlighted: false,
   },
 ];
+
+export const mockCalendarData = [
+  {
+    id: "1001",
+    title: "Coffee with Sarah",
+    iconTitle: "silverware-fork-knife",
+    startDate: "2025-08-01T10:00:00.000Z",
+    endDate: "2025-08-01T11:00:00.000Z",
+  },
+  {
+    id: "1002",
+    title: "Saturday Movie Night",
+    iconTitle: "movie-open",
+    startDate: "2025-08-05T19:30:00.000Z",
+    endDate: "2025-08-05T22:00:00.000Z",
+  },
+  {
+    id: "1003",
+    title: "Weekend Camping Trip",
+    iconTitle: "airplane",
+    startDate: "2025-08-10T08:00:00.000Z",
+    endDate: "2025-08-12T16:00:00.000Z",
+  },
+  {
+    id: "1004",
+    title: "Grocery Shopping",
+    iconTitle: "cart",
+    startDate: "2025-07-29T17:00:00.000Z",
+    endDate: "2025-07-29T18:30:00.000Z",
+  },
+  {
+    id: "1005",
+    title: "Evening Jog",
+    iconTitle: "dumbbell",
+    startDate: "2025-08-02T18:00:00.000Z",
+    endDate: "2025-08-02T18:45:00.000Z",
+  },
+  {
+    id: "1006",
+    title: "Visit to Grandma's",
+    iconTitle: "account-group",
+    startDate: "2025-08-15T14:00:00.000Z",
+    endDate: "2025-08-15T17:00:00.000Z",
+  },
+  {
+    id: "1007",
+    title: "Book Club Meeting",
+    iconTitle: "book-open",
+    startDate: "2025-08-20T19:00:00.000Z",
+    endDate: "2025-08-20T20:30:00.000Z",
+  },
+];
+
+export function getUpcomingEvents(events: CalendarData<string>[]) {
+  return events
+    .slice()
+    .sort(
+      (a, b) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    )
+    .slice(0, 3);
+}

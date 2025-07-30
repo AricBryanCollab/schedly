@@ -7,6 +7,14 @@ import { IconButton, Text } from "react-native-paper";
 import EventChip from "@/components/ui/EventChip";
 import { Href, useRouter } from "expo-router";
 
+export interface CalendarData<T> {
+  id: T;
+  title: T;
+  iconTitle: T;
+  startDate: T;
+  endDate: T;
+}
+
 const CalendarScreen = () => {
   const [selected, setSelected] = useState<string>("");
   const router = useRouter();
