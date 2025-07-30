@@ -5,7 +5,7 @@ import { Calendar } from "react-native-calendars";
 import { IconButton, Text } from "react-native-paper";
 
 import EventChip from "@/components/ui/EventChip";
-import { useRouter } from "expo-router";
+import { Href, useRouter } from "expo-router";
 
 const CalendarScreen = () => {
   const [selected, setSelected] = useState<string>("");
@@ -21,7 +21,11 @@ const CalendarScreen = () => {
             icon="plus"
             mode="outlined"
           />
-          <IconButton icon="assistant" mode="outlined" />
+          <IconButton
+            onPress={() => router.push("/ai-assistant" as Href)}
+            icon="assistant"
+            mode="outlined"
+          />
         </View>
       </View>
       <View style={{ paddingVertical: 20 }}>
