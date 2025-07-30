@@ -14,10 +14,14 @@ const CalendarScreen = () => {
   return (
     <ScreenWrapper>
       <View style={styles.controls}>
-        <IconButton icon="cog" mode="outlined" />
+        <IconButton
+          onPress={() => router.push("/settings" as Href)}
+          icon="cog"
+          mode="outlined"
+        />
         <View style={styles.rightControl}>
           <IconButton
-            onPress={() => router.push("/add-calendar-item")}
+            onPress={() => router.push("/add-calendar-item" as Href)}
             icon="plus"
             mode="outlined"
           />
