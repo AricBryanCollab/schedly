@@ -5,16 +5,24 @@ import { Calendar } from "react-native-calendars";
 import { IconButton, Text } from "react-native-paper";
 
 import EventChip from "@/components/ui/EventChip";
+import { useRouter } from "expo-router";
 
 const CalendarScreen = () => {
   const [selected, setSelected] = useState<string>("");
+  const router = useRouter();
 
   return (
     <ScreenWrapper>
       <View style={styles.controls}>
-        <IconButton icon="plus" mode="outlined" />
-        <IconButton icon="trash-can" mode="outlined" />
-        <IconButton icon="assistant" mode="outlined" />
+        <IconButton icon="cog" mode="outlined" />
+        <View style={styles.rightControl}>
+          <IconButton
+            onPress={() => router.push("/add-calendar-item")}
+            icon="plus"
+            mode="outlined"
+          />
+          <IconButton icon="assistant" mode="outlined" />
+        </View>
       </View>
       <View style={{ paddingVertical: 20 }}>
         <Calendar
@@ -84,10 +92,14 @@ const styles = StyleSheet.create({
   },
   controls: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     gap: 12,
     paddingTop: 20,
     paddingHorizontal: 10,
+  },
+  rightControl: {
+    flexDirection: "row",
+    gap: 4,
   },
   eventsView: {
     paddingHorizontal: 10,
