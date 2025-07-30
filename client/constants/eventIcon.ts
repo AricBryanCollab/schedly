@@ -1,0 +1,16 @@
+export const eventIcons = [
+  { name: "Work / Meeting", value: "briefcase" },
+  { name: "Birthday / Celebration", value: "cake-variant" },
+  { name: "Travel / Trip", value: "airplane" },
+  { name: "Fitness / Gym", value: "dumbbell" },
+  { name: "Study / Reading", value: "book-open" },
+  { name: "Shopping", value: "cart" },
+  { name: "Medical Appointment", value: "stethoscope" },
+  { name: "Meal / Dining", value: "silverware-fork-knife" },
+  { name: "Home Tasks / Chores", value: "broom" },
+  { name: "Entertainment / Movie", value: "movie-open" },
+  { name: "Family Activity", value: "account-group" },
+  { name: "Music / Concert", value: "music-note" },
+  { name: "Reminder / Alarm", value: "bell" },
+  { name: "General Activity", value: "calendar" },
+];
