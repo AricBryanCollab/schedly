@@ -2,7 +2,7 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { ScrollView, StyleSheet } from "react-native";
 
 import CalendarItemCard from "@/components/ui/CalendarItemCard";
-import { eventCardDetails } from "@/constants/mockData";
+import { eventCardDetails } from "@/features/calendarItem/api/mockData";
 
 const EventsScreen = () => {
   return (
@@ -11,8 +11,9 @@ const EventsScreen = () => {
         {eventCardDetails.map((card) => {
           return (
             <CalendarItemCard
-              key={card.title}
+              key={card.id}
               title={card.title}
+              iconTitle={card.iconTitle}
               description={card.description}
               startDate={card.startDate}
               endDate={card.endDate}

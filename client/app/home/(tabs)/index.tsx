@@ -1,75 +1,47 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Calendar } from "react-native-calendars";
-import { IconButton, Text } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import { IconButton } from "react-native-paper";
 
-import EventChip from "@/components/ui/EventChip";
+import CalendarBlock from "@/features/calendarItem/components/CalendarBlock";
+import UpcomingEvents from "@/features/calendarItem/components/UpcomingEvents";
+import { Href, useRouter } from "expo-router";
+
+import { mockCalendarData } from "@/features/calendarItem/api/mockData";
+
+export interface CalendarData<T> {
+  id: T;
+  title: T;
+  iconTitle: T;
+  startDate: T;
+  endDate: T;
+}
 
 const CalendarScreen = () => {
-  const [selected, setSelected] = useState<string>("");
+  const router = useRouter();
 
   return (
     <ScreenWrapper>
       <View style={styles.controls}>
-        <IconButton icon="plus" mode="outlined" />
-        <IconButton icon="trash-can" mode="outlined" />
-        <IconButton icon="assistant" mode="outlined" />
-      </View>
-      <View style={{ paddingVertical: 20 }}>
-        <Calendar
-          style={styles.calendar}
-          theme={{
-            backgroundColor: "transparent",
-            calendarBackground: "transparent",
-            todayTextColor: "#7f7d9c",
-            dayTextColor: "#363636",
-            textDisabledColor: "#ccc",
-            arrowColor: "#545454",
-            monthTextColor: "#363636",
-            textMonthFontWeight: "bold",
-            textDayFontWeight: "400",
-            textDayFontSize: 16,
-            textMonthFontSize: 18,
-            textDayHeaderFontSize: 14,
-          }}
-          onDayPress={(day) => {
-            setSelected(day.dateString);
-          }}
-          markedDates={{
-            [selected]: {
-              selected: true,
-              disableTouchEvent: true,
-              selectedColor: "#dedee9",
-              selectedTextColor: "#0a0a0a",
-            },
-          }}
+        <IconButton
+          onPress={() => router.push("/settings" as Href)}
+          icon="cog"
+          mode="outlined"
         />
-      </View>
-      <ScrollView style={styles.eventsView}>
-        <Text style={styles.eventHeader} variant="bodyLarge">
-          Upcoming Events
-        </Text>
-        <View style={styles.eventsChipList}>
-          <EventChip
-            title="Workout at the Gym"
-            iconSrc="dumbbell"
-            date="2025-07-23T08:00:00.000Z"
+        <View style={styles.rightControl}>
+          <IconButton
+            onPress={() => router.push("/add-calendar-item" as Href)}
+            icon="plus"
+            mode="outlined"
           />
-
-          <EventChip
-            title="Attend friends online meeting"
-            iconSrc="account-group"
-            date="2025-07-26T10:30:00.000Z"
-          />
-
-          <EventChip
-            title="Eat dinner with the family"
-            iconSrc="food-turkey"
-            date="2025-07-26T20:00:00.000Z"
+          <IconButton
+            onPress={() => router.push("/ai-assistant" as Href)}
+            icon="assistant"
+            mode="outlined"
           />
         </View>
-      </ScrollView>
+      </View>
+      <CalendarBlock data={mockCalendarData} />
+      <UpcomingEvents data={mockCalendarData} />
     </ScreenWrapper>
   );
 };
@@ -84,10 +56,14 @@ const styles = StyleSheet.create({
   },
   controls: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     gap: 12,
     paddingTop: 20,
     paddingHorizontal: 10,
+  },
+  rightControl: {
+    flexDirection: "row",
+    gap: 4,
   },
   eventsView: {
     paddingHorizontal: 10,

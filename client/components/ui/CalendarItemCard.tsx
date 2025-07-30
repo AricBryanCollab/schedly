@@ -4,8 +4,10 @@ import { StyleSheet, View } from "react-native";
 import { Chip, Icon, Text } from "react-native-paper";
 
 export interface CalendarItemCardProps<T, U> {
+  id?: T;
   title: T;
   startDate: T;
+  iconTitle: T;
   endDate: T;
   description: T;
   isAllDay: U;
@@ -16,6 +18,7 @@ export interface CalendarItemCardProps<T, U> {
 
 const CalendarItemCard = ({
   title,
+  iconTitle,
   startDate,
   endDate,
   description,
@@ -27,7 +30,7 @@ const CalendarItemCard = ({
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Icon source="calendar-text" size={18} />
+        <Icon source={iconTitle} size={18} />
         <Text style={styles.title} variant="bodyLarge">
           {title}
         </Text>
