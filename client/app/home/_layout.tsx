@@ -1,4 +1,4 @@
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Tabs } from "expo-router";
 import React from "react";
 
@@ -28,7 +28,11 @@ export default function TabLayout() {
         options={{
           title: "Calendar",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="calendar-today" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="calendar-today"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -39,16 +43,6 @@ export default function TabLayout() {
           title: "Events",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="table" color={color} size={size} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="about"
-        options={{
-          title: "About",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="information" color={color} size={size} />
           ),
         }}
       />
