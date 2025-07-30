@@ -1,32 +1,30 @@
-import { CalendarData } from "@/app/home/(tabs)";
-import EventChip from "@/components/ui/EventChip";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 
+import { CalendarData } from "@/app/home/(tabs)";
+import EventChip from "@/components/ui/EventChip";
+
+import { getUpcomingEvents } from "@/utils/getUpcomingEvents";
+
 const UpcomingEvents = ({ data }: { data: CalendarData<string>[] }) => {
+  const latestEvents = getUpcomingEvents(data);
+
   return (
     <ScrollView style={styles.eventsView}>
       <Text style={styles.eventHeader} variant="bodyLarge">
         Upcoming Events
       </Text>
       <View style={styles.eventsChipList}>
-        <EventChip
-          title="Workout at the Gym"
-          iconSrc="dumbbell"
-          date="2025-07-23T08:00:00.000Z"
-        />
-
-        <EventChip
-          title="Attend friends online meeting"
-          iconSrc="account-group"
-          date="2025-07-26T10:30:00.000Z"
-        />
-
-        <EventChip
-          title="Eat dinner with the family"
-          iconSrc="food-turkey"
-          date="2025-07-26T20:00:00.000Z"
-        />
+        {latestEvents.map((late) => {
+          return (
+            <EventChip
+              key={late.id}
+              title={late.title}
+              iconSrc={late.iconTitle}
+              date={late.startDate}
+            />
+          );
+        })}
       </View>
     </ScrollView>
   );

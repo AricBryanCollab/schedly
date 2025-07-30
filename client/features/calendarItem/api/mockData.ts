@@ -1,4 +1,3 @@
-import { CalendarData } from "@/app/home/(tabs)";
 import { CalendarItemCardProps } from "@/components/ui/CalendarItemCard";
 
 export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
@@ -146,13 +145,3 @@ export const mockCalendarData = [
     endDate: "2025-08-20T20:30:00.000Z",
   },
 ];
-
-export function getUpcomingEvents(events: CalendarData<string>[]) {
-  return events
-    .slice()
-    .sort(
-      (a, b) =>
-        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-    )
-    .slice(0, 3);
-}
