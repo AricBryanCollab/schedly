@@ -1,18 +1,31 @@
 import { StyleSheet, View } from "react-native";
-
 import { Divider, IconButton, Menu } from "react-native-paper";
 
+import { useRouter } from "expo-router";
+
 interface EventCardActionsProps {
+  itemId: string;
   openMenu: boolean;
   onOpen: () => void;
   onClose: () => void;
 }
 
 const EventCardActions = ({
+  itemId,
   openMenu,
   onClose,
   onOpen,
 }: EventCardActionsProps) => {
+  const router = useRouter();
+
+  const handleEditePress = () => {
+    onClose();
+    router.push({
+      pathname: "/(calendar-item)/[id]/edit-item",
+      params: { id: itemId },
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Menu
@@ -23,7 +36,11 @@ const EventCardActions = ({
         }
         anchorPosition="bottom"
       >
-        <Menu.Item leadingIcon="pencil" onPress={() => {}} title="Edit" />
+        <Menu.Item
+          leadingIcon="pencil"
+          onPress={handleEditePress}
+          title="Edit"
+        />
         <Divider />
         <Menu.Item leadingIcon="delete" onPress={() => {}} title="Delete" />
       </Menu>

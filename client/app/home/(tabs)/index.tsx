@@ -29,7 +29,7 @@ const CalendarScreen = () => {
         />
         <View style={styles.rightControl}>
           <IconButton
-            onPress={() => router.push("/add-calendar-item" as Href)}
+            onPress={() => router.push("/(calendar-item)/add" as Href)}
             icon="plus"
             mode="outlined"
           />

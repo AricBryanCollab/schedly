@@ -12,6 +12,7 @@ const EventsScreen = () => {
           return (
             <CalendarItemCard
               key={card.id}
+              id={card.id}
               title={card.title}
               iconTitle={card.iconTitle}
               description={card.description}

@@ -8,7 +8,7 @@ import { secondFormatDate } from "@/utils/formatDate";
 import { Status, getReadableStatus, getStatusIcon } from "@/utils/formatStatus";
 
 export interface CalendarItemCardProps<T, U> {
-  id?: T;
+  id: T;
   title: T;
   startDate: T;
   iconTitle: T;
@@ -21,6 +21,7 @@ export interface CalendarItemCardProps<T, U> {
 }
 
 const CalendarItemCard = ({
+  id,
   title,
   iconTitle,
   startDate,
@@ -48,6 +49,7 @@ const CalendarItemCard = ({
 
       <View style={styles.cardOptions}>
         <EventCardActions
+          itemId={id}
           openMenu={openMenu}
           onOpen={onOpen}
           onClose={onClose}
