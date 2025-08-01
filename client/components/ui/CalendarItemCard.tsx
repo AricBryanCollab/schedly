@@ -1,10 +1,14 @@
-import { secondFormatDate } from "@/utils/formatDate";
-import { Status, getReadableStatus, getStatusIcon } from "@/utils/formatStatus";
+import EventCardActions from "@/features/calendarItem/components/EventCardActions";
+import { useState } from "react";
+
 import { StyleSheet, View } from "react-native";
 import { Chip, Icon, Text } from "react-native-paper";
 
+import { secondFormatDate } from "@/utils/formatDate";
+import { Status, getReadableStatus, getStatusIcon } from "@/utils/formatStatus";
+
 export interface CalendarItemCardProps<T, U> {
-  id?: T;
+  id: T;
   title: T;
   startDate: T;
   iconTitle: T;
@@ -17,6 +21,7 @@ export interface CalendarItemCardProps<T, U> {
 }
 
 const CalendarItemCard = ({
+  id,
   title,
   iconTitle,
   startDate,
@@ -27,6 +32,12 @@ const CalendarItemCard = ({
   isHighlighted,
   status,
 }: CalendarItemCardProps<string, boolean>) => {
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
+
+  const onOpen = () => setOpenMenu(true);
+
+  const onClose = () => setOpenMenu(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -34,6 +45,15 @@ const CalendarItemCard = ({
         <Text style={styles.title} variant="bodyLarge">
           {title}
         </Text>
+      </View>
+
+      <View style={styles.cardOptions}>
+        <EventCardActions
+          itemId={id}
+          openMenu={openMenu}
+          onOpen={onOpen}
+          onClose={onClose}
+        />
       </View>
 
       <View style={styles.timeContent}>
@@ -85,6 +105,7 @@ export default CalendarItemCard;
 
 const styles = StyleSheet.create({
   container: {
+    position: "relative",
     borderWidth: 1,
     borderRadius: 10,
     marginVertical: 8,
@@ -97,6 +118,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+  },
+  cardOptions: {
+    position: "absolute",
+    top: -6,
+    right: 4,
   },
   timeContent: {
     flexDirection: "row",
