@@ -32,6 +32,7 @@ model User {
   email String? @unique
   password String? 
   profilePic String?
+  highlights String[] 
 
   oAuthAccount OAuthAccount[]
   calendarItems CalendarItem[]
@@ -65,7 +66,6 @@ model CalendarItem {
   isAllDay Boolean
   isRecurrent Boolean
   recurrenceRule String?
-  isHighlighted Boolean
   status Status
 
   user User @relation(fields: [userId], references: [id])
