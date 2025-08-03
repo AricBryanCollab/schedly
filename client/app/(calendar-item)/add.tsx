@@ -1,14 +1,41 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 
-import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import CustomInput from "@/components/ui/CustomInput";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Text, TextInput } from "react-native-paper";
 
 const AddCalendarItem = () => {
   return (
     <ScreenWrapper>
-      <View style={styles.titleBlock}>
-        <Text variant="bodyLarge"> Add an Event Here</Text>
-      </View>
+      <ScrollView style={styles.scrollContent}>
+        <View style={styles.titleBlock}>
+          <Text variant="headlineSmall">Create an Event Here</Text>
+        </View>
+
+        <CustomInput
+          placeholder="Event Title"
+          icon="text"
+          value=""
+          onChangeText={() => {}}
+        />
+
+        <CustomInput
+          placeholder="Description (optional)"
+          icon="note-text"
+          isTextArea
+          value=""
+          onChangeText={() => {}}
+        />
+
+        <View style={styles.inputBlock}>
+          <TextInput
+            mode="outlined"
+            theme={{ roundness: 12 }}
+            placeholder="Category"
+            left={<TextInput.Icon icon="tag" />}
+          />
+        </View>
+      </ScrollView>
     </ScreenWrapper>
   );
 };
@@ -16,7 +43,21 @@ const AddCalendarItem = () => {
 export default AddCalendarItem;
 
 const styles = StyleSheet.create({
+  scrollContent: {
+    paddingHorizontal: 8,
+  },
   titleBlock: {
-    padding: 10,
+    paddingVertical: 12,
+  },
+
+  inputBlock: {
+    flexDirection: "column",
+    gap: 10,
+    marginVertical: 12,
+    marginHorizontal: 10,
+  },
+  textArea: {
+    minHeight: 100,
+    textAlignVertical: "top",
   },
 });
