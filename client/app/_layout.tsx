@@ -4,7 +4,11 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { PaperProvider } from "react-native-paper";
+import { en, registerTranslation } from "react-native-paper-dates";
+
 import "react-native-reanimated";
+
+registerTranslation("en", en);
 
 export default function RootLayout() {
   const [loaded] = useFonts({
