@@ -3,28 +3,22 @@ import { prisma } from "@/infrastructure/database/connectToDb";
 import { DatabaseError } from "@/infrastructure/errors/customErrors";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-import { OAuthData, SignUpData } from "@/internal/auth/dto";
+import { SignUpData } from "@/internal/auth/dto";
 import { IAuthRepository, IAuthResponse } from "@/internal/auth/interface";
 
 export const defaultProfilePic =
   "https://res.cloudinary.com/dpmecjee7/image/upload/v1750701689/default_profilepic_lm3qvo.jpg";
 
 export class AuthRepository implements IAuthRepository {
-  async createUser(signUpData: SignUpData | OAuthData): Promise<IAuthResponse> {
+  async createUser(signUpData: SignUpData): Promise<IAuthResponse> {
     try {
       const newUser = await prisma.user.create({
         data: {
           username: signUpData.username,
           email: signUpData.email,
-          password:
-            "password" in signUpData && signUpData.password !== undefined
-              ? signUpData.password
-              : null,
+          password: signUpData.password,
+          salt: signUpData.salt,
           profilePic: signUpData.profilePicURL || defaultProfilePic,
-          provider:
-            "provider" in signUpData && signUpData.provider !== undefined
-              ? signUpData.provider
-              : null,
         },
       });
 

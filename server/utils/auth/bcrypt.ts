@@ -1,10 +1,17 @@
 import bcrypt from "bcryptjs";
 
-export const toHashPassword = async (password: string): Promise<string> => {
+interface HashedPassword {
+  hashedPassword: string;
+  cryptSalt: string;
+}
+
+export const toHashPassword = async (
+  password: string
+): Promise<HashedPassword> => {
   const cryptSalt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, cryptSalt);
 
-  return hashedPassword;
+  return { hashedPassword, cryptSalt };
 };
 
 export const validatePassword = async (

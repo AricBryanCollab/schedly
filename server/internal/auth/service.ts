@@ -60,10 +60,11 @@ export class AuthService {
     }
 
     //Password Hashing
-    const hashedPassword = await toHashPassword(password);
+    const hash = await toHashPassword(password);
     const validatedUser = {
       ...signUpData,
-      password: hashedPassword,
+      password: hash.hashedPassword,
+      salt: hash.cryptSalt,
     };
 
     const redisKey = await sendOtpToEmail(
@@ -113,7 +114,7 @@ export class AuthService {
         throw new ValidationError(`Unsupported provider: ${provider}`);
     }
 
-    const { email, username, profilePic } = userInfo;
+    const { email, username, profilePic, oAuthAccountId } = userInfo;
 
     const user = await this.authRepository.findUserByEmail(userInfo.email);
     if (user) {
@@ -123,10 +124,11 @@ export class AuthService {
     }
 
     const validatedData: OAuthData = {
+      username: username,
       email: email,
-      username,
       profilePicURL: profilePic,
       provider: provider,
+      oAuthAccountId: oAuthAccountId,
     };
 
     const redisKey = await sendOtpToEmail(email, "oauth", validatedData);

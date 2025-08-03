@@ -8,6 +8,7 @@ export class SignUpData {
   email!: string;
   password!: string;
   confirmPassword?: string;
+  salt!: string;
   profilePicURL?: string;
 }
 
@@ -16,4 +17,5 @@ export class OAuthData {
   email!: string;
   profilePicURL?: string;
   provider!: string;
+  oAuthAccountId!: string;
 }

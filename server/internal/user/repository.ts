@@ -8,9 +8,9 @@ import {
   ProfilePic,
   UpdateProfilePicRequest,
   UpdateUserRequest,
-  UserDataRepo,
   UserListItem,
 } from "@/internal/user/interface";
+import type { User } from "@prisma/client";
 
 export class UserRepository implements IUserRepository {
   async updateUser({
@@ -23,7 +23,6 @@ export class UserRepository implements IUserRepository {
         data: {
           username: userData.username,
           email: userData.email,
-          timezone: userData.timezone,
         },
       });
       return user as UserData;
@@ -75,9 +74,9 @@ export class UserRepository implements IUserRepository {
   async findUser(
     field: "email" | "username",
     value: string
-  ): Promise<UserDataRepo | null> {
+  ): Promise<User | null> {
     try {
-      let user: UserDataRepo | null = null;
+      let user: User | null = null;
       if (field === "email") {
         user = await prisma.user.findUnique({ where: { email: value } });
       } else if (field === "username") {
@@ -121,7 +120,6 @@ export class UserRepository implements IUserRepository {
           username: user.username,
           email: user.email,
           profilePic: user.profilePic,
-          timezone: user.timezone,
         };
       });
 
