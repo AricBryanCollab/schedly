@@ -12,16 +12,38 @@ export const defaultProfilePic =
 export class AuthRepository implements IAuthRepository {
   async createUser(signUpData: SignUpData): Promise<IAuthResponse> {
     try {
-      const newUser = await prisma.user.create({
-        data: {
-          username: signUpData.username,
-          email: signUpData.email,
-          password: signUpData.password,
-          profilePic: signUpData.profilePicURL || defaultProfilePic,
-        },
+      const result = await prisma.$transaction(async (tx) => {
+        const createdUser = await tx.user.create({
+          data: {
+            username: signUpData.username,
+            email: signUpData.email,
+            password: signUpData.password,
+            profilePic: signUpData.profilePicURL || defaultProfilePic,
+          },
+        });
+
+        let createdOAuth: { provider: string } | null = null;
+
+        if (signUpData.provider && signUpData.providerAccountId) {
+          createdOAuth = await tx.oAuthAccount.create({
+            data: {
+              userId: createdUser.id,
+              provider: signUpData.provider,
+              providerAccountId: signUpData.providerAccountId,
+            },
+          });
+        }
+
+        const newUser: IAuthResponse = {
+          id: createdUser.id,
+          username: createdUser.username,
+          provider: createdOAuth?.provider || null,
+        };
+
+        return newUser;
       });
 
-      return newUser;
+      return result;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         console.error(error.message);

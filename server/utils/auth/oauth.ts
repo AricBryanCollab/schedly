@@ -4,7 +4,7 @@ export interface UserInfo<T> {
   email: T;
   username: T;
   profilePic: T;
-  oAuthAccountId: T;
+  providerAccountId: T;
 }
 
 const handleGoogleProvider = async (
@@ -17,7 +17,7 @@ const handleGoogleProvider = async (
       email: data.email,
       username: data.name,
       profilePic: data.picture,
-      oAuthAccountId: data.sub,
+      providerAccountId: data.sub,
     };
   } catch (error) {
     throw new Error("Failed to handle google access token ");
@@ -49,7 +49,7 @@ const handleGithubProvider = async (
       email: primaryEmail || "",
       username: user.login,
       profilePic: user.avatar_url,
-      oAuthAccountId: user.id.toString(),
+      providerAccountId: user.id.toString(),
     };
   } catch (error) {
     throw new Error("Failed to handle GitHub access token");

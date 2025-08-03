@@ -113,7 +113,7 @@ export class AuthService {
         throw new ValidationError(`Unsupported provider: ${provider}`);
     }
 
-    const { email, username, profilePic, oAuthAccountId } = userInfo;
+    const { email, username, profilePic, providerAccountId } = userInfo;
 
     const user = await this.authRepository.findUserByEmail(userInfo.email);
     if (user) {
@@ -127,7 +127,7 @@ export class AuthService {
       email: email,
       profilePicURL: profilePic,
       provider: provider,
-      oAuthAccountId: oAuthAccountId,
+      providerAccountId: providerAccountId,
     };
 
     const redisKey = await sendOtpToEmail(email, "oauth", validatedData);
