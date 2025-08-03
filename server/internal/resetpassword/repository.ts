@@ -38,10 +38,14 @@ export class ResetPasswordRepository implements IResetPasswordRepository {
         throw new ValidationError("User was not found in the database");
       }
 
+      const oAuth = await prisma.oAuthAccount.findFirst({
+        where: { userId: user.id },
+      });
+
       const existingUser = {
         username: user.username,
         email: user.email,
-        provider: user.provider,
+        provider: oAuth?.provider || null,
       };
 
       return existingUser;
