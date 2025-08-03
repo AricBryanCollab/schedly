@@ -7,6 +7,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 
 import { eventIcons } from "@/constants/eventIcon";
+import DatePickerField from "@/features/calendarItem/components/DatePickerField";
 
 const AddCalendarItem = () => {
   return (
@@ -32,6 +33,19 @@ const AddCalendarItem = () => {
         />
 
         <Select data={eventIcons} onSelect={() => {}} />
+
+        <View style={{ padding: 16 }}>
+          <DatePickerField
+            label="Start Date"
+            value={new Date("2025-05-14")}
+            onChange={() => {}}
+          />
+          <DatePickerField
+            label="End Date"
+            value={new Date()}
+            onChange={() => {}}
+          />
+        </View>
       </ScrollView>
 
       <View>
