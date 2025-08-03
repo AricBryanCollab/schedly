@@ -9,6 +9,8 @@ export class SignUpData {
   password!: string;
   confirmPassword?: string;
   profilePicURL?: string;
+  provider?: string;
+  providerAccountId?: string;
 }
 
 export class OAuthData {
@@ -16,4 +18,5 @@ export class OAuthData {
   email!: string;
   profilePicURL?: string;
   provider!: string;
+  providerAccountId!: string;
 }

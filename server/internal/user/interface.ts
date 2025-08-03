@@ -1,4 +1,5 @@
 import { UserData } from "@/internal/user/dto";
+import type { User } from "@prisma/client";
 
 export interface IUserRepository {
   updateUser({
@@ -10,10 +11,7 @@ export interface IUserRepository {
     imageUrl,
   }: UpdateProfilePicRequest): Promise<string>;
   deleteUser(userId: string): Promise<void>;
-  findUser(
-    field: "email" | "username",
-    value: string
-  ): Promise<UserDataRepo | null>;
+  findUser(field: "email" | "username", value: string): Promise<User | null>;
   findUserProfilePic(userId: string): Promise<ProfilePic | null>;
   getAllUsers(): Promise<UserListItem[]>;
 }
@@ -28,12 +26,6 @@ export interface UpdateUserRequest {
 export interface UpdateProfilePicRequest {
   userId: string;
   imageUrl: string;
-}
-
-export interface UserDataRepo {
-  username: string;
-  email: string | null;
-  timezone: string | null;
 }
 
 export interface ProfilePic {

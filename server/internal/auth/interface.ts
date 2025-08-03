@@ -11,4 +11,5 @@ export interface IAuthResponse {
   id: string;
   username: string;
   password?: string | null;
+  provider?: string | null;
 }

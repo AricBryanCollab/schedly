@@ -17,6 +17,7 @@ export class CalendarService {
     const {
       title,
       description,
+      icon,
       startTime,
       endTime,
       isAllDay,
@@ -30,6 +31,8 @@ export class CalendarService {
 
     if (!title || typeof title !== "string")
       throw new ValidationError("Title is required");
+
+    if (!icon) throw new ValidationError("Event category is not selected");
 
     if (!startTime) throw new ValidationError("Invalid start time");
 
@@ -53,6 +56,7 @@ export class CalendarService {
       calendarItem: {
         title,
         description,
+        icon,
         startTime: new Date(startTime),
         endTime: new Date(endTime),
         isAllDay,

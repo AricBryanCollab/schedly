@@ -30,7 +30,7 @@ export class ResetPasswordService {
 
     if (existingUser?.provider != null) {
       throw new AuthorizationError(
-        "User logged in with a third-party provider are not allowed with this feature"
+        "User logged in with a third-party provider so they are not allowed with this feature"
       );
     }
 
