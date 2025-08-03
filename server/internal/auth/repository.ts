@@ -17,7 +17,6 @@ export class AuthRepository implements IAuthRepository {
           username: signUpData.username,
           email: signUpData.email,
           password: signUpData.password,
-          salt: signUpData.salt,
           profilePic: signUpData.profilePicURL || defaultProfilePic,
         },
       });

@@ -8,7 +8,6 @@ export class SignUpData {
   email!: string;
   password!: string;
   confirmPassword?: string;
-  salt!: string;
   profilePicURL?: string;
 }
 

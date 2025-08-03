@@ -60,11 +60,10 @@ export class AuthService {
     }
 
     //Password Hashing
-    const hash = await toHashPassword(password);
+    const hashedPassword = await toHashPassword(password);
     const validatedUser = {
       ...signUpData,
-      password: hash.hashedPassword,
-      salt: hash.cryptSalt,
+      password: hashedPassword,
     };
 
     const redisKey = await sendOtpToEmail(

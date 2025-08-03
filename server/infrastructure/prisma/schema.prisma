@@ -31,7 +31,6 @@ model User {
   username String @unique
   email String? @unique
   password String? 
-  salt String?
   profilePic String?
 
   oAuthAccount OAuthAccount[]
