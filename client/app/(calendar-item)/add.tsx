@@ -1,8 +1,12 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 
 import CustomInput from "@/components/ui/CustomInput";
+import Select from "@/components/ui/Select";
+
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Text, TextInput } from "react-native-paper";
+import { Text } from "react-native-paper";
+
+import { eventIcons } from "@/constants/eventIcon";
 
 const AddCalendarItem = () => {
   return (
@@ -27,15 +31,12 @@ const AddCalendarItem = () => {
           onChangeText={() => {}}
         />
 
-        <View style={styles.inputBlock}>
-          <TextInput
-            mode="outlined"
-            theme={{ roundness: 12 }}
-            placeholder="Category"
-            left={<TextInput.Icon icon="tag" />}
-          />
-        </View>
+        <Select data={eventIcons} onSelect={() => {}} />
       </ScrollView>
+
+      <View>
+        <Text variant="headlineSmall">Card Preview</Text>
+      </View>
     </ScreenWrapper>
   );
 };
