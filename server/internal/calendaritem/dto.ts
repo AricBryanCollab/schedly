@@ -3,6 +3,7 @@ export type Status = "PENDING" | "INCOMING" | "INPROGRESS" | "COMPLETED";
 export interface CalendarItem {
   id: string;
   title: string;
+  icon: string;
   description?: string | null;
   startTime: Date;
   endTime: Date;
