@@ -6,19 +6,26 @@ import { useState } from "react";
 import { Platform, View } from "react-native";
 import { TextInput } from "react-native-paper";
 
-interface DatePickerFieldProps {
+interface TimePickerFieldProps {
   label: string;
   value: Date | undefined;
   onChange: (date: Date) => void;
 }
 
-const DatePickerField = ({ label, value, onChange }: DatePickerFieldProps) => {
+const TimePickerField = ({ label, value, onChange }: TimePickerFieldProps) => {
   const [visible, setVisible] = useState(false);
 
-  const handleChange = (_event: DateTimePickerEvent, selectedDate?: Date) => {
+  const handleChange = (_event: DateTimePickerEvent, selectedTime?: Date) => {
     setVisible(false);
-    if (selectedDate) {
-      onChange(selectedDate);
+    if (selectedTime && value) {
+      const newDate = new Date(
+        value.getFullYear(),
+        value.getMonth(),
+        value.getDate(),
+        selectedTime.getHours(),
+        selectedTime.getMinutes()
+      );
+      onChange(newDate);
     }
   };
 
@@ -26,9 +33,9 @@ const DatePickerField = ({ label, value, onChange }: DatePickerFieldProps) => {
     <View style={{ marginVertical: 8 }}>
       <TextInput
         label={label}
-        left={<TextInput.Icon icon="calendar" />}
+        left={<TextInput.Icon icon="clock-outline" />}
         theme={{ roundness: 12 }}
-        value={value ? format(value, "PPP") : ""}
+        value={value ? format(value, "hh:mm a") : ""}
         onPressIn={() => setVisible(true)}
         editable={false}
         mode="outlined"
@@ -37,8 +44,8 @@ const DatePickerField = ({ label, value, onChange }: DatePickerFieldProps) => {
       {visible && (
         <DateTimePicker
           value={value ?? new Date()}
-          mode="date"
-          display={Platform.OS === "ios" ? "inline" : "default"}
+          mode="time"
+          display={Platform.OS === "ios" ? "spinner" : "default"}
           onChange={handleChange}
         />
       )}
@@ -46,4 +53,4 @@ const DatePickerField = ({ label, value, onChange }: DatePickerFieldProps) => {
   );
 };
 
-export default DatePickerField;
+export default TimePickerField;

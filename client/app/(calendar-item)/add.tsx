@@ -1,23 +1,26 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-
-import { useState } from "react";
-
 import CustomInput from "@/components/ui/CustomInput";
 import Select from "@/components/ui/Select";
 
 import { eventIcons } from "@/constants/eventIcon";
 import DatePickerField from "@/features/calendarItem/components/DatePickerField";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { format } from "date-fns";
+import TimePickerField from "@/features/calendarItem/components/TimePickerField";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, Checkbox, Text, TextInput } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
+
+import {
+  setDatePreserveTime,
+  setTimePreserveDate,
+} from "@/features/calendarItem/utils/setDateTime";
+import { useState } from "react";
 
 const AddCalendarItem = () => {
-  const [isAllDay, setIsAllDay] = useState(false);
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
-  const [showStartTimePicker, setShowStartTimePicker] = useState(false);
-  const [showEndTimePicker, setShowEndTimePicker] = useState(false);
+  const initialStartDate = new Date();
+  const initialEndDate = new Date(initialStartDate);
+  initialEndDate.setHours(initialStartDate.getHours() + 1);
+
+  const [startDate, setStartDate] = useState<Date>(initialStartDate);
+  const [endDate, setEndDate] = useState<Date>(initialEndDate);
 
   return (
     <ScreenWrapper>
@@ -44,69 +47,50 @@ const AddCalendarItem = () => {
         <Select data={eventIcons} onSelect={() => {}} />
 
         {/* Todo: Fix Layout and Separate Components */}
-        <View style={{ padding: 16 }}>
+        <View style={styles.dateBlock}>
           <DatePickerField
             label="Start Date"
-            value={new Date("2025-05-14")}
-            onChange={() => {}}
+            value={startDate}
+            onChange={(newDate) => {
+              setStartDate((prev) => setDatePreserveTime(prev, newDate));
+            }}
           />
+
+          <TimePickerField
+            label="Start Time"
+            value={startDate}
+            onChange={(newTime) => {
+              setStartDate((prev) => setTimePreserveDate(prev, newTime));
+            }}
+          />
+        </View>
+
+        <View style={styles.dateBlock}>
           <DatePickerField
             label="End Date"
-            value={new Date()}
-            onChange={() => {}}
+            value={endDate}
+            onChange={(newDate) => {
+              setEndDate((prev) =>
+                setDatePreserveTime(prev, newDate, {
+                  isEndDate: true,
+                  compareTo: startDate,
+                })
+              );
+            }}
           />
 
-          <Checkbox.Item
-            label="All Day"
-            status={isAllDay ? "checked" : "unchecked"}
-            onPress={() => setIsAllDay(!isAllDay)}
-            position="leading"
+          <TimePickerField
+            label="End Time"
+            value={endDate}
+            onChange={(newTime) => {
+              setEndDate((prev) =>
+                setTimePreserveDate(prev, newTime, {
+                  isEndTime: true,
+                  compareTo: startDate,
+                })
+              );
+            }}
           />
-
-          {!isAllDay && (
-            <View style={{ padding: 16 }}>
-              <TextInput
-                label="Start Time"
-                value={format(startTime, "hh:mm a")}
-                mode="outlined"
-                editable={false}
-                onPressIn={() => setShowStartTimePicker(true)}
-                left={<TextInput.Icon icon="clock-outline" />}
-              />
-              <TextInput
-                label="End Time"
-                value={format(endTime, "hh:mm a")}
-                mode="outlined"
-                editable={false}
-                onPressIn={() => setShowEndTimePicker(true)}
-                left={<TextInput.Icon icon="clock-outline" />}
-              />
-            </View>
-          )}
-
-          {showStartTimePicker && (
-            <DateTimePicker
-              value={startTime}
-              mode="time"
-              display="default"
-              onChange={(event, selectedDate) => {
-                setShowStartTimePicker(false);
-                if (selectedDate) setStartTime(selectedDate);
-              }}
-            />
-          )}
-
-          {showEndTimePicker && (
-            <DateTimePicker
-              value={endTime}
-              mode="time"
-              display="default"
-              onChange={(event, selectedDate) => {
-                setShowEndTimePicker(false);
-                if (selectedDate) setEndTime(selectedDate);
-              }}
-            />
-          )}
         </View>
 
         {/* Todo: Recurrence and Recurrence Rule */}
@@ -129,15 +113,9 @@ const styles = StyleSheet.create({
   titleBlock: {
     paddingVertical: 12,
   },
-
-  inputBlock: {
-    flexDirection: "column",
-    gap: 10,
-    marginVertical: 12,
-    marginHorizontal: 10,
-  },
-  textArea: {
-    minHeight: 100,
-    textAlignVertical: "top",
+  dateBlock: {
+    display: "flex",
+    gap: 8,
+    padding: 10,
   },
 });
