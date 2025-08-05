@@ -1,12 +1,13 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
+import CalendarItemCard from "@/components/ui/CalendarItemCard";
 import CustomInput from "@/components/ui/CustomInput";
 import Select from "@/components/ui/Select";
 
 import { eventIcons } from "@/constants/eventIcon";
 import DatePickerField from "@/features/calendarItem/components/DatePickerField";
 import TimePickerField from "@/features/calendarItem/components/TimePickerField";
-import { ScrollView, StyleSheet, Switch, View } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Button, Switch, Text } from "react-native-paper";
 
 import useAddCalendarItem from "@/features/calendarItem/hooks/useAddCalendarItem";
 
@@ -15,6 +16,7 @@ const AddCalendarItem = () => {
     calendarItem,
     onCalendarItemChange,
     toggleIsAllDay,
+    toggleIsRecurrent,
     updateStartDate,
     updateStartTime,
     updateEndDate,
@@ -33,7 +35,7 @@ const AddCalendarItem = () => {
           placeholder="Event Title"
           icon="text"
           value={calendarItem.title}
-          onChangeText={() => onCalendarItemChange("title", calendarItem.title)}
+          onChangeText={(text) => onCalendarItemChange("title", text)}
         />
 
         <CustomInput
@@ -41,9 +43,7 @@ const AddCalendarItem = () => {
           icon="note-text"
           isTextArea
           value={calendarItem.description}
-          onChangeText={() =>
-            onCalendarItemChange("description", calendarItem.description)
-          }
+          onChangeText={(text) => onCalendarItemChange("description", text)}
         />
 
         <Select
@@ -51,10 +51,11 @@ const AddCalendarItem = () => {
           onSelect={(value: string) => onCalendarItemChange("icon", value)}
         />
 
-        <View style={styles.isAllDaySwitchBlock}>
+        <View style={styles.switchBlock}>
           <Text variant="bodyLarge">Whole Day?</Text>
           <Switch
             value={calendarItem.isAllDay}
+            color="#0a0a0a"
             onValueChange={toggleIsAllDay}
           />
         </View>
@@ -91,13 +92,46 @@ const AddCalendarItem = () => {
           )}
         </View>
 
-        {/* Todo: Recurrence and Recurrence Rule */}
-        <Button mode="contained">Create</Button>
-      </ScrollView>
+        <View style={styles.switchBlock}>
+          <Text variant="bodyLarge">Does this event repeat?</Text>
+          <Switch
+            value={calendarItem.isRecurrent}
+            color="#0a0a0a"
+            onValueChange={toggleIsRecurrent}
+          />
+        </View>
 
-      <View>
-        <Text variant="headlineSmall">Card Preview</Text>
-      </View>
+        {calendarItem.isRecurrent && (
+          <CustomInput
+            placeholder="Recurrence (eg. daily, weekly)"
+            icon="repeat"
+            value={calendarItem.recurrenceRule}
+            onChangeText={(text) =>
+              onCalendarItemChange("recurrenceRule", text)
+            }
+          />
+        )}
+        <View style={styles.button}>
+          <Button mode="contained">Create</Button>
+        </View>
+
+        <View style={styles.eventPreviewBlock}>
+          <Text variant="headlineSmall">Card Preview</Text>
+
+          <CalendarItemCard
+            id=""
+            title={calendarItem.title}
+            description={calendarItem.description}
+            iconTitle={calendarItem.icon}
+            startDate={calendarItem.startDate.toISOString()}
+            endDate={calendarItem.endDate.toISOString()}
+            isAllDay={calendarItem.isAllDay}
+            isRecurrent={calendarItem.isRecurrent}
+            isHighlighted={false}
+            status="PENDING"
+          />
+        </View>
+      </ScrollView>
     </ScreenWrapper>
   );
 };
@@ -111,7 +145,7 @@ const styles = StyleSheet.create({
   titleBlock: {
     paddingVertical: 12,
   },
-  isAllDaySwitchBlock: {
+  switchBlock: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -123,5 +157,13 @@ const styles = StyleSheet.create({
     display: "flex",
     gap: 8,
     padding: 10,
+  },
+  button: {
+    marginTop: 12,
+  },
+  eventPreviewBlock: {
+    marginTop: 18,
+    paddingBottom: 10,
+    paddingHorizontal: 20,
   },
 });

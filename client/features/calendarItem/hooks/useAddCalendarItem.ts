@@ -3,6 +3,7 @@ import {
   setDatePreserveTime,
   setTimePreserveDate,
 } from "@/features/calendarItem/utils/setDateTime";
+
 import { useState } from "react";
 
 const useAddCalendarItem = () => {
@@ -55,6 +56,13 @@ const useAddCalendarItem = () => {
     });
   };
 
+  const toggleIsRecurrent = () => {
+    setCalendarItem((prev) => ({
+      ...calendarItem,
+      isRecurrent: !prev.isRecurrent,
+    }));
+  };
+
   const updateStartDate = (newDateOnly: Date) => {
     setCalendarItem((prev) => ({
       ...prev,
@@ -93,6 +101,7 @@ const useAddCalendarItem = () => {
     calendarItem,
     onCalendarItemChange,
     toggleIsAllDay,
+    toggleIsRecurrent,
     updateStartDate,
     updateStartTime,
     updateEndDate,
