@@ -5,23 +5,23 @@ import Select from "@/components/ui/Select";
 import { eventIcons } from "@/constants/eventIcon";
 import DatePickerField from "@/features/calendarItem/components/DatePickerField";
 import TimePickerField from "@/features/calendarItem/components/TimePickerField";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, Switch, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 
-import {
-  setDatePreserveTime,
-  setTimePreserveDate,
-} from "@/features/calendarItem/utils/setDateTime";
-import { useState } from "react";
+import useAddCalendarItem from "@/features/calendarItem/hooks/useAddCalendarItem";
 
 const AddCalendarItem = () => {
-  const initialStartDate = new Date();
-  const initialEndDate = new Date(initialStartDate);
-  initialEndDate.setHours(initialStartDate.getHours() + 1);
+  const {
+    calendarItem,
+    onCalendarItemChange,
+    toggleIsAllDay,
+    updateStartDate,
+    updateStartTime,
+    updateEndDate,
+    updateEndTime,
+  } = useAddCalendarItem();
 
-  const [startDate, setStartDate] = useState<Date>(initialStartDate);
-  const [endDate, setEndDate] = useState<Date>(initialEndDate);
-
+  const isAllDay = calendarItem.isAllDay;
   return (
     <ScreenWrapper>
       <ScrollView style={styles.scrollContent}>
@@ -32,65 +32,63 @@ const AddCalendarItem = () => {
         <CustomInput
           placeholder="Event Title"
           icon="text"
-          value=""
-          onChangeText={() => {}}
+          value={calendarItem.title}
+          onChangeText={() => onCalendarItemChange("title", calendarItem.title)}
         />
 
         <CustomInput
           placeholder="Description (optional)"
           icon="note-text"
           isTextArea
-          value=""
-          onChangeText={() => {}}
+          value={calendarItem.description}
+          onChangeText={() =>
+            onCalendarItemChange("description", calendarItem.description)
+          }
         />
 
-        <Select data={eventIcons} onSelect={() => {}} />
+        <Select
+          data={eventIcons}
+          onSelect={(value: string) => onCalendarItemChange("icon", value)}
+        />
 
-        {/* Todo: Fix Layout and Separate Components */}
-        <View style={styles.dateBlock}>
-          <DatePickerField
-            label="Start Date"
-            value={startDate}
-            onChange={(newDate) => {
-              setStartDate((prev) => setDatePreserveTime(prev, newDate));
-            }}
-          />
-
-          <TimePickerField
-            label="Start Time"
-            value={startDate}
-            onChange={(newTime) => {
-              setStartDate((prev) => setTimePreserveDate(prev, newTime));
-            }}
+        <View style={styles.isAllDaySwitchBlock}>
+          <Text variant="bodyLarge">Whole Day?</Text>
+          <Switch
+            value={calendarItem.isAllDay}
+            onValueChange={toggleIsAllDay}
           />
         </View>
 
         <View style={styles.dateBlock}>
           <DatePickerField
-            label="End Date"
-            value={endDate}
-            onChange={(newDate) => {
-              setEndDate((prev) =>
-                setDatePreserveTime(prev, newDate, {
-                  isEndDate: true,
-                  compareTo: startDate,
-                })
-              );
-            }}
+            label="Start Date"
+            value={calendarItem.startDate}
+            onChange={updateStartDate}
           />
 
-          <TimePickerField
-            label="End Time"
-            value={endDate}
-            onChange={(newTime) => {
-              setEndDate((prev) =>
-                setTimePreserveDate(prev, newTime, {
-                  isEndTime: true,
-                  compareTo: startDate,
-                })
-              );
-            }}
+          {!isAllDay && (
+            <TimePickerField
+              label="Start Time"
+              value={calendarItem.startDate}
+              onChange={updateStartTime}
+            />
+          )}
+        </View>
+
+        <View style={styles.dateBlock}>
+          <DatePickerField
+            label="End Date"
+            value={calendarItem.endDate}
+            onChange={updateEndDate}
           />
+
+          {!isAllDay && (
+            <TimePickerField
+              label="End Time"
+              value={calendarItem.endDate}
+              onChange={updateEndTime}
+            />
+          )}
         </View>
 
         {/* Todo: Recurrence and Recurrence Rule */}
@@ -112,6 +110,14 @@ const styles = StyleSheet.create({
   },
   titleBlock: {
     paddingVertical: 12,
+  },
+  isAllDaySwitchBlock: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
   },
   dateBlock: {
     display: "flex",
