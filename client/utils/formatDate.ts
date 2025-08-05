@@ -15,19 +15,25 @@ export function formatDate(timestamp: string): string {
 }
 
 export function secondFormatDate(timestamp: string): string {
-  const date = new Date(timestamp);
+  try {
+    const date = new Date(timestamp);
 
-  const datePart = date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  });
+    if (isNaN(date.getTime())) return "Invalid Date";
 
-  const timePart = date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
+    const datePart = date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
 
-  return `${datePart} ${timePart}`;
+    const timePart = date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    return `${datePart} ${timePart}`;
+  } catch {
+    return "Invalid Date";
+  }
 }
