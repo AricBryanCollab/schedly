@@ -89,7 +89,7 @@ const CalendarBlock = ({ data }: CalendarBlockProps) => {
           <Text style={styles.tooltipDate}>{selectedDate}</Text>
           {selectedEvents.map((event) => (
             <View key={event.id} style={styles.tooltipItem}>
-              <IconButton icon={event.iconTitle} size={24} />
+              <IconButton icon={event.icon} size={24} />
               <Text variant="titleMedium">{event.title}</Text>
             </View>
           ))}

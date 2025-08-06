@@ -7,15 +7,18 @@ import { Chip, Icon, Text } from "react-native-paper";
 import { secondFormatDate } from "@/utils/formatDate";
 import { Status, getReadableStatus, getStatusIcon } from "@/utils/formatStatus";
 
+import { capitalizeFirstLetter } from "@/features/calendarItem/utils/capitalizeFirstLetter";
+
 export interface CalendarItemCardProps<T, U> {
   id: T;
   title: T;
   startDate: T;
-  iconTitle: T;
+  icon: T;
   endDate: T;
   description: T;
   isAllDay: U;
   isRecurrent: U;
+  recurrenceRule?: T;
   status: Status;
   isHighlighted: U;
 }
@@ -23,12 +26,13 @@ export interface CalendarItemCardProps<T, U> {
 const CalendarItemCard = ({
   id,
   title,
-  iconTitle,
+  icon,
   startDate,
   endDate,
   description,
   isAllDay,
   isRecurrent,
+  recurrenceRule,
   isHighlighted,
   status,
 }: CalendarItemCardProps<string, boolean>) => {
@@ -41,7 +45,7 @@ const CalendarItemCard = ({
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Icon source={iconTitle} size={18} />
+        <Icon source={icon} size={18} />
         <Text style={styles.title} variant="bodyLarge">
           {title}
         </Text>
@@ -57,7 +61,7 @@ const CalendarItemCard = ({
       </View>
 
       <View style={styles.timeContent}>
-        <View style="">
+        <View>
           <Text variant="bodySmall">Start</Text>
           <Text variant="bodyMedium">{secondFormatDate(startDate)}</Text>
         </View>
@@ -82,7 +86,7 @@ const CalendarItemCard = ({
 
         {isRecurrent && (
           <Chip mode="outlined" icon="history">
-            Recurrent
+            {capitalizeFirstLetter(recurrenceRule || "recurrent")}
           </Chip>
         )}
 

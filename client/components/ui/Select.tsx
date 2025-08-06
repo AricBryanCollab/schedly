@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Icon, Menu, Text } from "react-native-paper";
 
@@ -7,6 +7,7 @@ interface SelectData {
   value: string;
 }
 interface SelectProps {
+  value?: string;
   data: SelectData[];
   onSelect: (value: string) => void;
 }
@@ -16,9 +17,21 @@ const defaultSelectValue = {
   value: "tag",
 };
 
-const Select = ({ data, onSelect }: SelectProps) => {
+const Select = ({ data, onSelect, value }: SelectProps) => {
   const [visible, setVisible] = useState<boolean>(false);
   const [selected, setSelected] = useState<SelectData>(defaultSelectValue);
+
+  useEffect(() => {
+    if (!value) {
+      setSelected(defaultSelectValue);
+      return;
+    }
+
+    const found = data.find((item) => item.value === value);
+    if (found) {
+      setSelected(found);
+    }
+  }, [value, data]);
 
   const openMenu = () => setVisible(true);
 

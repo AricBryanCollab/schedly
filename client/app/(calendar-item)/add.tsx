@@ -111,9 +111,6 @@ const AddCalendarItem = () => {
             }
           />
         )}
-        <View style={styles.button}>
-          <Button mode="contained">Create</Button>
-        </View>
 
         <View style={styles.eventPreviewBlock}>
           <Text variant="headlineSmall">Card Preview</Text>
@@ -122,7 +119,7 @@ const AddCalendarItem = () => {
             id=""
             title={calendarItem.title}
             description={calendarItem.description}
-            iconTitle={calendarItem.icon}
+            icon={calendarItem.icon}
             startDate={calendarItem.startDate.toISOString()}
             endDate={calendarItem.endDate.toISOString()}
             isAllDay={calendarItem.isAllDay}
@@ -130,6 +127,10 @@ const AddCalendarItem = () => {
             isHighlighted={false}
             status="PENDING"
           />
+        </View>
+
+        <View style={styles.button}>
+          <Button mode="contained">Create</Button>
         </View>
       </ScrollView>
     </ScreenWrapper>
@@ -160,6 +161,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 12,
+    marginBottom: 20,
+    paddingHorizontal: 12,
   },
   eventPreviewBlock: {
     marginTop: 18,
