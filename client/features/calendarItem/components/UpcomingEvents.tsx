@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 
 import { CalendarData } from "@/app/home/(tabs)";
@@ -10,7 +10,7 @@ const UpcomingEvents = ({ data }: { data: CalendarData<string>[] }) => {
   const latestEvents = getUpcomingEvents(data);
 
   return (
-    <ScrollView style={styles.eventsView}>
+    <View style={styles.eventsView}>
       <Text style={styles.eventHeader} variant="bodyLarge">
         Upcoming Events
       </Text>
@@ -26,7 +26,7 @@ const UpcomingEvents = ({ data }: { data: CalendarData<string>[] }) => {
           );
         })}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

@@ -20,6 +20,7 @@ const EventsScreen = () => {
               endDate={card.endDate}
               isAllDay={card.isAllDay}
               isRecurrent={card.isRecurrent}
+              recurrenceRule={card.recurrenceRule}
               status={card.status}
               isHighlighted={card.isHighlighted}
             />

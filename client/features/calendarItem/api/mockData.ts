@@ -49,7 +49,8 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
     description:
       "Quick run to the supermarket for weekly essentials. Need to stock up on fresh produce and pantry items. Don't forget the milk!",
     isAllDay: false,
-    isRecurrent: true, // This could be a weekly recurring task
+    isRecurrent: true,
+    recurrenceRule: "weekly",
     status: "COMPLETED",
     isHighlighted: false,
   },
@@ -63,6 +64,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
       "Daily evening jog around the park. Aiming for 45 minutes. Great way to unwind after a long day.",
     isAllDay: false,
     isRecurrent: true,
+    recurrenceRule: "daily",
     status: "INPROGRESS",
     isHighlighted: false,
   },
@@ -89,6 +91,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
       "Discussing this month's book, 'The Midnight Library'. Make sure you've finished reading and prepared your thoughts!",
     isAllDay: false,
     isRecurrent: true,
+    recurrenceRule: "twice a month",
     status: "PENDING",
     isHighlighted: false,
   },

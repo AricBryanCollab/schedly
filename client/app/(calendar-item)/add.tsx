@@ -111,9 +111,6 @@ const AddCalendarItem = () => {
             }
           />
         )}
-        <View style={styles.button}>
-          <Button mode="contained">Create</Button>
-        </View>
 
         <View style={styles.eventPreviewBlock}>
           <Text variant="headlineSmall">Card Preview</Text>
@@ -130,6 +127,10 @@ const AddCalendarItem = () => {
             isHighlighted={false}
             status="PENDING"
           />
+        </View>
+
+        <View style={styles.button}>
+          <Button mode="contained">Create</Button>
         </View>
       </ScrollView>
     </ScreenWrapper>

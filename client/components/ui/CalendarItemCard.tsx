@@ -16,6 +16,7 @@ export interface CalendarItemCardProps<T, U> {
   description: T;
   isAllDay: U;
   isRecurrent: U;
+  recurrenceRule?: T;
   status: Status;
   isHighlighted: U;
 }
@@ -29,6 +30,7 @@ const CalendarItemCard = ({
   description,
   isAllDay,
   isRecurrent,
+  recurrenceRule,
   isHighlighted,
   status,
 }: CalendarItemCardProps<string, boolean>) => {
@@ -37,6 +39,10 @@ const CalendarItemCard = ({
   const onOpen = () => setOpenMenu(true);
 
   const onClose = () => setOpenMenu(false);
+
+  function capitalizeFirstLetter(text: string): string {
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  }
 
   return (
     <View style={styles.container}>
@@ -57,7 +63,7 @@ const CalendarItemCard = ({
       </View>
 
       <View style={styles.timeContent}>
-        <View style="">
+        <View>
           <Text variant="bodySmall">Start</Text>
           <Text variant="bodyMedium">{secondFormatDate(startDate)}</Text>
         </View>
@@ -80,9 +86,9 @@ const CalendarItemCard = ({
           </Chip>
         )}
 
-        {isRecurrent && (
+        {isRecurrent && recurrenceRule && (
           <Chip mode="outlined" icon="history">
-            Recurrent
+            {capitalizeFirstLetter(recurrenceRule)}
           </Chip>
         )}
 
