@@ -7,6 +7,8 @@ import { Chip, Icon, Text } from "react-native-paper";
 import { secondFormatDate } from "@/utils/formatDate";
 import { Status, getReadableStatus, getStatusIcon } from "@/utils/formatStatus";
 
+import { capitalizeFirstLetter } from "@/features/calendarItem/utils/capitalizeFirstLetter";
+
 export interface CalendarItemCardProps<T, U> {
   id: T;
   title: T;
@@ -39,10 +41,6 @@ const CalendarItemCard = ({
   const onOpen = () => setOpenMenu(true);
 
   const onClose = () => setOpenMenu(false);
-
-  function capitalizeFirstLetter(text: string): string {
-    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-  }
 
   return (
     <View style={styles.container}>
@@ -86,9 +84,9 @@ const CalendarItemCard = ({
           </Chip>
         )}
 
-        {isRecurrent && recurrenceRule && (
+        {isRecurrent && (
           <Chip mode="outlined" icon="history">
-            {capitalizeFirstLetter(recurrenceRule)}
+            {capitalizeFirstLetter(recurrenceRule || "recurrent")}
           </Chip>
         )}
 
