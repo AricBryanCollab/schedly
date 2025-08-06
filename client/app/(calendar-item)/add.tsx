@@ -119,7 +119,7 @@ const AddCalendarItem = () => {
             id=""
             title={calendarItem.title}
             description={calendarItem.description}
-            iconTitle={calendarItem.icon}
+            icon={calendarItem.icon}
             startDate={calendarItem.startDate.toISOString()}
             endDate={calendarItem.endDate.toISOString()}
             isAllDay={calendarItem.isAllDay}

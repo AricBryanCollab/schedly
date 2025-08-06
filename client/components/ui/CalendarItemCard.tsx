@@ -13,7 +13,7 @@ export interface CalendarItemCardProps<T, U> {
   id: T;
   title: T;
   startDate: T;
-  iconTitle: T;
+  icon: T;
   endDate: T;
   description: T;
   isAllDay: U;
@@ -26,7 +26,7 @@ export interface CalendarItemCardProps<T, U> {
 const CalendarItemCard = ({
   id,
   title,
-  iconTitle,
+  icon,
   startDate,
   endDate,
   description,
@@ -45,7 +45,7 @@ const CalendarItemCard = ({
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Icon source={iconTitle} size={18} />
+        <Icon source={icon} size={18} />
         <Text style={styles.title} variant="bodyLarge">
           {title}
         </Text>

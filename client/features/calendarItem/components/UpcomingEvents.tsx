@@ -20,7 +20,7 @@ const UpcomingEvents = ({ data }: { data: CalendarData<string>[] }) => {
             <EventChip
               key={late.id}
               title={late.title}
-              iconSrc={late.iconTitle}
+              iconSrc={late.icon}
               date={late.startDate}
             />
           );

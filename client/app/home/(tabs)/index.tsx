@@ -11,7 +11,7 @@ import { mockCalendarData } from "@/features/calendarItem/api/mockData";
 export interface CalendarData<T> {
   id: T;
   title: T;
-  iconTitle: T;
+  icon: T;
   startDate: T;
   endDate: T;
 }

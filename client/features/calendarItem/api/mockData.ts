@@ -4,7 +4,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
   {
     id: "1001",
     title: "Coffee with Sarah",
-    iconTitle: "silverware-fork-knife",
+    icon: "silverware-fork-knife",
     startDate: "2025-08-01T10:00:00.000Z",
     endDate: "2025-08-01T11:00:00.000Z",
     description:
@@ -17,7 +17,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
   {
     id: "1002",
     title: "Saturday Movie Night",
-    iconTitle: "movie-open",
+    icon: "movie-open",
     startDate: "2025-08-05T19:30:00.000Z",
     endDate: "2025-08-05T22:00:00.000Z",
     description:
@@ -30,7 +30,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
   {
     id: "1003",
     title: "Weekend Camping Trip",
-    iconTitle: "airplane",
+    icon: "airplane",
     startDate: "2025-08-10T08:00:00.000Z",
     endDate: "2025-08-12T16:00:00.000Z",
     description:
@@ -43,7 +43,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
   {
     id: "1004",
     title: "Grocery Shopping",
-    iconTitle: "cart",
+    icon: "cart",
     startDate: "2025-07-29T17:00:00.000Z",
     endDate: "2025-07-29T18:30:00.000Z",
     description:
@@ -57,7 +57,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
   {
     id: "1005",
     title: "Evening Jog",
-    iconTitle: "dumbbell",
+    icon: "dumbbell",
     startDate: "2025-08-02T18:00:00.000Z",
     endDate: "2025-08-02T18:45:00.000Z",
     description:
@@ -71,7 +71,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
   {
     id: "1006",
     title: "Visit to Grandma's",
-    iconTitle: "account-group",
+    icon: "account-group",
     startDate: "2025-08-15T14:00:00.000Z",
     endDate: "2025-08-15T17:00:00.000Z",
     description:
@@ -84,7 +84,7 @@ export const eventCardDetails: CalendarItemCardProps<string, boolean>[] = [
   {
     id: "1007",
     title: "Book Club Meeting",
-    iconTitle: "book-open",
+    icon: "book-open",
     startDate: "2025-08-20T19:00:00.000Z",
     endDate: "2025-08-20T20:30:00.000Z",
     description:
@@ -101,49 +101,49 @@ export const mockCalendarData = [
   {
     id: "1001",
     title: "Coffee with Sarah",
-    iconTitle: "silverware-fork-knife",
+    icon: "silverware-fork-knife",
     startDate: "2025-08-01T10:00:00.000Z",
     endDate: "2025-08-01T11:00:00.000Z",
   },
   {
     id: "1002",
     title: "Saturday Movie Night",
-    iconTitle: "movie-open",
+    icon: "movie-open",
     startDate: "2025-08-05T19:30:00.000Z",
     endDate: "2025-08-05T22:00:00.000Z",
   },
   {
     id: "1003",
     title: "Weekend Camping Trip",
-    iconTitle: "airplane",
+    icon: "airplane",
     startDate: "2025-08-10T08:00:00.000Z",
     endDate: "2025-08-12T16:00:00.000Z",
   },
   {
     id: "1004",
     title: "Grocery Shopping",
-    iconTitle: "cart",
+    icon: "cart",
     startDate: "2025-07-29T17:00:00.000Z",
     endDate: "2025-07-29T18:30:00.000Z",
   },
   {
     id: "1005",
     title: "Evening Jog",
-    iconTitle: "dumbbell",
+    icon: "dumbbell",
     startDate: "2025-08-02T18:00:00.000Z",
     endDate: "2025-08-02T18:45:00.000Z",
   },
   {
     id: "1006",
     title: "Visit to Grandma's",
-    iconTitle: "account-group",
+    icon: "account-group",
     startDate: "2025-08-15T14:00:00.000Z",
     endDate: "2025-08-15T17:00:00.000Z",
   },
   {
     id: "1007",
     title: "Book Club Meeting",
-    iconTitle: "book-open",
+    icon: "book-open",
     startDate: "2025-08-20T19:00:00.000Z",
     endDate: "2025-08-20T20:30:00.000Z",
   },

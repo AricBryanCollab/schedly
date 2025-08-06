@@ -1,3 +1,5 @@
+import { Status } from "@/utils/formatStatus";
+
 export interface MutateCalendarItem {
   title: string;
   description: string;
@@ -6,6 +8,7 @@ export interface MutateCalendarItem {
   endDate: Date;
   isAllDay: boolean;
   isRecurrent: boolean;
+  isHighlighted?: boolean;
   recurrenceRule: string;
-  status?: string;
+  status?: Status;
 }
