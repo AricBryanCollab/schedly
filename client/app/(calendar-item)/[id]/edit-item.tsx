@@ -52,8 +52,6 @@ const EditCalendarItem = () => {
     status,
   } = calendarItem;
 
-  console.log(icon);
-
   const onCalendarItemChange = <K extends keyof MutateCalendarItem>(
     key: K,
     value: MutateCalendarItem[K]
@@ -131,7 +129,7 @@ const EditCalendarItem = () => {
       <ScreenWrapper>
         <ScrollView style={styles.scrollContent}>
           <View style={styles.titleBlock}>
-            <Text variant="headlineSmall">Create an Event Here</Text>
+            <Text variant="headlineSmall">Edit the Calendar Event</Text>
           </View>
 
           <CustomInput
@@ -234,7 +232,7 @@ const EditCalendarItem = () => {
           </View>
 
           <View style={styles.button}>
-            <Button mode="contained">Create</Button>
+            <Button mode="contained">Confirm Edit</Button>
           </View>
         </ScrollView>
       </ScreenWrapper>
@@ -266,6 +264,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 12,
+    marginBottom: 20,
+    paddingHorizontal: 12,
   },
   eventPreviewBlock: {
     marginTop: 18,

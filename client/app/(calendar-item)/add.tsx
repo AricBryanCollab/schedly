@@ -161,6 +161,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 12,
+    marginBottom: 20,
+    paddingHorizontal: 12,
   },
   eventPreviewBlock: {
     marginTop: 18,
