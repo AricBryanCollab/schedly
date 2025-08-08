@@ -1,11 +1,10 @@
-import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { MutateCalendarItem } from "@/features/calendarItem/api/dto";
-import { useState } from "react";
+import useEditCalendarItem from "@/features/calendarItem/hooks/useEditCalendarItem";
+import { useLocalSearchParams } from "expo-router";
 
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import CalendarItemCard from "@/components/ui/CalendarItemCard";
 import CustomInput from "@/components/ui/CustomInput";
 import Select from "@/components/ui/Select";
-import { useLocalSearchParams } from "expo-router";
 
 import { eventIcons } from "@/constants/eventIcon";
 import DatePickerField from "@/features/calendarItem/components/DatePickerField";
@@ -13,31 +12,21 @@ import TimePickerField from "@/features/calendarItem/components/TimePickerField"
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Switch, Text } from "react-native-paper";
 
-import {
-  setDatePreserveTime,
-  setTimePreserveDate,
-} from "@/features/calendarItem/utils/setDateTime";
-
-import { eventCardDetails } from "@/features/calendarItem/api/mockData";
 import { Status } from "@/utils/formatStatus";
 
 const EditCalendarItem = () => {
   const { id } = useLocalSearchParams();
-  const eventId = Array.isArray(id) ? id[0] : id;
-  const cardDetail = eventCardDetails.find((event) => event.id === eventId) as
-    | MutateCalendarItem
-    | undefined;
-  const [calendarItem, setCalendarItem] = useState<MutateCalendarItem>(() => {
-    if (!cardDetail) {
-      throw new Error("Calendar item not found");
-    }
 
-    return {
-      ...cardDetail,
-      startDate: new Date(cardDetail.startDate ?? Date.now()),
-      endDate: new Date(cardDetail.endDate ?? Date.now()),
-    };
-  });
+  const {
+    calendarItem,
+    onCalendarItemChange,
+    toggleIsAllDay,
+    updateStartDate,
+    updateStartTime,
+    updateEndDate,
+    updateEndTime,
+    toggleIsRecurrent,
+  } = useEditCalendarItem(id);
 
   const {
     title,
@@ -51,78 +40,6 @@ const EditCalendarItem = () => {
     isHighlighted,
     status,
   } = calendarItem;
-
-  const onCalendarItemChange = <K extends keyof MutateCalendarItem>(
-    key: K,
-    value: MutateCalendarItem[K]
-  ) => {
-    setCalendarItem((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const toggleIsAllDay = () => {
-    setCalendarItem((prev) => {
-      const nextIsAllDay = !prev.isAllDay;
-
-      const updatedStart = new Date(prev.startDate);
-      const updatedEnd = new Date(prev.endDate);
-
-      if (nextIsAllDay) {
-        updatedStart.setHours(0, 0, 0, 0);
-        updatedEnd.setHours(0, 0, 0, 0);
-      }
-
-      return {
-        ...prev,
-        isAllDay: nextIsAllDay,
-        startDate: updatedStart,
-        endDate: updatedEnd,
-      };
-    });
-  };
-
-  const toggleIsRecurrent = () => {
-    setCalendarItem((prev) => ({
-      ...calendarItem,
-      isRecurrent: !prev.isRecurrent,
-    }));
-  };
-
-  const updateStartDate = (newDateOnly: Date) => {
-    setCalendarItem((prev) => ({
-      ...prev,
-      startDate: setDatePreserveTime(prev.startDate, newDateOnly),
-    }));
-  };
-
-  const updateStartTime = (newTimeOnly: Date) => {
-    setCalendarItem((prev) => ({
-      ...prev,
-      startDate: setTimePreserveDate(prev.startDate, newTimeOnly),
-    }));
-  };
-
-  const updateEndDate = (newDateOnly: Date) => {
-    setCalendarItem((prev) => ({
-      ...prev,
-      endDate: setDatePreserveTime(prev.endDate, newDateOnly, {
-        isEndDate: true,
-        compareTo: prev.startDate,
-      }),
-    }));
-  };
-
-  const updateEndTime = (newTimeOnly: Date) => {
-    setCalendarItem((prev) => ({
-      ...prev,
-      endDate: setTimePreserveDate(prev.endDate, newTimeOnly, {
-        isEndTime: true,
-        compareTo: prev.startDate,
-      }),
-    }));
-  };
 
   return (
     <ScreenWrapper>
@@ -218,7 +135,7 @@ const EditCalendarItem = () => {
             <Text variant="headlineSmall">Card Preview</Text>
 
             <CalendarItemCard
-              id={eventId}
+              id={id as string}
               title={title}
               description={description}
               icon={icon}
