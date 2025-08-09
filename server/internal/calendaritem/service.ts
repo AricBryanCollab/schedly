@@ -23,7 +23,6 @@ export class CalendarService {
       isAllDay,
       isRecurrent,
       recurrenceRule,
-      isHighlighted,
       status,
     } = calendarItem;
 
@@ -44,9 +43,6 @@ export class CalendarService {
     if (typeof isRecurrent !== "boolean")
       throw new ValidationError("isRecurrent must be boolean");
 
-    if (typeof isHighlighted !== "boolean")
-      throw new ValidationError("isHighlighted must be boolean");
-
     const allowedStatus = ["PENDING", "INCOMING", "INPROGRESS", "COMPLETED"];
     if (!allowedStatus.includes(status))
       throw new ValidationError("Invalid status value");
@@ -62,7 +58,6 @@ export class CalendarService {
         isAllDay,
         isRecurrent,
         recurrenceRule,
-        isHighlighted,
         status,
       },
     });
@@ -91,15 +86,8 @@ export class CalendarService {
 
     if (!calendarId) throw new ValidationError("Calendar Item ID is required");
 
-    const {
-      title,
-      startTime,
-      endTime,
-      isAllDay,
-      isRecurrent,
-      isHighlighted,
-      status,
-    } = calendarItem;
+    const { title, startTime, endTime, isAllDay, isRecurrent, status } =
+      calendarItem;
 
     if (!title || typeof title !== "string")
       throw new ValidationError("Title is required");
@@ -117,9 +105,6 @@ export class CalendarService {
 
     if (typeof isRecurrent !== "boolean")
       throw new ValidationError("isRecurrent must be boolean");
-
-    if (typeof isHighlighted !== "boolean")
-      throw new ValidationError("isHighlighted must be boolean");
 
     const allowedStatus = ["PENDING", "INCOMING", "INPROGRESS", "COMPLETED"];
     if (!allowedStatus.includes(status))
@@ -143,5 +128,53 @@ export class CalendarService {
     if (!calendarId) throw new ValidationError("Calendar ID is required");
 
     await this.calendarRepository.deleteCalendarItem(calendarId);
+  }
+
+  async highlightOn(userId: string, calendarId: string): Promise<string[]> {
+    if (!userId) throw new NotFoundError("User ID");
+
+    if (!calendarId) throw new ValidationError("Calendar ID is required");
+
+    const existingHighlights =
+      await this.calendarRepository.findUserHighlights(userId);
+    if (!existingHighlights) {
+      throw new ValidationError("User has no array of highlights");
+    }
+
+    if (existingHighlights.includes(calendarId)) {
+      throw new ValidationError("Calendar item is already highlighted");
+    }
+
+    const highlights = await this.calendarRepository.highlightOn(
+      userId,
+      calendarId
+    );
+
+    return highlights;
+  }
+
+  async highlightOff(userId: string, calendarId: string): Promise<string[]> {
+    if (!userId) throw new NotFoundError("User ID");
+
+    if (!calendarId) throw new ValidationError("Calendar ID is required");
+
+    const highlights = await this.calendarRepository.highlightOff(
+      userId,
+      calendarId
+    );
+
+    return highlights;
+  }
+
+  async getAllHighlightsByUser(userId: string) {
+    if (!userId) throw new NotFoundError("User ID");
+
+    const highlights = await this.calendarRepository.findUserHighlights(userId);
+
+    if (!highlights) {
+      throw new Error("Failed to retrieve the user highlights");
+    }
+
+    return highlights;
   }
 }

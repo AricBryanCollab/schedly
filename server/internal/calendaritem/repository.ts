@@ -82,6 +82,83 @@ export class CalendarRepository implements ICalendarItemRepository {
     }
   }
 
+  async findUserHighlights(userId: string): Promise<string[] | null> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { highlights: true },
+      });
+
+      if (!user) return null;
+
+      const { highlights } = user;
+
+      return highlights;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at findUserById method");
+      }
+      throw error;
+    }
+  }
+
+  async highlightOn(userId: string, calendarId: string): Promise<string[]> {
+    try {
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: {
+          highlights: {
+            push: calendarId,
+          },
+        },
+        select: {
+          highlights: true,
+        },
+      });
+      return updatedUser.highlights;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at highlightOn method");
+      }
+      throw error;
+    }
+  }
+
+  async highlightOff(userId: string, calendarId: string): Promise<string[]> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { highlights: true },
+      });
+
+      if (!user) throw new Error("User not found");
+
+      const updatedHighlights = user.highlights.filter(
+        (id) => id !== calendarId
+      );
+
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: {
+          highlights: updatedHighlights,
+        },
+        select: {
+          highlights: true,
+        },
+      });
+
+      return updatedUser.highlights;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at highlightOff method");
+      }
+      throw error;
+    }
+  }
+
   async createNotification(userId: string, message: string): Promise<void> {
     try {
       await prisma.notification.create({
