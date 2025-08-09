@@ -10,7 +10,6 @@ export interface CalendarItem {
   isAllDay: boolean;
   isRecurrent: boolean;
   recurrenceRule?: string | null;
-  isHighlighted: boolean;
   status: Status;
   createdAt: Date;
   updatedAt: Date;

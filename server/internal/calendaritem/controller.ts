@@ -7,6 +7,9 @@ export class CalendarController {
     this.getCalendarItemsByUser = this.getCalendarItemsByUser.bind(this);
     this.updateCalendarItem = this.updateCalendarItem.bind(this);
     this.deleteCalendarItem = this.deleteCalendarItem.bind(this);
+    this.highlightOn = this.highlightOn.bind(this);
+    this.highlightOff = this.highlightOff.bind(this);
+    this.getAllHighlightsByUser = this.getAllHighlightsByUser.bind(this);
   }
 
   async createCalendarItem(
@@ -104,4 +107,36 @@ export class CalendarController {
       next(error);
     }
   }
+
+  async highlightOn(req: CustomRequest, res: Response, next: NextFunction) {
+    try {
+      if (!req.user) {
+        return next(new Error("User not authenticated"));
+      }
+      const userId = req.user.id;
+
+      const calendarId = req.params.id;
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async highlightOff(req: CustomRequest, res: Response, next: NextFunction) {
+    try {
+      if (!req.user) {
+        return next(new Error("User not authenticated"));
+      }
+      const userId = req.user.id;
+
+      const calendarId = req.params.id;
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getAllHighlightsByUser(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) {}
 }

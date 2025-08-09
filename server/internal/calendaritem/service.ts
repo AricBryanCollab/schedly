@@ -23,7 +23,6 @@ export class CalendarService {
       isAllDay,
       isRecurrent,
       recurrenceRule,
-      isHighlighted,
       status,
     } = calendarItem;
 
@@ -44,9 +43,6 @@ export class CalendarService {
     if (typeof isRecurrent !== "boolean")
       throw new ValidationError("isRecurrent must be boolean");
 
-    if (typeof isHighlighted !== "boolean")
-      throw new ValidationError("isHighlighted must be boolean");
-
     const allowedStatus = ["PENDING", "INCOMING", "INPROGRESS", "COMPLETED"];
     if (!allowedStatus.includes(status))
       throw new ValidationError("Invalid status value");
@@ -62,7 +58,6 @@ export class CalendarService {
         isAllDay,
         isRecurrent,
         recurrenceRule,
-        isHighlighted,
         status,
       },
     });
@@ -91,15 +86,8 @@ export class CalendarService {
 
     if (!calendarId) throw new ValidationError("Calendar Item ID is required");
 
-    const {
-      title,
-      startTime,
-      endTime,
-      isAllDay,
-      isRecurrent,
-      isHighlighted,
-      status,
-    } = calendarItem;
+    const { title, startTime, endTime, isAllDay, isRecurrent, status } =
+      calendarItem;
 
     if (!title || typeof title !== "string")
       throw new ValidationError("Title is required");
@@ -117,9 +105,6 @@ export class CalendarService {
 
     if (typeof isRecurrent !== "boolean")
       throw new ValidationError("isRecurrent must be boolean");
-
-    if (typeof isHighlighted !== "boolean")
-      throw new ValidationError("isHighlighted must be boolean");
 
     const allowedStatus = ["PENDING", "INCOMING", "INPROGRESS", "COMPLETED"];
     if (!allowedStatus.includes(status))
