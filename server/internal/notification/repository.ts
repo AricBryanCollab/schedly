@@ -22,8 +22,23 @@ export class NotificationRepository implements INotificationRepository {
       throw error;
     }
   }
-  markNotificationAsRead(notifId: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async markNotificationAsRead(notifId: string): Promise<Notification> {
+    try {
+      const notification = await prisma.notification.update({
+        where: { id: notifId },
+        data: { isRead: true },
+      });
+
+      return notification;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError(
+          "Database error at markNotificationAsRead method"
+        );
+      }
+      throw error;
+    }
   }
   markAllNotificationsAsRead(userId: string): Promise<void> {
     throw new Error("Method not implemented.");

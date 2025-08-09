@@ -1,6 +1,6 @@
 import { CustomRequest } from "@/infrastructure/middleware/interface";
 import { NotificationService } from "@/internal/notification/service";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 0;
 
 export class NotificationController {
@@ -33,20 +33,31 @@ export class NotificationController {
   }
 
   async markNotificationAsRead(
-    req: Request,
+    req: CustomRequest,
     res: Response,
     next: NextFunction
   ) {
-    res.status(200).json({ message: "Mark Notification As Read" });
-  }
+    try {
+      const notifId = req.params.id;
 
+      await this.notificationService.markNotificationAsRead(notifId);
+
+      res.status(200).json({ message: "A notification was marked as read" });
+    } catch (error) {
+      next(error);
+    }
+  }
   async markAllNotificationsAsRead(
-    req: Request,
+    req: CustomRequest,
     res: Response,
     next: NextFunction
   ) {
-    res
-      .status(200)
-      .json({ message: "Mark All Notifications As Read Endpoint" });
+    try {
+      if (!req.user) {
+        return next(new Error("User not authenticated"));
+      }
+    } catch (error) {
+      next(error);
+    }
   }
 }
