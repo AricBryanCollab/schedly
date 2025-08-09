@@ -154,5 +154,19 @@ export class CalendarController {
     req: CustomRequest,
     res: Response,
     next: NextFunction
-  ) {}
+  ) {
+    try {
+      if (!req.user) {
+        return next(new Error("User not authenticated"));
+      }
+      const userId = req.user.id;
+
+      const highlights =
+        await this.calendarService.getAllHighlightsByUser(userId);
+
+      res.status(200).json(highlights);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

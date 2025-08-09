@@ -166,5 +166,15 @@ export class CalendarService {
     return highlights;
   }
 
-  async getAllHighlightsByUser(userId: string) {}
+  async getAllHighlightsByUser(userId: string) {
+    if (!userId) throw new NotFoundError("User ID");
+
+    const highlights = await this.calendarRepository.findUserHighlights(userId);
+
+    if (!highlights) {
+      throw new Error("Failed to retrieve the user highlights");
+    }
+
+    return highlights;
+  }
 }

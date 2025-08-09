@@ -13,5 +13,5 @@ router.delete("/:id", calendarController.deleteCalendarItem);
 
 router.put("/:id/highlights", calendarController.highlightOn);
 router.delete("/:id/highlights", calendarController.highlightOff);
-router.get("/user/:id", calendarController.getAllHighlightsByUser);
+router.get("/highlights", calendarController.getAllHighlightsByUser);
 export default router;
