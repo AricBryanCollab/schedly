@@ -1,9 +1,26 @@
+import { prisma } from "@/infrastructure/database/connectToDb";
+import { DatabaseError } from "@/infrastructure/errors/customErrors";
 import { Notification } from "@/internal/notification/dto";
 import { INotificationRepository } from "@/internal/notification/interface";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export class NotificationRepository implements INotificationRepository {
-  getUserNotifications(userId: string): Promise<Notification> {
-    throw new Error("Method not implemented.");
+  async getUserNotifications(userId: string): Promise<Notification[]> {
+    try {
+      const notifications = await prisma.notification.findMany({
+        where: { userId },
+      });
+
+      return notifications;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError(
+          "Database error at getUserNotifications method"
+        );
+      }
+      throw error;
+    }
   }
   markNotificationAsRead(notifId: string): Promise<void> {
     throw new Error("Method not implemented.");
