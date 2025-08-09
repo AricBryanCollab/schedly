@@ -1,4 +1,7 @@
-import { NotFoundError } from "@/infrastructure/errors/customErrors";
+import {
+  NotFoundError,
+  ValidationError,
+} from "@/infrastructure/errors/customErrors";
 import { NotificationRepository } from "@/internal/notification/repository";
 
 export class NotificationService {
@@ -20,7 +23,30 @@ export class NotificationService {
     return notifications;
   }
 
-  async markNotificationAsRead(notifId: string) {}
+  async markNotificationAsRead(notifId: string) {
+    if (!notifId) {
+      throw new NotFoundError("Notification ID");
+    }
 
-  async markAllNotificationsAsRead(userId: string) {}
+    const notification =
+      await this.notificationRepository.markNotificationAsRead(notifId);
+    if (!notification) {
+      throw new ValidationError("Failed to update the notification");
+    }
+
+    if (notification.isRead !== true) {
+      throw new ValidationError("Failed to mark notification as read");
+    }
+  }
+
+  async markAllNotificationsAsRead(userId: string) {
+    if (!userId) {
+      throw new ValidationError("User ID");
+    }
+
+    const isReadCount =
+      await this.notificationRepository.markAllNotificationsAsRead(userId);
+
+    return isReadCount;
+  }
 }
