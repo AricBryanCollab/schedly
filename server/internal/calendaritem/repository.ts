@@ -82,6 +82,27 @@ export class CalendarRepository implements ICalendarItemRepository {
     }
   }
 
+  async findUserHighlights(userId: string): Promise<string[] | null> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { highlights: true },
+      });
+
+      if (!user) return null;
+
+      const { highlights } = user;
+
+      return highlights;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at findUserById method");
+      }
+      throw error;
+    }
+  }
+
   async highlightOn(userId: string, calendarId: string): Promise<string[]> {
     try {
       const updatedUser = await prisma.user.update({
@@ -95,7 +116,6 @@ export class CalendarRepository implements ICalendarItemRepository {
           highlights: true,
         },
       });
-
       return updatedUser.highlights;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {

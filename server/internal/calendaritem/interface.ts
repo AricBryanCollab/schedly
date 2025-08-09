@@ -15,6 +15,8 @@ export interface ICalendarItemRepository {
 
   deleteCalendarItem(calendarId: string): Promise<void>;
 
+  findUserHighlights(userId: string): Promise<string[] | null>;
+
   highlightOn(calendarId: string, userId: string): Promise<string[]>;
   highlightOff(calendarId: string, userId: string): Promise<string[]>;
 

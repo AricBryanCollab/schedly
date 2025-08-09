@@ -135,6 +135,16 @@ export class CalendarService {
 
     if (!calendarId) throw new ValidationError("Calendar ID is required");
 
+    const existingHighlights =
+      await this.calendarRepository.findUserHighlights(userId);
+    if (!existingHighlights) {
+      throw new ValidationError("User has no array of highlights");
+    }
+
+    if (existingHighlights.includes(calendarId)) {
+      throw new ValidationError("Calendar item is already highlighted");
+    }
+
     const highlights = await this.calendarRepository.highlightOn(
       userId,
       calendarId
