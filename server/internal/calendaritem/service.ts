@@ -129,4 +129,10 @@ export class CalendarService {
 
     await this.calendarRepository.deleteCalendarItem(calendarId);
   }
+
+  async highlightOn() {}
+
+  async highlightOff() {}
+
+  async getAllHighlightsByUser() {}
 }
