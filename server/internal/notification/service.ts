@@ -39,5 +39,14 @@ export class NotificationService {
     }
   }
 
-  async markAllNotificationsAsRead(userId: string) {}
+  async markAllNotificationsAsRead(userId: string) {
+    if (!userId) {
+      throw new ValidationError("User ID");
+    }
+
+    const isReadCount =
+      await this.notificationRepository.markAllNotificationsAsRead(userId);
+
+    return isReadCount;
+  }
 }

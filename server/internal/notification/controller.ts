@@ -56,6 +56,18 @@ export class NotificationController {
       if (!req.user) {
         return next(new Error("User not authenticated"));
       }
+
+      const userId = req.user.id;
+
+      const isReadCount =
+        await this.notificationService.markAllNotificationsAsRead(userId);
+
+      res
+        .status(200)
+        .json({
+          message: "All user notifications were marked as read",
+          isReadCount,
+        });
     } catch (error) {
       next(error);
     }
