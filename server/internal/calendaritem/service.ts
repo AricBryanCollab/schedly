@@ -130,9 +130,31 @@ export class CalendarService {
     await this.calendarRepository.deleteCalendarItem(calendarId);
   }
 
-  async highlightOn() {}
+  async highlightOn(userId: string, calendarId: string): Promise<string[]> {
+    if (!userId) throw new NotFoundError("User ID");
 
-  async highlightOff() {}
+    if (!calendarId) throw new ValidationError("Calendar ID is required");
 
-  async getAllHighlightsByUser() {}
+    const highlights = await this.calendarRepository.highlightOn(
+      userId,
+      calendarId
+    );
+
+    return highlights;
+  }
+
+  async highlightOff(userId: string, calendarId: string): Promise<string[]> {
+    if (!userId) throw new NotFoundError("User ID");
+
+    if (!calendarId) throw new ValidationError("Calendar ID is required");
+
+    const highlights = await this.calendarRepository.highlightOff(
+      userId,
+      calendarId
+    );
+
+    return highlights;
+  }
+
+  async getAllHighlightsByUser(userId: string) {}
 }

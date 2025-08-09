@@ -116,6 +116,15 @@ export class CalendarController {
       const userId = req.user.id;
 
       const calendarId = req.params.id;
+
+      const highlights = await this.calendarService.highlightOn(
+        userId,
+        calendarId
+      );
+
+      res
+        .status(200)
+        .json({ message: "You have highlighted an event", highlights });
     } catch (error) {
       next(error);
     }
@@ -129,6 +138,13 @@ export class CalendarController {
       const userId = req.user.id;
 
       const calendarId = req.params.id;
+
+      const highlights = await this.calendarService.highlightOff(
+        userId,
+        calendarId
+      );
+
+      res.status(200).json({ highlights: highlights });
     } catch (error) {
       next(error);
     }
