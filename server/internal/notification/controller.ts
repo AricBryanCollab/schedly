@@ -1,7 +1,6 @@
 import { CustomRequest } from "@/infrastructure/middleware/interface";
 import { NotificationService } from "@/internal/notification/service";
 import { NextFunction, Response } from "express";
-0;
 
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {
@@ -9,6 +8,7 @@ export class NotificationController {
     this.markNotificationAsRead = this.markNotificationAsRead.bind(this);
     this.markAllNotificationsAsRead =
       this.markAllNotificationsAsRead.bind(this);
+    this.deleteNotification = this.deleteNotification.bind(this);
   }
 
   async getUserNotifications(
@@ -62,12 +62,33 @@ export class NotificationController {
       const isReadCount =
         await this.notificationService.markAllNotificationsAsRead(userId);
 
+      res.status(200).json({
+        message: "All user notifications were marked as read",
+        isReadCount,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteNotification(
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      if (!req.user) {
+        return next(new Error("User not authenticated"));
+      }
+
+      const userId = req.user.id;
+      const notifId = req.params.id;
+
+      await this.notificationService.deleteNotification(notifId, userId);
+
       res
         .status(200)
-        .json({
-          message: "All user notifications were marked as read",
-          isReadCount,
-        });
+        .json({ message: "You have successfully deleted a notification" });
     } catch (error) {
       next(error);
     }

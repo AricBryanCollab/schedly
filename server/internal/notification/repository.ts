@@ -58,4 +58,17 @@ export class NotificationRepository implements INotificationRepository {
       throw error;
     }
   }
+
+  async deleteNotification(notifId: string, userId: string): Promise<void> {
+    try {
+      await prisma.notification.delete({
+        where: { id: notifId, userId },
+      });
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at deleteNotification method");
+      }
+    }
+  }
 }
