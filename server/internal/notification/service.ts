@@ -49,4 +49,16 @@ export class NotificationService {
 
     return isReadCount;
   }
+
+  async deleteNotification(notifId: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundError("User ID");
+    }
+
+    if (!notifId) {
+      throw new NotFoundError("Notification ID");
+    }
+
+    await this.notificationRepository.deleteNotification(notifId, userId);
+  }
 }
