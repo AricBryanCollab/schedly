@@ -26,7 +26,6 @@ const DatePickerField = ({ label, value, onChange }: DatePickerFieldProps) => {
     <View style={{ marginVertical: 8 }}>
       <TextInput
         label={label}
-        left={<TextInput.Icon icon="calendar" />}
         theme={{ roundness: 12 }}
         value={value ? format(value, "PPP") : ""}
         onPressIn={() => setVisible(true)}

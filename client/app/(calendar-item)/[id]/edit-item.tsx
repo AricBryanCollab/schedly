@@ -51,14 +51,12 @@ const EditCalendarItem = () => {
 
           <CustomInput
             placeholder="Event Title"
-            icon="text"
             value={title}
             onChangeText={(text) => onCalendarItemChange("title", text)}
           />
 
           <CustomInput
             placeholder="Description (optional)"
-            icon="note-text"
             isTextArea
             value={description}
             onChangeText={(text) => onCalendarItemChange("description", text)}
@@ -123,7 +121,6 @@ const EditCalendarItem = () => {
           {isRecurrent && (
             <CustomInput
               placeholder="Recurrence (eg. daily, weekly)"
-              icon="repeat"
               value={recurrenceRule}
               onChangeText={(text) =>
                 onCalendarItemChange("recurrenceRule", text)
@@ -171,7 +168,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    paddingVertical: 12,
+    paddingVertical: 24,
+    marginLeft: 10,
     paddingHorizontal: 10,
   },
   dateBlock: {

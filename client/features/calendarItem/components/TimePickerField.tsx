@@ -33,7 +33,6 @@ const TimePickerField = ({ label, value, onChange }: TimePickerFieldProps) => {
     <View style={{ marginVertical: 8 }}>
       <TextInput
         label={label}
-        left={<TextInput.Icon icon="clock-outline" />}
         theme={{ roundness: 12 }}
         value={value ? format(value, "hh:mm a") : ""}
         onPressIn={() => setVisible(true)}

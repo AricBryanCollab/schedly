@@ -28,28 +28,28 @@ const AddCalendarItem = () => {
     <ScreenWrapper>
       <ScrollView style={styles.scrollContent}>
         <View style={styles.titleBlock}>
-          <Text variant="headlineSmall">Create an Event Here</Text>
+          <Text variant="headlineSmall">Create an Event</Text>
         </View>
 
-        <CustomInput
-          placeholder="Event Title"
-          icon="text"
-          value={calendarItem.title}
-          onChangeText={(text) => onCalendarItemChange("title", text)}
-        />
+        <View style={styles.inputGroup}>
+          <CustomInput
+            placeholder="Event Title"
+            value={calendarItem.title}
+            onChangeText={(text) => onCalendarItemChange("title", text)}
+          />
 
-        <CustomInput
-          placeholder="Description (optional)"
-          icon="note-text"
-          isTextArea
-          value={calendarItem.description}
-          onChangeText={(text) => onCalendarItemChange("description", text)}
-        />
+          <CustomInput
+            placeholder="Description (optional)"
+            isTextArea
+            value={calendarItem.description}
+            onChangeText={(text) => onCalendarItemChange("description", text)}
+          />
 
-        <Select
-          data={eventIcons}
-          onSelect={(value: string) => onCalendarItemChange("icon", value)}
-        />
+          <Select
+            data={eventIcons}
+            onSelect={(value: string) => onCalendarItemChange("icon", value)}
+          />
+        </View>
 
         <View style={styles.switchBlock}>
           <Text variant="bodyLarge">Whole Day?</Text>
@@ -60,36 +60,38 @@ const AddCalendarItem = () => {
           />
         </View>
 
-        <View style={styles.dateBlock}>
-          <DatePickerField
-            label="Start Date"
-            value={calendarItem.startDate}
-            onChange={updateStartDate}
-          />
-
-          {!isAllDay && (
-            <TimePickerField
-              label="Start Time"
+        <View style={styles.dateTimeSection}>
+          <View style={styles.dateTimeRow}>
+            <DatePickerField
+              label="Start Date"
               value={calendarItem.startDate}
-              onChange={updateStartTime}
+              onChange={updateStartDate}
             />
-          )}
-        </View>
 
-        <View style={styles.dateBlock}>
-          <DatePickerField
-            label="End Date"
-            value={calendarItem.endDate}
-            onChange={updateEndDate}
-          />
+            {!isAllDay && (
+              <TimePickerField
+                label="Start Time"
+                value={calendarItem.startDate}
+                onChange={updateStartTime}
+              />
+            )}
+          </View>
 
-          {!isAllDay && (
-            <TimePickerField
-              label="End Time"
+          <View style={styles.dateTimeRow}>
+            <DatePickerField
+              label="End Date"
               value={calendarItem.endDate}
-              onChange={updateEndTime}
+              onChange={updateEndDate}
             />
-          )}
+
+            {!isAllDay && (
+              <TimePickerField
+                label="End Time"
+                value={calendarItem.endDate}
+                onChange={updateEndTime}
+              />
+            )}
+          </View>
         </View>
 
         <View style={styles.switchBlock}>
@@ -102,14 +104,15 @@ const AddCalendarItem = () => {
         </View>
 
         {calendarItem.isRecurrent && (
-          <CustomInput
-            placeholder="Recurrence (eg. daily, weekly)"
-            icon="repeat"
-            value={calendarItem.recurrenceRule}
-            onChangeText={(text) =>
-              onCalendarItemChange("recurrenceRule", text)
-            }
-          />
+          <View style={styles.recurrenceBlock}>
+            <CustomInput
+              placeholder="Recurrence (eg. daily, weekly)"
+              value={calendarItem.recurrenceRule}
+              onChangeText={(text) =>
+                onCalendarItemChange("recurrenceRule", text)
+              }
+            />
+          </View>
         )}
 
         <View style={styles.eventPreviewBlock}>
@@ -129,7 +132,7 @@ const AddCalendarItem = () => {
           />
         </View>
 
-        <View style={styles.button}>
+        <View style={styles.buttonContainer}>
           <Button mode="contained">Create</Button>
         </View>
       </ScrollView>
@@ -141,32 +144,47 @@ export default AddCalendarItem;
 
 const styles = StyleSheet.create({
   scrollContent: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
+    paddingBottom: 32,
   },
   titleBlock: {
-    paddingVertical: 12,
+    paddingVertical: 20,
+    paddingBottom: 24,
+  },
+  inputGroup: {
+    gap: 16,
+    marginBottom: 24,
   },
   switchBlock: {
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
+    justifyContent: "space-between",
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    marginVertical: 8,
+    borderRadius: 8,
   },
-  dateBlock: {
-    display: "flex",
-    gap: 8,
-    padding: 10,
+  dateTimeSection: {
+    gap: 16,
+    marginVertical: 16,
   },
-  button: {
-    marginTop: 12,
-    marginBottom: 20,
-    paddingHorizontal: 12,
+  dateTimeRow: {
+    gap: 12,
+    paddingHorizontal: 4,
+  },
+  recurrenceBlock: {
+    marginTop: 16,
+    marginBottom: 24,
   },
   eventPreviewBlock: {
-    marginTop: 18,
-    paddingBottom: 10,
-    paddingHorizontal: 20,
+    marginTop: 32,
+    marginBottom: 24,
+    paddingHorizontal: 4,
+    gap: 16,
+  },
+  buttonContainer: {
+    marginTop: 16,
+    marginBottom: 32,
+    paddingHorizontal: 4,
   },
 });
