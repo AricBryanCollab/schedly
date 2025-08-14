@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, Icon, Menu, Text } from "react-native-paper";
+import { Button, Menu, Text } from "react-native-paper";
 
 interface SelectData {
   name: string;
@@ -56,10 +56,7 @@ const Select = ({ data, onSelect, value }: SelectProps) => {
             onPress={openMenu}
           >
             <View style={styles.selectedContent}>
-              <Icon source={selected.value} size={20} />
-              <View style={{ marginLeft: 8 }}>
-                <Text variant="bodyLarge">{selected.name}</Text>
-              </View>
+              <Text variant="bodyLarge">{selected.name}</Text>
             </View>
           </Button>
         }
@@ -84,27 +81,28 @@ export default Select;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    marginTop: 10,
   },
   button: {
     borderRadius: 12,
     borderWidth: 1,
     height: 56,
     paddingVertical: 0,
-
     justifyContent: "center",
   },
   buttonContent: {
     justifyContent: "flex-start",
+    paddingHorizontal: 16,
   },
   labelStyle: {
     fontSize: 16,
     textAlign: "left",
     lineHeight: 24,
+    marginLeft: 0,
   },
   selectedContent: {
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: 4,
+    paddingTop: 0,
+    flex: 1,
   },
 });

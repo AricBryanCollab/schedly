@@ -31,9 +31,11 @@ const LoginPage = () => {
           </Text>
         </View>
         <View style={styles.form}>
-          <TextInput label="Email" />
+          <TextInput mode="outlined" theme={{ roundness: 8 }} label="Email" />
 
           <TextInput
+            mode="outlined"
+            theme={{ roundness: 8 }}
             label="Password"
             secureTextEntry={!showPassword}
             right={

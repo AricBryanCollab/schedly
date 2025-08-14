@@ -33,13 +33,22 @@ const SignUp = () => {
         </View>
         <View style={styles.form}>
           <TextInput
+            mode="outlined"
+            theme={{ roundness: 8 }}
             label="Username"
             right={<TextInput.Icon icon="account" />}
           />
 
-          <TextInput label="Email" right={<TextInput.Icon icon="email" />} />
+          <TextInput
+            mode="outlined"
+            theme={{ roundness: 8 }}
+            label="Email"
+            right={<TextInput.Icon icon="email" />}
+          />
 
           <TextInput
+            mode="outlined"
+            theme={{ roundness: 8 }}
             label="Password"
             secureTextEntry={!showPassword}
             right={
@@ -51,6 +60,8 @@ const SignUp = () => {
           />
 
           <TextInput
+            mode="outlined"
+            theme={{ roundness: 8 }}
             label="Confirm Password"
             secureTextEntry={!showPassword}
             right={

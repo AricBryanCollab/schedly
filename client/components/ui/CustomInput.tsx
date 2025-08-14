@@ -1,11 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import { TextInput } from "react-native-paper";
 
-import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
-
 interface CustomInputProps {
   placeholder: string;
-  icon: IconSource;
   isTextArea?: boolean;
   value: string;
   onChangeText: (text: string) => void;
@@ -13,7 +10,6 @@ interface CustomInputProps {
 
 const CustomInput = ({
   placeholder,
-  icon,
   isTextArea = false,
   value,
   onChangeText,
@@ -26,7 +22,6 @@ const CustomInput = ({
         onChangeText={onChangeText}
         theme={{ roundness: 12 }}
         placeholder={placeholder}
-        left={<TextInput.Icon icon={icon} />}
         multiline={isTextArea}
         numberOfLines={isTextArea ? 5 : 1}
         style={isTextArea ? styles.textArea : styles.input}

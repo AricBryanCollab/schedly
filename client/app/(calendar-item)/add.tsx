@@ -1,3 +1,7 @@
+import calendarFormStyles from "@/styles/calendarItemForm";
+import { ScrollView, View } from "react-native";
+import { Button, Switch, Text } from "react-native-paper";
+
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import CalendarItemCard from "@/components/ui/CalendarItemCard";
 import CustomInput from "@/components/ui/CustomInput";
@@ -6,8 +10,6 @@ import Select from "@/components/ui/Select";
 import { eventIcons } from "@/constants/eventIcon";
 import DatePickerField from "@/features/calendarItem/components/DatePickerField";
 import TimePickerField from "@/features/calendarItem/components/TimePickerField";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, Switch, Text } from "react-native-paper";
 
 import useAddCalendarItem from "@/features/calendarItem/hooks/useAddCalendarItem";
 
@@ -26,32 +28,32 @@ const AddCalendarItem = () => {
   const isAllDay = calendarItem.isAllDay;
   return (
     <ScreenWrapper>
-      <ScrollView style={styles.scrollContent}>
-        <View style={styles.titleBlock}>
-          <Text variant="headlineSmall">Create an Event Here</Text>
+      <ScrollView style={calendarFormStyles.scrollContent}>
+        <View style={calendarFormStyles.titleBlock}>
+          <Text variant="headlineSmall">Create an Event</Text>
         </View>
 
-        <CustomInput
-          placeholder="Event Title"
-          icon="text"
-          value={calendarItem.title}
-          onChangeText={(text) => onCalendarItemChange("title", text)}
-        />
+        <View style={calendarFormStyles.inputGroup}>
+          <CustomInput
+            placeholder="Event Title"
+            value={calendarItem.title}
+            onChangeText={(text) => onCalendarItemChange("title", text)}
+          />
 
-        <CustomInput
-          placeholder="Description (optional)"
-          icon="note-text"
-          isTextArea
-          value={calendarItem.description}
-          onChangeText={(text) => onCalendarItemChange("description", text)}
-        />
+          <CustomInput
+            placeholder="Description (optional)"
+            isTextArea
+            value={calendarItem.description}
+            onChangeText={(text) => onCalendarItemChange("description", text)}
+          />
 
-        <Select
-          data={eventIcons}
-          onSelect={(value: string) => onCalendarItemChange("icon", value)}
-        />
+          <Select
+            data={eventIcons}
+            onSelect={(value: string) => onCalendarItemChange("icon", value)}
+          />
+        </View>
 
-        <View style={styles.switchBlock}>
+        <View style={calendarFormStyles.switchBlock}>
           <Text variant="bodyLarge">Whole Day?</Text>
           <Switch
             value={calendarItem.isAllDay}
@@ -60,39 +62,41 @@ const AddCalendarItem = () => {
           />
         </View>
 
-        <View style={styles.dateBlock}>
-          <DatePickerField
-            label="Start Date"
-            value={calendarItem.startDate}
-            onChange={updateStartDate}
-          />
-
-          {!isAllDay && (
-            <TimePickerField
-              label="Start Time"
+        <View style={calendarFormStyles.dateTimeSection}>
+          <View style={calendarFormStyles.dateTimeRow}>
+            <DatePickerField
+              label="Start Date"
               value={calendarItem.startDate}
-              onChange={updateStartTime}
+              onChange={updateStartDate}
             />
-          )}
-        </View>
 
-        <View style={styles.dateBlock}>
-          <DatePickerField
-            label="End Date"
-            value={calendarItem.endDate}
-            onChange={updateEndDate}
-          />
+            {!isAllDay && (
+              <TimePickerField
+                label="Start Time"
+                value={calendarItem.startDate}
+                onChange={updateStartTime}
+              />
+            )}
+          </View>
 
-          {!isAllDay && (
-            <TimePickerField
-              label="End Time"
+          <View style={calendarFormStyles.dateTimeRow}>
+            <DatePickerField
+              label="End Date"
               value={calendarItem.endDate}
-              onChange={updateEndTime}
+              onChange={updateEndDate}
             />
-          )}
+
+            {!isAllDay && (
+              <TimePickerField
+                label="End Time"
+                value={calendarItem.endDate}
+                onChange={updateEndTime}
+              />
+            )}
+          </View>
         </View>
 
-        <View style={styles.switchBlock}>
+        <View style={calendarFormStyles.switchBlock}>
           <Text variant="bodyLarge">Does this event repeat?</Text>
           <Switch
             value={calendarItem.isRecurrent}
@@ -102,17 +106,18 @@ const AddCalendarItem = () => {
         </View>
 
         {calendarItem.isRecurrent && (
-          <CustomInput
-            placeholder="Recurrence (eg. daily, weekly)"
-            icon="repeat"
-            value={calendarItem.recurrenceRule}
-            onChangeText={(text) =>
-              onCalendarItemChange("recurrenceRule", text)
-            }
-          />
+          <View style={calendarFormStyles.recurrenceBlock}>
+            <CustomInput
+              placeholder="Recurrence (eg. daily, weekly)"
+              value={calendarItem.recurrenceRule}
+              onChangeText={(text) =>
+                onCalendarItemChange("recurrenceRule", text)
+              }
+            />
+          </View>
         )}
 
-        <View style={styles.eventPreviewBlock}>
+        <View style={calendarFormStyles.eventPreviewBlock}>
           <Text variant="headlineSmall">Card Preview</Text>
 
           <CalendarItemCard
@@ -129,7 +134,7 @@ const AddCalendarItem = () => {
           />
         </View>
 
-        <View style={styles.button}>
+        <View style={calendarFormStyles.buttonContainer}>
           <Button mode="contained">Create</Button>
         </View>
       </ScrollView>
@@ -138,35 +143,3 @@ const AddCalendarItem = () => {
 };
 
 export default AddCalendarItem;
-
-const styles = StyleSheet.create({
-  scrollContent: {
-    paddingHorizontal: 8,
-  },
-  titleBlock: {
-    paddingVertical: 12,
-  },
-  switchBlock: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-  },
-  dateBlock: {
-    display: "flex",
-    gap: 8,
-    padding: 10,
-  },
-  button: {
-    marginTop: 12,
-    marginBottom: 20,
-    paddingHorizontal: 12,
-  },
-  eventPreviewBlock: {
-    marginTop: 18,
-    paddingBottom: 10,
-    paddingHorizontal: 20,
-  },
-});
