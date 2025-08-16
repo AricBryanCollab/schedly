@@ -8,10 +8,10 @@ import CustomInput from "@/components/ui/CustomInput";
 import Select from "@/components/ui/Select";
 
 import { eventIcons } from "@/constants/eventIcon";
-import DatePickerField from "@/features/calendarItem/components/DatePickerField";
-import TimePickerField from "@/features/calendarItem/components/TimePickerField";
+import DatePickerField from "@/features/CalendarItem/components/DatePickerField";
+import TimePickerField from "@/features/CalendarItem/components/TimePickerField";
 
-import useAddCalendarItem from "@/features/calendarItem/hooks/useAddCalendarItem";
+import useAddCalendarItem from "@/features/CalendarItem/hooks/useAddCalendarItem";
 
 const AddCalendarItem = () => {
   const {

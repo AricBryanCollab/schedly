@@ -1,4 +1,4 @@
-import EventCardActions from "@/features/calendarItem/components/EventCardActions";
+import EventCardActions from "@/features/CalendarItem/components/EventCardActions";
 import { useState } from "react";
 
 import { StyleSheet, View } from "react-native";
@@ -7,7 +7,7 @@ import { Chip, Icon, Text } from "react-native-paper";
 import { secondFormatDate } from "@/utils/formatDate";
 import { Status, getReadableStatus, getStatusIcon } from "@/utils/formatStatus";
 
-import { capitalizeFirstLetter } from "@/features/calendarItem/utils/capitalizeFirstLetter";
+import { capitalizeFirstLetter } from "@/features/CalendarItem/utils/capitalizeFirstLetter";
 
 export interface CalendarItemCardProps<T, U> {
   id: T;

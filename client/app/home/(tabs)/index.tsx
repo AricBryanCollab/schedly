@@ -2,11 +2,11 @@ import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { StyleSheet, View } from "react-native";
 import { IconButton } from "react-native-paper";
 
-import CalendarBlock from "@/features/calendarItem/components/CalendarBlock";
-import UpcomingEvents from "@/features/calendarItem/components/UpcomingEvents";
+import CalendarBlock from "@/features/CalendarItem/components/CalendarBlock";
+import UpcomingEvents from "@/features/CalendarItem/components/UpcomingEvents";
 import { Href, useRouter } from "expo-router";
 
-import { mockCalendarData } from "@/features/calendarItem/api/mockData";
+import { mockCalendarData } from "@/features/CalendarItem/api/mockData";
 
 export interface CalendarData<T> {
   id: T;

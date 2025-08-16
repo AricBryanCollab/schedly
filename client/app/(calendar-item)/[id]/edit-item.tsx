@@ -1,4 +1,4 @@
-import useEditCalendarItem from "@/features/calendarItem/hooks/useEditCalendarItem";
+import useEditCalendarItem from "@/features/CalendarItem/hooks/useEditCalendarItem";
 import calendarFormStyles from "@/styles/calendarItemForm";
 import { useLocalSearchParams } from "expo-router";
 
@@ -8,8 +8,8 @@ import CustomInput from "@/components/ui/CustomInput";
 import Select from "@/components/ui/Select";
 
 import { eventIcons } from "@/constants/eventIcon";
-import DatePickerField from "@/features/calendarItem/components/DatePickerField";
-import TimePickerField from "@/features/calendarItem/components/TimePickerField";
+import DatePickerField from "@/features/CalendarItem/components/DatePickerField";
+import TimePickerField from "@/features/CalendarItem/components/TimePickerField";
 import { Status } from "@/utils/formatStatus";
 import { ScrollView, View } from "react-native";
 import { Button, Switch, Text } from "react-native-paper";

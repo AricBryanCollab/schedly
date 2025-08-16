@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
 
 import CalendarItemCard from "@/components/ui/CalendarItemCard";
-import { eventCardDetails } from "@/features/calendarItem/api/mockData";
+import { eventCardDetails } from "@/features/CalendarItem/api/mockData";
 
 const EventsScreen = () => {
   const [activeTab, setActiveTab] = useState<"all" | "highlight">("all");

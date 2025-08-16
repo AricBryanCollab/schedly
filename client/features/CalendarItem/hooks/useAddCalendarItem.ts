@@ -1,8 +1,8 @@
-import { MutateCalendarItem } from "@/features/calendarItem/api/dto";
+import { MutateCalendarItem } from "@/features/CalendarItem/api/dto";
 import {
   setDatePreserveTime,
   setTimePreserveDate,
-} from "@/features/calendarItem/utils/setDateTime";
+} from "@/features/CalendarItem/utils/setDateTime";
 
 import { useState } from "react";
 
