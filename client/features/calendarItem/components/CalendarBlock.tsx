@@ -21,6 +21,11 @@ interface DateObject {
 
 const CalendarBlock = ({ data }: CalendarBlockProps) => {
   const [selected, setSelected] = useState<string>("");
+  const [visible, setVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedEvents, setSelectedEvents] = useState<CalendarData<string>[]>(
+    [],
+  );
 
   const markedDates = {
     ...getMarkedDatesFromEvents(data),
@@ -51,12 +56,6 @@ const CalendarBlock = ({ data }: CalendarBlockProps) => {
       setVisible(true);
     }
   };
-
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedEvents, setSelectedEvents] = useState<CalendarData<string>[]>(
-    []
-  );
-  const [visible, setVisible] = useState(false);
 
   return (
     <View style={{ paddingVertical: 20 }}>
