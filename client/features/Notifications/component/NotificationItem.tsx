@@ -1,5 +1,7 @@
+import NotificationActions from "@/features/Notifications//component/NotificationActions";
+import { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { IconButton, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 
 import { secondFormatDate } from "@/utils/formatDate";
 
@@ -11,7 +13,13 @@ export interface NotificationItemProps {
 }
 
 const NotificationItem = (props: NotificationItemProps) => {
-  const { id, message, isRead, createdAt } = props;
+  const { id, message, createdAt } = props;
+
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
+
+  const onOpen = () => setOpenMenu(true);
+
+  const onClose = () => setOpenMenu(false);
 
   return (
     <View style={styles.notificationItem}>
@@ -24,7 +32,12 @@ const NotificationItem = (props: NotificationItemProps) => {
         </Text>
       </View>
       <TouchableOpacity style={styles.actionContainer}>
-        <IconButton icon="dots-vertical" />
+        <NotificationActions
+          itemId={id}
+          openMenu={openMenu}
+          onOpen={onOpen}
+          onClose={onClose}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -53,6 +66,7 @@ const styles = StyleSheet.create({
   notificationContent: {
     flex: 1,
     marginRight: 12,
+    maxWidth: 290,
   },
   notificationText: {
     marginBottom: 4,
@@ -65,7 +79,5 @@ const styles = StyleSheet.create({
   actionContainer: {
     position: "absolute",
     right: 0,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

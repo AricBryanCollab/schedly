@@ -14,7 +14,7 @@ export const mockNotificationsData: NotificationItemProps[] = [
     createdAt: "2025-08-09T05:52:50.000Z",
   },
   {
-    id: "979c5639-9cc0-4186-b437-44442d243232",
+    id: "979c5639-9cc0-4186-b437-44442d243245",
     message: "You have created an event: Grocery Shopping",
     isRead: true,
     createdAt: "2025-08-09T05:52:50.000Z",
