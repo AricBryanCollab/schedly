@@ -1,5 +1,5 @@
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
 
 import { mockNotificationsData } from "@/features/Notifications/api/mockData";
@@ -13,10 +13,18 @@ const NotificationScreen = () => {
           <Text variant="headlineSmall">Notifications</Text>
         </View>
 
-        <View style={styles.notifListBlock}>
+        <ScrollView style={styles.notifListBlock}>
           {mockNotificationsData.map((notif) => {
             return <NotificationItem key={notif.id} {...notif} />;
           })}
+        </ScrollView>
+        <View style={styles.markAllContainer}>
+          <TouchableOpacity>
+            <Text variant="bodyMedium">Mark All As Read</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.titleBlock}>
+          <Text variant="headlineSmall">Reminders</Text>
         </View>
       </ScrollView>
     </ScreenWrapper>
@@ -37,5 +45,11 @@ const styles = StyleSheet.create({
   notifListBlock: {
     flex: 1,
     gap: 10,
+    paddingBottom: 20,
+    height: 350,
+  },
+  markAllContainer: {
+    marginTop: "auto",
+    paddingTop: 10,
   },
 });
