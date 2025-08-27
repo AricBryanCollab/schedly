@@ -1,11 +1,34 @@
+import { prisma } from "@/infrastructure/database/connectToDb";
+
+import { DatabaseError } from "@/infrastructure/errors/customErrors";
 import { IReminderRepository } from "@/internal/reminder/interface";
-import { Reminder } from "./dto";
+import { CalendarItem, OffsetDuration, Reminder } from "@prisma/client";
+import { PrismaClientInitializationError } from "@prisma/client/runtime/library";
 
 export class ReminderRepository implements IReminderRepository {
-  createReminder(calendarId: string, userId: string): Promise<Reminder> {
-    throw new Error("Method not implemented.");
+  async createReminder(
+    calendarId: string,
+    offset: number,
+    offsetType: OffsetDuration
+  ): Promise<Reminder> {
+    try {
+      return await prisma.reminder.create({
+        data: {
+          calendarItemId: calendarId,
+          offset,
+          offsetType,
+          isSent: false,
+        },
+      });
+    } catch (error) {
+      if (error instanceof PrismaClientInitializationError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at createReminder method");
+      }
+      throw error;
+    }
   }
-  getRemindersByUSer(userId: string): Promise<Reminder[]> {
+  getRemindersByUser(userId: string): Promise<Reminder[]> {
     throw new Error("Method not implemented.");
   }
   updateReminder(reminderId: string): Promise<Reminder> {
@@ -13,5 +36,19 @@ export class ReminderRepository implements IReminderRepository {
   }
   deleteReminder(reminderId: string): Promise<void> {
     throw new Error("Method not implemented.");
+  }
+
+  async findCalendarItem(calendarItemId: string): Promise<CalendarItem | null> {
+    try {
+      return await prisma.calendarItem.findFirst({
+        where: { id: calendarItemId },
+      });
+    } catch (error) {
+      if (error instanceof PrismaClientInitializationError) {
+        console.error(error.message);
+        throw new DatabaseError("Database error at findCalendarItem method");
+      }
+      throw error;
+    }
   }
 }
