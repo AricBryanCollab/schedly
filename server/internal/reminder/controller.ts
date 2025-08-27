@@ -12,7 +12,27 @@ export class ReminderController {
 
   async createReminder(req: CustomRequest, res: Response, next: NextFunction) {
     try {
-      res.status(200).json({ message: "createReminder Endpoint!" });
+      if (!req.user) {
+        return next(new Error("User not authenticated"));
+      }
+      const userId = req.user.id;
+
+      const calendarId = req.params.id;
+
+      const reminder = req.body;
+
+      const newReminder = await this.reminderService.createReminders(
+        userId,
+        calendarId,
+        reminder
+      );
+
+      res
+        .status(200)
+        .json({
+          message: "A reminder has been created",
+          reminder: newReminder,
+        });
     } catch (error) {
       next(error);
     }
